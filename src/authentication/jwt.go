@@ -1,12 +1,12 @@
 package authentication
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 var jwtKey = []byte("secret_key")
@@ -26,28 +26,21 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func Login(ctx *gin.Context) {
 	fmt.Println("Im here")
 	var credentials Credentials
-	err := json.NewDecoder(r.Body).Decode(&credentials)
-	fmt.Println("Im here 2")
+	err := ctx.BindJSON(&credentials)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Bad Req"})
 		return
 	}
-	fmt.Println("Im here 3")
 
 	expectedPassword, ok := users[credentials.Username]
 
-	fmt.Println(expectedPassword)
-	fmt.Println("Im here 4")
-	fmt.Println(credentials.Password)
 	if !ok || expectedPassword != credentials.Password {
-		w.WriteHeader(http.StatusUnauthorized)
+		ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Unauth"})
 		return
 	}
-	fmt.Println("Im here 5")
-
 	expirationTime := time.Now().Add(time.Minute * 5)
 
 	claims := &Claims{
@@ -59,35 +52,67 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)
+	fmt.Println(tokenString)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "Internal Server Error"})
 		return
 	}
 
-	fmt.Println("Im here 6")
-
-	http.SetCookie(w,
-		&http.Cookie{
-			Name:    "token",
-			Value:   tokenString,
-			Expires: expirationTime,
-		})
-
+	ctx.SetCookie("token", tokenString, 3600, "/", "localhost", false, true)
+	ctx.JSON(http.StatusOK, gin.H{"msg": "Sucess Login", "data": tokenString})
 }
 
-func Home(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("token")
+// func Home(w http.ResponseWriter, r *http.Request) {
+// 	cookie, err := r.Cookie("token")
+// 	if err != nil {
+// 		if err == http.ErrNoCookie {
+// 			w.WriteHeader(http.StatusUnauthorized)
+// 			return
+// 		}
+// 		w.WriteHeader(http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	tokenStr := cookie.Value
+
+// 	claims := &Claims{}
+
+// 	tkn, err := jwt.ParseWithClaims(tokenStr, claims,
+// 		func(t *jwt.Token) (interface{}, error) {
+// 			return jwtKey, nil
+// 		})
+
+// 	if err != nil {
+// 		if err == jwt.ErrSignatureInvalid {
+// 			w.WriteHeader(http.StatusUnauthorized)
+// 			return
+// 		}
+// 		w.WriteHeader(http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	if !tkn.Valid {
+// 		w.WriteHeader(http.StatusUnauthorized)
+// 		return
+// 	}
+
+// 	w.Write([]byte(fmt.Sprintf("Hello, %s", claims.Username)))
+
+// }
+
+func Refresh(ctx *gin.Context) {
+	cookie, err := ctx.Cookie("token")
 	if err != nil {
 		if err == http.ErrNoCookie {
-			w.WriteHeader(http.StatusUnauthorized)
+			ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Unauthorized"})
 			return
 		}
-		w.WriteHeader(http.StatusBadRequest)
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Bad Request"})
 		return
 	}
 
-	tokenStr := cookie.Value
+	tokenStr := cookie
 
 	claims := &Claims{}
 
@@ -98,52 +123,14 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
-			w.WriteHeader(http.StatusUnauthorized)
+			ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Unauthorized"})
 			return
 		}
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	if !tkn.Valid {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-
-	w.Write([]byte(fmt.Sprintf("Hello, %s", claims.Username)))
-
-}
-
-func Refresh(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("token")
-	if err != nil {
-		if err == http.ErrNoCookie {
-			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	tokenStr := cookie.Value
-
-	claims := &Claims{}
-
-	tkn, err := jwt.ParseWithClaims(tokenStr, claims,
-		func(t *jwt.Token) (interface{}, error) {
-			return jwtKey, nil
-		})
-
-	if err != nil {
-		if err == jwt.ErrSignatureInvalid {
-			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-		w.WriteHeader(http.StatusBadRequest)
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Bad Request"})
 		return
 	}
 	if !tkn.Valid {
-		w.WriteHeader(http.StatusUnauthorized)
+		ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Unauthorized"})
 		return
 	}
 
@@ -152,7 +139,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	// 	return
 	// }
 
-	expirationTime := time.Now().Add(time.Minute * 5)
+	expirationTime := time.Now().Add(time.Minute * 15)
 
 	claims.ExpiresAt = expirationTime.Unix()
 
@@ -160,15 +147,18 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	tokenString, err := token.SignedString(jwtKey)
 
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "Internal Error"})
 		return
 	}
 
-	http.SetCookie(w,
-		&http.Cookie{
-			Name:    "refresh_token",
-			Value:   tokenString,
-			Expires: expirationTime,
-		})
+	// http.SetCookie(w,
+	// 	&http.Cookie{
+	// 		Name:    "refresh_token",
+	// 		Value:   tokenString,
+	// 		Expires: expirationTime,
+	// 	})
+
+	ctx.SetCookie("refresh_token", tokenString, 3600, "/", "localhost", false, true)
+	ctx.JSON(http.StatusOK, gin.H{"msg": "Refresh Token Successfully", "data": tokenString})
 
 }
