@@ -1,20 +1,3 @@
-// package main
-
-// import (
-// 	"log"
-// 	"net/http"
-
-// 	auth "gitlab.com/JacobDCruz/supplier-portal/src/authentication"
-// )
-
-// func main() {
-// 	http.HandleFunc("/login", auth.Login)
-// 	http.HandleFunc("/home", auth.Home)
-// 	http.HandleFunc("/refresh", auth.Refresh)
-
-// 	log.Fatal(http.ListenAndServe(":8000", nil))
-// }
-
 package main
 
 import (
@@ -43,7 +26,4 @@ func main() {
 		id := ctx.Param("id")
 		delete.DeleteController(ctx, id)
 	})
-
-	// register
-	server.Run(":8000")
 }
