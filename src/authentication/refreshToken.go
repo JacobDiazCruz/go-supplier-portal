@@ -43,10 +43,9 @@ func RefreshController(ctx *gin.Context) {
 		return
 	}
 
-	// if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 30*time.Second {
-	// 	w.WriteHeader(http.StatusBadRequest)
-	// 	return
-	// }
+	if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 30*time.Second {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "Bad Request"})
+	}
 
 	expirationTime := time.Now().Add(time.Minute * 15)
 

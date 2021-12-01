@@ -1,7 +1,6 @@
 package authentication
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -9,17 +8,7 @@ import (
 
 var jwtKey = []byte("secret_key")
 
-// var users = map[string]string{
-// 	"user1": "password1",
-// 	"user2": "password2",
-// }
-
-type TokenIdentity struct {
-	Username string
-}
-
 func SignToken(tk TokenIdentity) string {
-	fmt.Println(tk)
 	// err := tk.Username
 
 	// add expiration time

@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var personCollection *mongo.Collection = database.OpenCollection(database.Client, "newsletter")
+var personCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
 func SignupService(person entity.User) string {
 	// query

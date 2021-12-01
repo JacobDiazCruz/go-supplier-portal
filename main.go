@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	auth "gitlab.com/JacobDCruz/supplier-portal/src/authentication"
 	delete "gitlab.com/JacobDCruz/supplier-portal/src/person/delete"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/person/get"
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
@@ -11,6 +12,7 @@ import (
 func main() {
 	server := gin.Default()
 
+	server.GET("/token", auth.CheckToken)
 	server.GET("/person/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		get.GetUser(ctx, id)

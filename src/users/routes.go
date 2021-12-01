@@ -11,7 +11,7 @@ func Routes() {
 
 	server.POST("/login", users.LoginController)
 	server.POST("/refresh", users.RefreshController)
-
+	server.POST("/logout", users.LogoutController)
 	server.GET("/users", users.ListController)
 
 	server.POST("/signup", func(ctx *gin.Context) {

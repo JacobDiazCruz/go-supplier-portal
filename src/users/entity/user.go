@@ -8,14 +8,18 @@ import (
 type User struct {
 	ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Email     string             `json:"email"`
-	FirstName string             `json:"first_name"`
-	LastName  string             `json:"last_name"`
+	FirstName string             `json:"firstname"`
+	LastName  string             `json:"lastname"`
 	Password  string             `json:"password"`
 }
 
 type Credentials struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type TokenIdentity struct {
+	Token string `json:"token"`
 }
 
 type Claims struct {
