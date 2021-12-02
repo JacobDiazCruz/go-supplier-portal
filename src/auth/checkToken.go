@@ -1,4 +1,4 @@
-package authentication
+package auth
 
 import (
 	"context"
@@ -15,6 +15,9 @@ var myCollection *mongo.Collection = database.OpenCollection(database.Client, "b
 
 func CheckToken(ctx *gin.Context) {
 	cookie, err := ctx.Cookie("token")
+	tokenStr := cookie
+	claims := &Claims{}
+	identity := &TokenIdentity{}
 
 	// if token exists
 	if err != nil {
@@ -23,10 +26,6 @@ func CheckToken(ctx *gin.Context) {
 		}
 		ctx.JSON(http.StatusOK, gin.H{"data": "Success"})
 	}
-
-	tokenStr := cookie
-	claims := &Claims{}
-	identity := &TokenIdentity{}
 
 	// validate with claims
 	tkn, err := jwt.ParseWithClaims(tokenStr, claims,

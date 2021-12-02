@@ -6,7 +6,7 @@ import (
 	get "gitlab.com/JacobDCruz/supplier-portal/src/person/get"
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
 	users "gitlab.com/JacobDCruz/supplier-portal/src/users/controllers"
-	auth "gitlab.com/JacobDCruz/supplier-portal/src/authentication"
+	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
 )
 
 func main() {

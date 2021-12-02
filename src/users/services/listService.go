@@ -9,7 +9,7 @@ import (
 )
 
 func ListService() []entity.User {
-	cursor, err := personCollection.Find(context.TODO(), bson.M{})
+	cursor, err := userCollection.Find(context.TODO(), bson.M{})
 	if err != nil {
 		log.Fatal(err)
 	}

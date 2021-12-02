@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	auth "gitlab.com/JacobDCruz/supplier-portal/src/authentication"
+	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
 	"go.mongodb.org/mongo-driver/mongo"

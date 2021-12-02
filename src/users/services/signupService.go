@@ -9,11 +9,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var personCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
+var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
-func SignupService(person entity.User) string {
+func SignupService(user entity.User) string {
 	// query
-	result, err := personCollection.InsertOne(context.TODO(), person)
+	result, err := userCollection.InsertOne(context.TODO(), user)
 	if err != nil {
 		panic(err)
 	}
