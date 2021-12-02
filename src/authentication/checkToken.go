@@ -39,18 +39,24 @@ func CheckToken(ctx *gin.Context) {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Invalid token"})
 		}
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Bad Request"})
+		return
 	}
+
 	if !tkn.Valid {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Invalid token"})
+		return
 	}
 
 	// check jwt if it is blacklisted
 	query := bson.M{"token": tokenStr}
 	err2 := myCollection.FindOne(context.TODO(), query).Decode(&identity)
 	if err2 != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Token does not exist in db"})
+		// return if it is valid
+		ctx.JSON(http.StatusOK, gin.H{"data": tokenStr})
+		return
+	} else {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"data": "Invalid token"})
+		return
 	}
 
-	ctx.JSON(http.StatusUnauthorized, gin.H{"data": tokenStr})
-	// ctx.JSON(http.StatusOK, gin.H{"msg": "Sucess", "data": claims.Username})
 }

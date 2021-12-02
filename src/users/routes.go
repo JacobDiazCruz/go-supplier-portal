@@ -18,7 +18,4 @@ func Routes() {
 		id := users.SignupController(ctx)
 		get.GetUser(ctx, id)
 	})
-
-	// register
-	server.Run(":8000")
 }
