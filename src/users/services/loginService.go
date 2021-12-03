@@ -15,18 +15,8 @@ import (
 var myCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
 func LoginService(login *entity.Credentials) string {
-	user := entity.User{}
-
-	// Hashing the password with the default cost of 10
-	// password := []byte(login.Password)
-	// hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// fmt.Println(string(hashedPassword))
-
 	// validate credentials
+	user := entity.User{}
 	query := bson.M{"email": login.Email}
 	err2 := myCollection.FindOne(context.TODO(), query).Decode(&user)
 	if err2 != nil {
