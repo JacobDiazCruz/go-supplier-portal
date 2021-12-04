@@ -65,8 +65,8 @@ func main() {
 
 	// auth
 	server.GET("/token", auth.CheckToken)
-	server.GET("/google/login", auth.GoogleLogin)
-	server.GET("/google/callback", auth.GoogleCallback)
+	server.POST("/google/login", auth.GoogleLogin)
+	server.POST("/google/callback", auth.GoogleCallback)
 
 	// users
 	server.POST("/login", func(ctx *gin.Context) {
