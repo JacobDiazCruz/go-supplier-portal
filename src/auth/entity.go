@@ -11,3 +11,10 @@ type Claims struct {
 	Username string `json:"username"`
 	jwt.StandardClaims
 }
+
+type Credentials struct {
+	Email string `json:"email"`
+	Token string `json:"token"`
+	Type  string `json:"type"`
+	Scope string `json:"scope"`
+}

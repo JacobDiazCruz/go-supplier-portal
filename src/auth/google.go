@@ -1,99 +1,79 @@
 package auth
 
 import (
-	"context"
-	"crypto/rand"
-	"encoding/base64"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
+	"google.golang.org/api/oauth2/v2"
 )
 
 // Scopes: OAuth 2.0 scopes provide a way to limit the amount of access that is granted to an access token.
-var googleOauthConfig = &oauth2.Config{
-	RedirectURL:  "http://localhost:8000/google/callback",
-	ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
-	ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
-	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
-	Endpoint:     google.Endpoint,
-}
+// var googleOauthConfig = &oauth2.Config{
+// 	ClientID:     os.Getenv("GOOGLE_OAUTH_CLIENT_ID"),
+// 	ClientSecret: os.Getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+// 	RedirectURL:  "http://localhost:300/googlelogin",
+// 	Scopes: []string{
+// 		"https://www.googleapis.com/auth/userinfo.profile",
+// 		"https://www.googleapis.com/auth/userinfo.email",
+// 	},
+// 	Endpoint: google.Endpoint,
+// }
 
-const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
+// const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
+
+var httpClient = &http.Client{}
+
+func verifyIdToken(idToken string) *oauth2.Tokeninfo {
+	oauth2Service, err := oauth2.New(httpClient)
+	tokenInfoCall := oauth2Service.Tokeninfo()
+	tokenInfoCall.IdToken(idToken)
+	tokenInfo, err := tokenInfoCall.Do()
+	if err != nil {
+		return nil
+	}
+	fmt.Println(tokenInfo)
+	fmt.Println("testest")
+	return tokenInfo
+}
 
 func GoogleLogin(ctx *gin.Context) {
-
-	// Create oauthState cookie
-	oauthState := generateStateOauthCookie(ctx)
-
-	/*
-	   AuthCodeURL receive state that is a token to protect the user from CSRF attacks. You must always provide a non-empty string and
-	   validate that it matches the the state query parameter on your redirect callback.
-	*/
-	u := googleOauthConfig.AuthCodeURL(oauthState)
-	// http.Redirect(ctx, u, http.StatusTemporaryRedirect)
-	fmt.Println(u)
-	fmt.Println("test 123")
-	// ctx.Redirect(http.StatusTemporaryRedirect, u)
-}
-
-func GoogleCallback(ctx *gin.Context) {
-	// Read oauthState from Cookie
-	oauthState, _ := ctx.Cookie("oauthstate")
-
-	if ctx.Request.FormValue("state") != oauthState {
-		log.Println("invalid oauth google state")
-		// http.Redirect(ctx, "/", http.StatusTemporaryRedirect)
-		ctx.Redirect(http.StatusTemporaryRedirect, "/")
-		return
+	credentials := &Credentials{}
+	err2 := ctx.BindJSON(&credentials)
+	fmt.Println("im here 0")
+	if err2 != nil {
+		fmt.Println("im here 1")
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 	}
+	res := verifyIdToken(credentials.Token)
+	ctx.JSON(http.StatusOK, gin.H{"data": res})
+	// client, err := google.DefaultClient(context.Background(), credentials.Scope)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// client.Get("")
+	// fmt.Println(client)
+	// fmt.Println("24242424242")
 
-	data, err := getUserDataFromGoogle(ctx.Request.FormValue("code"))
-	if err != nil {
-		log.Println(err.Error())
-		// http.Redirect(ctx, "/", http.StatusTemporaryRedirect)
-		return
-	}
+	// var token string          // this comes from your web or mobile app maybe
+	// googleClientId := os.Getenv("GOOGLE_OAUTH_CLIENT_ID") // from credentials in the Google dev console
 
-	// GetOrCreate User in your db.
-	// Redirect or response with a token.
-	// More code .....
-	fmt.Println(data)
-}
+	// tokenValidator, err := idtoken.NewValidator(context.Background())
+	// if err != nil {
+	// 	fmt.Println("im here 2")
+	// 	// handle error, stop execution
+	// }
 
-func generateStateOauthCookie(ctx *gin.Context) string {
-	// var expiration = time.Now().Add(365 * 24 * time.Hour)
-
-	b := make([]byte, 16)
-	rand.Read(b)
-	state := base64.URLEncoding.EncodeToString(b)
-	// cookie := http.Cookie{Name: "oauthstate", Value: state, Expires: expiration}
-	// http.SetCookie(ctx.Request, &cookie)
-	ctx.SetCookie("googleCookie", state, 3600, "/", "localhost", false, true)
-
-	return state
-}
-
-func getUserDataFromGoogle(code string) ([]byte, error) {
-	// Use code to get token and get user info from Google.
-
-	token, err := googleOauthConfig.Exchange(context.Background(), code)
-	if err != nil {
-		return nil, fmt.Errorf("code exchange wrong: %s", err.Error())
-	}
-	response, err := http.Get(oauthGoogleUrlAPI + token.AccessToken)
-	if err != nil {
-		return nil, fmt.Errorf("failed getting user info: %s", err.Error())
-	}
-	defer response.Body.Close()
-	contents, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed read response: %s", err.Error())
-	}
-	return contents, nil
+	// fmt.Println(tokenValidator)
+	// fmt.Println("here payload1231231232")
+	// payload, err := tokenValidator.Validate(context.Background(), credentials.Token, googleClientId)
+	// if err != nil {
+	// 	// fmt.Println(payload)
+	// 	fmt.Println("im here 3")
+	// }
+	// // // handle error, stop execution
+	// email := payload.Claims["email"]
+	// name := payload.Claims["name"]
+	// fmt.Println(email)
+	// fmt.Println(name)
 }
