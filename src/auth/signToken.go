@@ -9,8 +9,6 @@ import (
 var jwtKey = []byte("secret_key")
 
 func SignToken(tk TokenIdentity) string {
-	// err := tk.Username
-
 	// add expiration time
 	expirationTime := time.Now().Add(time.Minute * 5)
 

@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -14,21 +15,20 @@ import (
 var myCollection *mongo.Collection = database.OpenCollection(database.Client, "blacklists")
 
 func CheckToken(ctx *gin.Context) {
-	cookie, err := ctx.Cookie("token")
-	tokenStr := cookie
+	token := strings.Split(ctx.Request.Header["Authorization"][0], " ")[1]
 	claims := &Claims{}
 	identity := &TokenIdentity{}
 
 	// if token exists
-	if err != nil {
-		if err == http.ErrNoCookie {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Unauthorized"})
-		}
-		ctx.JSON(http.StatusOK, gin.H{"data": "Success"})
-	}
+	// if err != nil {
+	// 	if err == http.ErrNoCookie {
+	// 		ctx.JSON(http.StatusUnauthorized, gin.H{"msg": "Unauthorized"})
+	// 	}
+	// 	ctx.JSON(http.StatusOK, gin.H{"data": "Success"})
+	// }
 
 	// validate with claims
-	tkn, err := jwt.ParseWithClaims(tokenStr, claims,
+	tkn, err := jwt.ParseWithClaims(token, claims,
 		func(t *jwt.Token) (interface{}, error) {
 			return jwtKey, nil
 		})
@@ -47,11 +47,11 @@ func CheckToken(ctx *gin.Context) {
 	}
 
 	// check jwt if it is blacklisted
-	query := bson.M{"token": tokenStr}
+	query := bson.M{"token": token}
 	err2 := myCollection.FindOne(context.TODO(), query).Decode(&identity)
 	if err2 != nil {
 		// return if it is valid
-		ctx.JSON(http.StatusOK, gin.H{"data": tokenStr})
+		ctx.JSON(http.StatusOK, gin.H{"data": token})
 		return
 	} else {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"data": "Invalid token"})

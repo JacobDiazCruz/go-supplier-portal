@@ -24,17 +24,22 @@ import (
 
 var httpClient = &http.Client{}
 
-func verifyIdToken(idToken string) *oauth2.Tokeninfo {
+func verifyIdToken(idToken string) string {
 	oauth2Service, err := oauth2.New(httpClient)
 	tokenInfoCall := oauth2Service.Tokeninfo()
 	tokenInfoCall.IdToken(idToken)
 	tokenInfo, err := tokenInfoCall.Do()
 	if err != nil {
-		return nil
+		return "Error"
 	}
 	fmt.Println(tokenInfo)
 	fmt.Println("testest")
-	return tokenInfo
+	if tokenInfo.VerifiedEmail == true {
+		tk := TokenIdentity{}
+		signToken := SignToken(tk)
+		return signToken
+	}
+	return "Here"
 }
 
 func GoogleLogin(ctx *gin.Context) {
@@ -45,8 +50,9 @@ func GoogleLogin(ctx *gin.Context) {
 		fmt.Println("im here 1")
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 	}
-	res := verifyIdToken(credentials.Token)
-	ctx.JSON(http.StatusOK, gin.H{"data": res})
+	token := verifyIdToken(credentials.Token)
+
+	ctx.JSON(http.StatusOK, gin.H{"data": token})
 	// client, err := google.DefaultClient(context.Background(), credentials.Scope)
 	// if err != nil {
 	// 	log.Fatal(err)
