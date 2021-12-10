@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
+	contents "gitlab.com/JacobDCruz/supplier-portal/src/contents/controllers"
 	delete "gitlab.com/JacobDCruz/supplier-portal/src/person/delete"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/person/get"
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
@@ -67,7 +68,6 @@ func main() {
 	// auth
 	server.GET("/token", auth.CheckToken)
 	server.POST("/google/login", auth.GoogleLogin)
-	// server.POST("/google/callback", auth.GoogleCallback)
 
 	// users
 	server.POST("/login", func(ctx *gin.Context) {
@@ -87,6 +87,15 @@ func main() {
 		id := ctx.Param("id")
 		profiles.UpdateController(ctx, id)
 	})
+
+	// nominees
+	server.GET("/content", contents.ListController)
+	server.GET("/content/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		profiles.GetController(ctx, id)
+	})
+	server.POST("/content", contents.AddController)
+	// server.GET("/content", contents.ListController)
 
 	// register
 	// server.Use(CORSMiddleware())

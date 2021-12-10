@@ -1,7 +1,6 @@
 package profiles
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +9,6 @@ import (
 )
 
 func UpdateController(ctx *gin.Context, profileId string) {
-	fmt.Println("im here update")
 	profile := entity.Profile{}
 	err := ctx.BindJSON(&profile)
 	if err != nil {
