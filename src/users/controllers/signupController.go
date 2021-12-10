@@ -5,16 +5,18 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	profilesEntity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
+	profilesService "gitlab.com/JacobDCruz/supplier-portal/src/profiles/services"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
 	service "gitlab.com/JacobDCruz/supplier-portal/src/users/services"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func SignupController(ctx *gin.Context) string {
+func SignupController(ctx *gin.Context) {
 	user := entity.User{}
-	err2 := ctx.BindJSON(&user)
-	if err2 != nil {
-		panic(err2)
+	err := ctx.BindJSON(&user)
+	if err != nil {
+		panic(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 	}
 
@@ -30,7 +32,19 @@ func SignupController(ctx *gin.Context) string {
 	// if err != nil {
 	// 	return err
 	// }
+
 	res := service.SignupService(user)
-	fmt.Println(res)
-	return res
+	getUser := service.GetService(res)
+
+	// Create profile
+	pEntity := &profilesEntity.Profile{
+		UserId:    res,
+		Email:     getUser.Email,
+		FirstName: getUser.FirstName,
+		LastName:  getUser.LastName,
+		Role:      getUser.Role,
+	}
+	profileRes := profilesService.AddService(*pEntity)
+	fmt.Println(profileRes)
+	fmt.Println("profileRes")
 }

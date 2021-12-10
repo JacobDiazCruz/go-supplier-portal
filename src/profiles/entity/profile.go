@@ -1,23 +1,17 @@
-package users
+package profiles
 
 import (
 	"github.com/dgrijalva/jwt-go"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type User struct {
+type Profile struct {
 	ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Email     string             `json:"email"`
 	FirstName string             `json:"firstname"`
 	LastName  string             `json:"lastname"`
-	Password  string             `json:"password"`
 	Role      string             `json:"role"`
-	ProfileId string             `json:"profile_id"`
-}
-
-type Credentials struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	UserId    string             `json:"user_id"`
 }
 
 type TokenIdentity struct {

@@ -8,6 +8,13 @@ import (
 
 var jwtKey = []byte("secret_key")
 
+/**
+ * @author Gio
+ * @description verify token via google oauth
+ * @description register user and sign jwt token
+ * @param - token, login type
+ * @returns - access token
+ */
 func SignToken(tk TokenIdentity) string {
 	// add expiration time
 	expirationTime := time.Now().Add(time.Minute * 5)

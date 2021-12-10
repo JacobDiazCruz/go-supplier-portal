@@ -57,5 +57,4 @@ func CheckToken(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"data": "Invalid token"})
 		return
 	}
-
 }

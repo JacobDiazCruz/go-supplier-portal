@@ -9,6 +9,7 @@ import (
 	delete "gitlab.com/JacobDCruz/supplier-portal/src/person/delete"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/person/get"
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
+	profiles "gitlab.com/JacobDCruz/supplier-portal/src/profiles/controllers"
 	users "gitlab.com/JacobDCruz/supplier-portal/src/users/controllers"
 )
 
@@ -77,10 +78,14 @@ func main() {
 	server.GET("/users", func(ctx *gin.Context) {
 		users.ListController(ctx)
 	})
-
 	server.POST("/signup", func(ctx *gin.Context) {
-		id := users.SignupController(ctx)
-		get.GetUser(ctx, id)
+		users.SignupController(ctx)
+	})
+
+	// profile
+	server.PUT("/profile/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		profiles.UpdateController(ctx, id)
 	})
 
 	// register
