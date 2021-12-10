@@ -12,6 +12,7 @@ import (
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
 	profiles "gitlab.com/JacobDCruz/supplier-portal/src/profiles/controllers"
 	users "gitlab.com/JacobDCruz/supplier-portal/src/users/controllers"
+	votes "gitlab.com/JacobDCruz/supplier-portal/src/votes/controllers"
 )
 
 // func CORSMiddleware() gin.HandlerFunc {
@@ -88,14 +89,20 @@ func main() {
 		profiles.UpdateController(ctx, id)
 	})
 
-	// nominees
+	// contents
 	server.GET("/content", contents.ListController)
 	server.GET("/content/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		profiles.GetController(ctx, id)
 	})
 	server.POST("/content", contents.AddController)
-	// server.GET("/content", contents.ListController)
+
+	// votations
+	server.GET("/vote/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		votes.GetController(ctx, id)
+	})
+	server.POST("/vote", votes.AddController)
 
 	// register
 	// server.Use(CORSMiddleware())
