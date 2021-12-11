@@ -12,16 +12,13 @@ import (
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
 func SignupService(user entity.User) string {
-	// query
+
+	// save user to db
 	result, err := userCollection.InsertOne(context.TODO(), user)
 	if err != nil {
 		panic(err)
 	}
 
 	oid := result.InsertedID.(primitive.ObjectID)
-	// test := map[string]string{
-	// 	"id": oid.Hex(),
-	// }
-	// return get.GetUser(oid.Hex())
 	return oid.Hex()
 }

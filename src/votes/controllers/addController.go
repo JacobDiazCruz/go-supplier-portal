@@ -13,8 +13,6 @@ import (
 func AddController(ctx *gin.Context) {
 	// check token and return
 	ct, err := auth.GetToken(ctx)
-	fmt.Println(ct)
-	fmt.Println("qwrqwrqwrqrqr")
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})
 		return

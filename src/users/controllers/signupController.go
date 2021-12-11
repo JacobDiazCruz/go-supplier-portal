@@ -13,11 +13,22 @@ import (
 )
 
 func SignupController(ctx *gin.Context) {
+	// bind requestData
 	user := entity.User{}
 	err := ctx.BindJSON(&user)
 	if err != nil {
 		panic(err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
+	}
+
+	// validate email if already exist
+	emailRes, err := service.GetEmail(user.Email)
+	if err != nil {
+		fmt.Println("Err")
+	}
+	if emailRes.Email != "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Email already exist."})
+		return
 	}
 
 	// Hashing the password with the default cost of 10
@@ -44,7 +55,6 @@ func SignupController(ctx *gin.Context) {
 		LastName:  getUser.LastName,
 		Role:      getUser.Role,
 	}
-	profileRes := profilesService.AddService(*pEntity)
-	fmt.Println(profileRes)
-	fmt.Println("profileRes")
+	profilesService.AddService(*pEntity)
+	ctx.JSON(http.StatusOK, gin.H{"msg": "Fetched data successfully", "data": getUser})
 }
