@@ -12,14 +12,14 @@ type Content struct {
 	Title          string             `json:"title"`
 	Slug           string             `json:"slug"`
 	Body           string             `json:"body"`
-	Tags           string             `json:"tags"`
+	Tags           []string           `json:"tags"`
 	Category       string             `json:"category"`
 	ThumbnailImage string             `json:"thumbnail_image"`
 	OriginalImage  string             `json:"original_image"`
 	Status         string             `json:"status"`
 	MarketingLink  string             `json:"marketing_link"`
-	Comments       string             `json:"comments"`
-	VoteIds        string             `json:"vote_ids"`
+	Comments       []string           `json:"comments"`
+	VoteIds        []string           `json:"vote_ids"`
 	TotalVotes     string             `json:"total_votes"`
 	AuditLog       AuditLog           `json:"audit_log"`
 }

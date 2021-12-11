@@ -13,6 +13,8 @@ import (
 func AddController(ctx *gin.Context) {
 	// check token and return
 	ct, err := auth.GetToken(ctx)
+	fmt.Println(ct)
+	fmt.Println("qwrqwrqwrqrqr")
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})
 		return
@@ -33,7 +35,7 @@ func AddController(ctx *gin.Context) {
 
 	// service
 	queryParams := ctx.Request.URL.Query()
-	res := service.AddService(vote, queryParams["nominee_id"][0])
+	res := service.AddService(vote, queryParams["content_id"][0])
 	fmt.Println(res)
 
 	// get service details

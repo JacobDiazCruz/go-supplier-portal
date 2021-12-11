@@ -7,8 +7,8 @@ import (
 	service "gitlab.com/JacobDCruz/supplier-portal/src/votes/services"
 )
 
-func GetController(ctx *gin.Context, userId string) {
-	res := service.GetService(userId)
+func GetController(ctx *gin.Context, voteId string) {
+	res := service.GetService(voteId)
 	// fmt.Println(u.id)
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Fetched data successfully", "data": res})
 }

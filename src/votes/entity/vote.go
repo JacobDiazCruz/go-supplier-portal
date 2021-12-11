@@ -9,7 +9,7 @@ import (
 
 type Vote struct {
 	ID           primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	NomineeId    string             `json:"nominee_id"`
+	ContentId    string             `json:"content_id"`
 	Creativity   float64            `json:"creativity"`
 	Graphics     float64            `json:"graphics"`
 	StoryTelling float64            `json:"storytelling"`
