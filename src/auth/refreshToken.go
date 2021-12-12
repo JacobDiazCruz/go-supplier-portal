@@ -2,10 +2,9 @@ package auth
 
 import (
 	"net/http"
-	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 var jwtRefreshKey = []byte("secret_key")
@@ -43,13 +42,13 @@ func RefreshController(ctx *gin.Context) {
 		return
 	}
 
-	if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 30*time.Second {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "Bad Request"})
-	}
+	// if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 30*time.Second {
+	// 	ctx.JSON(http.StatusInternalServerError, gin.H{"msg": "Bad Request"})
+	// }
 
-	expirationTime := time.Now().Add(time.Minute * 15)
+	// expirationTime := time.Now().Add(time.Minute * 15)
 
-	claims.ExpiresAt = expirationTime.Unix()
+	// claims.ExpiresAt = expirationTime.Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtRefreshKey)

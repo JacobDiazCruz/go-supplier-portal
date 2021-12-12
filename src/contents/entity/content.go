@@ -3,7 +3,7 @@ package contents
 import (
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -20,12 +20,20 @@ type Content struct {
 	MarketingLink  string             `json:"marketing_link"`
 	Comments       []string           `json:"comments"`
 	VoteIds        []string           `json:"vote_ids"`
-	TotalVotes     string             `json:"total_votes"`
+	TotalVotes     float64            `json:"total_votes"`
 	AuditLog       AuditLog           `json:"audit_log"`
+}
+
+type ContentUpdates struct {
+	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	CommentId   string             `json:"comment_id"`
+	VoteId      string             `json:"vote_id"`
+	VoteAverage float64            `json:"vote_average"`
 }
 
 type AuditLog struct {
 	Name           string    `json:"name"`
+	Email          string    `json:"email"`
 	ThumbnailImage string    `json:"thumbnail_image"`
 	OriginalImage  string    `json:"original_image"`
 	CreatedAt      time.Time `json:"created_at"`

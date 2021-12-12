@@ -13,6 +13,7 @@ import (
 var voteCollection *mongo.Collection = database.OpenCollection(database.Client, "votes")
 
 func ListService() []entity.Vote {
+	// query list
 	cursor, err := voteCollection.Find(context.TODO(), bson.M{})
 	if err != nil {
 		log.Fatal(err)

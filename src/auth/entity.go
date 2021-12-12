@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type TokenIdentity struct {
@@ -9,7 +9,7 @@ type TokenIdentity struct {
 }
 type Claims struct {
 	Username string `json:"username"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 type Credentials struct {

@@ -10,14 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type getService interface {
-	GetService() entity.Vote
-}
-
-type Param struct {
-	id string
-}
-
 func GetService(id string) entity.Vote {
 	result := entity.Vote{}
 	objID, err := primitive.ObjectIDFromHex(id)
@@ -37,5 +29,6 @@ func GetService(id string) entity.Vote {
 	fmt.Printf("%s\n", jsonData)
 	fmt.Println("Test123123")
 	fmt.Println(result)
+	// return
 	return result
 }

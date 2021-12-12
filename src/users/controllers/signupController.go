@@ -9,6 +9,7 @@ import (
 	profilesService "gitlab.com/JacobDCruz/supplier-portal/src/profiles/services"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
 	service "gitlab.com/JacobDCruz/supplier-portal/src/users/services"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -44,17 +45,26 @@ func SignupController(ctx *gin.Context) {
 	// 	return err
 	// }
 
+	// signup service
 	res := service.SignupService(user)
+	objID, err := primitive.ObjectIDFromHex(res)
+	if err != nil {
+		panic(err)
+	}
+
+	// get user service
 	getUser := service.GetService(res)
 
 	// Create profile
 	pEntity := &profilesEntity.Profile{
-		UserId:    res,
+		UserId:    objID,
 		Email:     getUser.Email,
 		FirstName: getUser.FirstName,
 		LastName:  getUser.LastName,
 		Role:      getUser.Role,
 	}
 	profilesService.AddService(*pEntity)
+
+	// http response
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Fetched data successfully", "data": getUser})
 }

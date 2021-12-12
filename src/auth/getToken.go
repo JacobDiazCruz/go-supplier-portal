@@ -1,10 +1,11 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 func GetToken(ctx *gin.Context) (string, error) {
@@ -36,7 +37,11 @@ func GetToken(ctx *gin.Context) (string, error) {
 	if !tkn.Valid {
 		return "Unauthorized", nil
 	}
-
+	// do something with decoded claims
+	// for key, val := range claims {
+	// 	fmt.Printf("Key: %v, value: %v\n", key, val)
+	// }
+	fmt.Println("im here token")
 	return cookie, nil
 	// ctx.JSON(http.StatusOK, gin.H{"msg": "Sucess", "data": claims.Username})
 }

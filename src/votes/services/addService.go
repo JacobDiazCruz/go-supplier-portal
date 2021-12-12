@@ -2,7 +2,9 @@ package votes
 
 import (
 	"context"
+	"fmt"
 
+	contentEntity "gitlab.com/JacobDCruz/supplier-portal/src/contents/entity"
 	contentService "gitlab.com/JacobDCruz/supplier-portal/src/contents/services"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/votes/entity"
 	"go.mongodb.org/mongo-driver/bson"
@@ -10,8 +12,12 @@ import (
 )
 
 func AddService(vote entity.Vote, contentId string) string {
-	// add other requests
-	vote.ContentId = contentId
+	// add contentId
+	objContentId, err := primitive.ObjectIDFromHex(contentId)
+	if err != nil {
+		panic(err)
+	}
+	vote.ContentId = objContentId
 
 	// compute average vote
 	totalAverage := vote.Creativity + vote.Graphics + vote.StoryTelling + vote.Impact
@@ -33,7 +39,16 @@ func AddService(vote entity.Vote, contentId string) string {
 	oid := result.InsertedID.(primitive.ObjectID)
 
 	// insert content_id to contents service
-	contentService.UpdateService(oid.Hex(), contentId)
+	params := &contentEntity.ContentUpdates{}
+	objID, err := primitive.ObjectIDFromHex(contentId)
+	if err != nil {
+		panic(err)
+	}
+	params.ID = objID
+	params.VoteId = oid.Hex()
+	params.VoteAverage = vote.Average
+	res1 := contentService.UpdateVoteIds(params)
+	fmt.Println(res1)
 
 	// return
 	return oid.Hex()

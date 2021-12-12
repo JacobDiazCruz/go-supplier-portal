@@ -1,30 +1,26 @@
 package auth
 
 import (
-	"time"
-
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 var jwtKey = []byte("secret_key")
 
 /**
- * @author Gio
+ * @author Jacob
  * @description verify token via google oauth
  * @description register user and sign jwt token
  * @param - token, login type
  * @returns - access token
  */
 func SignToken(tk TokenIdentity) string {
-	// add expiration time
-	expirationTime := time.Now().Add(time.Minute * 5)
+	// const expirationTime = time.Now().Add(time.Minute * 5)
+	// test := jwt.RegisteredClaims{}
 
 	// sign jwt
 	claims := &Claims{
-		Username: tk.Username,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
+		Username:         tk.Username,
+		RegisteredClaims: jwt.RegisteredClaims{},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)
