@@ -1,10 +1,16 @@
 package auth
 
 import (
+	"time"
+
 	"github.com/golang-jwt/jwt/v4"
 )
 
 var jwtKey = []byte("secret_key")
+
+type ExpirationTime struct {
+	time.Time
+}
 
 /**
  * @author Jacob
@@ -14,13 +20,15 @@ var jwtKey = []byte("secret_key")
  * @returns - access token
  */
 func SignToken(tk TokenIdentity) string {
-	// const expirationTime = time.Now().Add(time.Minute * 5)
+	// expirationTime := &ExpirationTime{time.Now().Add(time.Minute * 5)}
 	// test := jwt.RegisteredClaims{}
 
 	// sign jwt
 	claims := &Claims{
-		Username:         tk.Username,
-		RegisteredClaims: jwt.RegisteredClaims{},
+		Username: tk.Username,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Minute * 5)},
+		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)
