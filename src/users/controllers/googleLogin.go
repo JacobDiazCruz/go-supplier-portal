@@ -1,10 +1,13 @@
-package auth
+package users
 
 import (
 	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
+	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
+	service "gitlab.com/JacobDCruz/supplier-portal/src/users/services"
 	"google.golang.org/api/oauth2/v2"
 )
 
@@ -35,16 +38,16 @@ func verifyIdToken(idToken string) string {
 	fmt.Println(tokenInfo)
 	fmt.Println("testest")
 	if tokenInfo.VerifiedEmail == true {
-		tk := &TokenIdentity{}
+		tk := &auth.TokenIdentity{}
 		fmt.Println(tk)
-		signToken := SignToken(tk.Username)
+		signToken := auth.SignToken(tk.Username)
 		return signToken
 	}
-	return "Here"
+	return "Error"
 }
 
 func GoogleLogin(ctx *gin.Context) {
-	credentials := &Credentials{}
+	credentials := &auth.Credentials{}
 	err2 := ctx.BindJSON(&credentials)
 	fmt.Println("im here 0")
 	if err2 != nil {
@@ -52,8 +55,25 @@ func GoogleLogin(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 	}
 	token := verifyIdToken(credentials.Token)
-
 	// @TODO: Signup google email if it does not exist in db
+	// bind requestData
+	user := entity.User{
+		Email: credentials.Email,
+	}
+
+	// // validate email if already exist
+	// emailRes, err := userService.GetEmail(user.Email)
+	// if err != nil {
+	// 	fmt.Println("Err")
+	// }
+	// if emailRes.Email != "" {
+	// 	ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Email already exist."})
+	// 	return
+	// }
+
+	res := service.SignupService(user)
+	fmt.Println(res)
+	fmt.Println("here signup already")
 
 	ctx.JSON(http.StatusOK, gin.H{"data": token})
 	// client, err := google.DefaultClient(context.Background(), credentials.Scope)

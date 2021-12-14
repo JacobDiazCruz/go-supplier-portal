@@ -68,7 +68,7 @@ func main() {
 
 	// auth
 	server.GET("/token", auth.CheckToken)
-	server.POST("/google/login", auth.GoogleLogin)
+	server.POST("/google/login", users.GoogleLogin)
 
 	// users
 	server.POST("/login", func(ctx *gin.Context) {
