@@ -9,6 +9,6 @@ metadata:
 spec:
   containers:
   - name: supplier-container
-    image: jacobdiazcruz/supplier-service
+    image: jacobdiazcruz/supplier-portal
     ports:
     - containerPort: 8010
