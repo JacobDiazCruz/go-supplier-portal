@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func AddService(vote entity.Vote, contentId string) string {
+func AddService(vote *entity.Vote, contentId string) string {
 	// add contentId
 	objContentId, err := primitive.ObjectIDFromHex(contentId)
 	if err != nil {
@@ -22,6 +22,17 @@ func AddService(vote entity.Vote, contentId string) string {
 	// compute average vote
 	totalAverage := vote.Creativity + vote.Graphics + vote.StoryTelling + vote.Impact
 	vote.Average = totalAverage
+
+	// @TODO: add audit log
+	// audit := &entity.AuditLog{
+	// 	Name:      ct.Username,
+	// 	CreatedAt: time.Now(),
+	// 	CreatedBy: ct.Username,
+	// 	UpdatedAt: time.Now(),
+	// 	UpdatedBy: "",
+	// }
+	// fmt.Println(audit)
+	// fmt.Println("trashtasrqwrqwr")
 
 	// query
 	result, err := voteCollection.InsertOne(context.TODO(), bson.M{

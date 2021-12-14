@@ -106,5 +106,5 @@ func main() {
 
 	// register
 	// server.Use(CORSMiddleware())
-	server.Run(":8000")
+	server.Run(":8010")
 }

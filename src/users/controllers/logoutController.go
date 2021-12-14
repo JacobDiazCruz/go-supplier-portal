@@ -20,7 +20,7 @@ func LogoutController(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})
 	}
-	jwt := entity.TokenIdentity{ct}
+	jwt := entity.TokenIdentity{ct.Token}
 
 	// blacklist to db
 	result, err2 := myCollection.InsertOne(context.TODO(), jwt)

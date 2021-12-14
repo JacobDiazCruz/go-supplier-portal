@@ -35,8 +35,9 @@ func verifyIdToken(idToken string) string {
 	fmt.Println(tokenInfo)
 	fmt.Println("testest")
 	if tokenInfo.VerifiedEmail == true {
-		tk := TokenIdentity{}
-		signToken := SignToken(tk)
+		tk := &TokenIdentity{}
+		fmt.Println(tk)
+		signToken := SignToken(tk.Username)
 		return signToken
 	}
 	return "Here"
@@ -51,6 +52,8 @@ func GoogleLogin(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 	}
 	token := verifyIdToken(credentials.Token)
+
+	// @TODO: Signup google email if it does not exist in db
 
 	ctx.JSON(http.StatusOK, gin.H{"data": token})
 	// client, err := google.DefaultClient(context.Background(), credentials.Scope)

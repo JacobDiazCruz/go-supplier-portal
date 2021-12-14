@@ -5,7 +5,8 @@ import (
 )
 
 type TokenIdentity struct {
-	Username string
+	Username string `json:"username"`
+	Token    string `json:"token"`
 }
 type Claims struct {
 	Username string `json:"username"`
