@@ -4,7 +4,7 @@ metadata:
   name: supplier-pod
   labels:
     name: supplier-pod
-    app: supplier-app
+    app: supplier-portal
   
 spec:
   containers:

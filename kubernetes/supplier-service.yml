@@ -4,7 +4,7 @@ metadata:
   name: supplier-service
   labels:
     name: supplier-service
-    app: supplier-app
+    app: supplier-portal
 
 spec:
   type: LoadBalancer
@@ -13,4 +13,4 @@ spec:
     targetPort: 8010
   selector:
     name: supplier-pod
-    app: supplier-app
+    app: supplier-portal
