@@ -27,25 +27,6 @@ import (
 
 var httpClient = &http.Client{}
 
-func verifyIdToken(idToken string) string {
-	oauth2Service, err := oauth2.New(httpClient)
-	tokenInfoCall := oauth2Service.Tokeninfo()
-	tokenInfoCall.IdToken(idToken)
-	tokenInfo, err := tokenInfoCall.Do()
-	if err != nil {
-		return "Error"
-	}
-	fmt.Println(tokenInfo)
-	fmt.Println("testest")
-	if tokenInfo.VerifiedEmail == true {
-		tk := &auth.TokenIdentity{}
-		fmt.Println(tk)
-		signToken := auth.SignToken(tk.Username)
-		return signToken
-	}
-	return "Error"
-}
-
 func GoogleLogin(ctx *gin.Context) {
 	credentials := &auth.Credentials{}
 	err2 := ctx.BindJSON(&credentials)
@@ -61,48 +42,37 @@ func GoogleLogin(ctx *gin.Context) {
 		Email: credentials.Email,
 	}
 
-	// // validate email if already exist
-	// emailRes, err := userService.GetEmail(user.Email)
-	// if err != nil {
-	// 	fmt.Println("Err")
-	// }
-	// if emailRes.Email != "" {
-	// 	ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Email already exist."})
-	// 	return
-	// }
+	// validate email if already exist
+	emailRes, err := service.GetEmail(user.Email)
+	if err != nil {
+		fmt.Println("Err")
+	}
 
-	res := service.SignupService(user)
-	fmt.Println(res)
-	fmt.Println("here signup already")
+	// Signup email if it doesnt exist yet
+	if emailRes.Email == "" {
+		res := service.SignupService(user)
+		fmt.Println(res)
+		fmt.Println("here signup already")
+	}
 
 	ctx.JSON(http.StatusOK, gin.H{"data": token})
-	// client, err := google.DefaultClient(context.Background(), credentials.Scope)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// client.Get("")
-	// fmt.Println(client)
-	// fmt.Println("24242424242")
+}
 
-	// var token string          // this comes from your web or mobile app maybe
-	// googleClientId := os.Getenv("GOOGLE_OAUTH_CLIENT_ID") // from credentials in the Google dev console
+func verifyIdToken(idToken string) string {
+	oauth2Service, err := oauth2.New(httpClient)
+	tokenInfoCall := oauth2Service.Tokeninfo()
+	tokenInfoCall.IdToken(idToken)
+	tokenInfo, err := tokenInfoCall.Do()
+	if err != nil {
+		return "Error"
+	}
 
-	// tokenValidator, err := idtoken.NewValidator(context.Background())
-	// if err != nil {
-	// 	fmt.Println("im here 2")
-	// 	// handle error, stop execution
-	// }
-
-	// fmt.Println(tokenValidator)
-	// fmt.Println("here payload1231231232")
-	// payload, err := tokenValidator.Validate(context.Background(), credentials.Token, googleClientId)
-	// if err != nil {
-	// 	// fmt.Println(payload)
-	// 	fmt.Println("im here 3")
-	// }
-	// // // handle error, stop execution
-	// email := payload.Claims["email"]
-	// name := payload.Claims["name"]
-	// fmt.Println(email)
-	// fmt.Println(name)
+	// if token is valid, return token
+	if tokenInfo.VerifiedEmail == true {
+		tk := &auth.TokenIdentity{}
+		fmt.Println(tk)
+		signToken := auth.SignToken(tk.Username)
+		return signToken
+	}
+	return "Error"
 }
