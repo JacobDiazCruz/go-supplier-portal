@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	addProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/add"
 	profilesEntity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
-	profilesService "gitlab.com/JacobDCruz/supplier-portal/src/profiles/services"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
-	service "gitlab.com/JacobDCruz/supplier-portal/src/users/services"
+	get "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -23,7 +23,7 @@ func SignupController(ctx *gin.Context) {
 	}
 
 	// validate email if already exist
-	emailRes, err := service.GetEmail(user.Email)
+	emailRes, err := get.GetEmail(user.Email)
 	if err != nil {
 		fmt.Println("Err")
 	}
@@ -46,14 +46,14 @@ func SignupController(ctx *gin.Context) {
 	// }
 
 	// signup service
-	res := service.SignupService(user)
+	res := SignupService(user)
 	objID, err := primitive.ObjectIDFromHex(res)
 	if err != nil {
 		panic(err)
 	}
 
 	// get user service
-	getUser := service.GetService(res)
+	getUser := get.GetService(res)
 
 	// Create profile
 	pEntity := &profilesEntity.Profile{
@@ -63,7 +63,7 @@ func SignupController(ctx *gin.Context) {
 		LastName:  getUser.LastName,
 		Role:      getUser.Role,
 	}
-	profilesService.AddService(*pEntity)
+	addProfile.AddService(*pEntity)
 
 	// http response
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Fetched data successfully", "data": getUser})

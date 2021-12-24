@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
-	service "gitlab.com/JacobDCruz/supplier-portal/src/users/services"
 )
 
 func LoginController(ctx *gin.Context) {
@@ -19,7 +18,7 @@ func LoginController(ctx *gin.Context) {
 		return
 	}
 
-	res := service.LoginService(&credentials)
+	res := LoginService(&credentials)
 
 	ctx.SetCookie("token", res, 3600, "/", "localhost", false, true)
 	ctx.JSON(http.StatusOK, gin.H{"data": res})

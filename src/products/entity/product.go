@@ -1,4 +1,4 @@
-package contents
+package products
 
 import (
 	"time"
@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type Content struct {
+type Product struct {
 	ID             primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Title          string             `json:"title"`
 	Slug           string             `json:"slug"`
@@ -24,7 +24,7 @@ type Content struct {
 	AuditLog       AuditLog           `json:"audit_log"`
 }
 
-type ContentUpdates struct {
+type ProductUpdates struct {
 	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	CommentId   string             `json:"comment_id"`
 	VoteId      string             `json:"vote_id"`

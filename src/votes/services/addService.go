@@ -2,7 +2,6 @@ package votes
 
 import (
 	"context"
-	"fmt"
 
 	contentEntity "gitlab.com/JacobDCruz/supplier-portal/src/contents/entity"
 	contentService "gitlab.com/JacobDCruz/supplier-portal/src/contents/services"
@@ -11,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func AddService(vote *entity.Vote, contentId string) string {
+func AddService(vote *entity.Vote, contentId string, audit *entity.AuditLog) string {
 	// add contentId
 	objContentId, err := primitive.ObjectIDFromHex(contentId)
 	if err != nil {
@@ -36,13 +35,13 @@ func AddService(vote *entity.Vote, contentId string) string {
 
 	// query
 	result, err := voteCollection.InsertOne(context.TODO(), bson.M{
-		"content_id":   vote.ContentId,
+		"content_id":   objContentId,
 		"creativity":   vote.Creativity,
 		"graphics":     vote.Graphics,
 		"storytelling": vote.StoryTelling,
 		"impact":       vote.Impact,
 		"average":      vote.Average,
-		"audit_log":    vote.AuditLog,
+		"audit_log":    audit,
 	})
 	if err != nil {
 		panic(err)
@@ -58,9 +57,8 @@ func AddService(vote *entity.Vote, contentId string) string {
 	params.ID = objID
 	params.VoteId = oid.Hex()
 	params.VoteAverage = vote.Average
-	res1 := contentService.UpdateVoteIds(params)
-	fmt.Println(res1)
+	contentService.UpdateVoteIds(params)
 
-	// return
+	// return string _id
 	return oid.Hex()
 }

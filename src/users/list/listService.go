@@ -4,9 +4,13 @@ import (
 	"context"
 	"log"
 
+	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
+
+var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
 func ListService() []entity.User {
 	cursor, err := userCollection.Find(context.TODO(), bson.M{})

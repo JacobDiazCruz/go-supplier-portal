@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
-	service "gitlab.com/JacobDCruz/supplier-portal/src/profiles/services"
 )
 
 func UpdateController(ctx *gin.Context, profileId string) {
@@ -17,6 +16,6 @@ func UpdateController(ctx *gin.Context, profileId string) {
 	}
 
 	// service
-	res := service.UpdateService(profile, profileId)
+	res := UpdateService(profile, profileId)
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Profile updated successfully", "data": res})
 }

@@ -10,32 +10,25 @@ import (
 	delete "gitlab.com/JacobDCruz/supplier-portal/src/person/delete"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/person/get"
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
-	profiles "gitlab.com/JacobDCruz/supplier-portal/src/profiles/controllers"
-	users "gitlab.com/JacobDCruz/supplier-portal/src/users/controllers"
+
+	// profile
+	getProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/get"
+	updateProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/update"
+
+	// users
+	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
+	loginUser "gitlab.com/JacobDCruz/supplier-portal/src/users/login"
+	logoutUser "gitlab.com/JacobDCruz/supplier-portal/src/users/logout"
+	signupUser "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
+
+	// products
+	addProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/add"
+	getProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/get"
+	listProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/list"
+
+	// votes
 	votes "gitlab.com/JacobDCruz/supplier-portal/src/votes/controllers"
 )
-
-// func CORSMiddleware() gin.HandlerFunc {
-// 	return func(ctx *gin.Context) {
-// 		ctx.Header("Access-Control-Allow-Origin", "*")
-// 		ctx.Header("Access-Control-Allow-Credentials", "true")
-// 		ctx.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-// 		ctx.Header("Access-Control-Allow-Headers", "Access-Control-Allow-Origin, Content-Type, Authorization")
-// 		ctx.Header("X-Frame-Options", "sameorigin")
-// 		ctx.Header("Content-Security-Policy", "self")
-// 		ctx.Header("X-Content-Type-Options", "nosniff")
-// 		ctx.Header("Content-Type", "multipart/form-data")
-// 		ctx.Header("Referrer-Policy", "origin")
-// 		ctx.Header("X-XSS-Protection", "1; mode=block")
-// 		ctx.Header("Accept", "image/*")
-
-// 		if ctx.Request.Method == "OPTIONS" {
-// 			return
-// 		}
-
-// 		ctx.Next()
-// 	}
-// }
 
 func main() {
 	server := gin.Default()
@@ -68,34 +61,40 @@ func main() {
 
 	// auth
 	server.GET("/token", auth.CheckToken)
-	server.POST("/google/login", users.GoogleLogin)
+	server.POST("/google/login", loginUser.GoogleLogin)
 
 	// users
 	server.POST("/login", func(ctx *gin.Context) {
-		users.LoginController(ctx)
+		loginUser.LoginController(ctx)
 	})
-	server.POST("/refresh", users.RefreshController)
-	server.POST("/logout", users.LogoutController)
+	server.POST("/logout", logoutUser.LogoutController)
 	server.GET("/users", func(ctx *gin.Context) {
-		users.ListController(ctx)
+		listUser.ListController(ctx)
 	})
 	server.POST("/signup", func(ctx *gin.Context) {
-		users.SignupController(ctx)
+		signupUser.SignupController(ctx)
 	})
 
 	// profile
 	server.PUT("/profile/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
-		profiles.UpdateController(ctx, id)
+		updateProfile.UpdateController(ctx, id)
 	})
 
 	// contents
 	server.GET("/content", contents.ListController)
 	server.GET("/content/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
-		profiles.GetController(ctx, id)
+		getProfile.GetController(ctx, id)
 	})
 	server.POST("/content", contents.AddController)
+
+	// products
+	server.GET("/products", listProduct.ListController)
+	server.GET("/product", func(ctx *gin.Context) {
+		getProduct.GetController(ctx)
+	})
+	server.POST("/products", addProduct.AddController)
 
 	// votations
 	server.GET("/vote/:id", func(ctx *gin.Context) {

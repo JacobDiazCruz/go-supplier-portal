@@ -7,7 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
-	service "gitlab.com/JacobDCruz/supplier-portal/src/users/services"
+	get "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
+	signup "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
 	"google.golang.org/api/oauth2/v2"
 )
 
@@ -43,14 +44,14 @@ func GoogleLogin(ctx *gin.Context) {
 	}
 
 	// validate email if already exist
-	emailRes, err := service.GetEmail(user.Email)
+	emailRes, err := get.GetEmail(user.Email)
 	if err != nil {
 		fmt.Println("Err")
 	}
 
 	// Signup email if it doesnt exist yet
 	if emailRes.Email == "" {
-		res := service.SignupService(user)
+		res := signup.SignupService(user)
 		fmt.Println(res)
 		fmt.Println("here signup already")
 	}

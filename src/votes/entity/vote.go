@@ -9,12 +9,12 @@ import (
 
 type Vote struct {
 	ID           primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	ContentId    primitive.ObjectID `json:"content_id" bson: "content_id,omitempty"`
-	Creativity   float64            `json:"creativity"`
-	Graphics     float64            `json:"graphics"`
-	StoryTelling float64            `json:"storytelling"`
-	Impact       float64            `json:"impact"`
-	Average      float64            `json:"average"`
+	ContentId    primitive.ObjectID `json:"content_id" bson:"content_id,omitempty"`
+	Creativity   float32            `json:"creativity"`
+	Graphics     float32            `json:"graphics"`
+	StoryTelling float32            `json:"storytelling"`
+	Impact       float32            `json:"impact"`
+	Average      float32            `json:"average"`
 	AuditLog     AuditLog           `json:"audit_log"`
 }
 
