@@ -26,7 +26,7 @@ type Param struct {
 func (p Param) GetService() entity.Product {
 	// set initial values
 	result := entity.Product{}
-	var query = bson.M{}
+	var query = bson.M{"_id": ""}
 	objID, err := primitive.ObjectIDFromHex(p.id)
 
 	// _id query params
