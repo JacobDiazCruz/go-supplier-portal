@@ -5,29 +5,25 @@ import (
 	"encoding/json"
 	"fmt"
 
-	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/products/entity"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var productCollection *mongo.Collection = database.OpenCollection(database.Client, "products")
-
-type getService interface {
+type mockGetService interface {
 	GetService() entity.Product
 }
 
-type Param struct {
+type MockParam struct {
 	id   string
 	slug string
 }
 
-func GetService(id string, slug string) entity.Product {
+func (p MockParam) MockGetService() entity.Product {
 	// set initial values
 	result := entity.Product{}
 	var query = bson.M{"_id": ""}
-	objID, err := primitive.ObjectIDFromHex(id)
+	objID, err := primitive.ObjectIDFromHex(p.id)
 
 	// _id query params
 	if err != nil {
@@ -38,8 +34,8 @@ func GetService(id string, slug string) entity.Product {
 	}
 
 	// slug query params
-	if slug != "" {
-		query = bson.M{"slug": slug}
+	if p.slug != "" {
+		query = bson.M{"slug": p.slug}
 	}
 
 	// query to db

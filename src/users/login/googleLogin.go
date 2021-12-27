@@ -59,6 +59,7 @@ func GoogleLogin(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"data": token})
 }
 
+// Verify Id Token func
 func verifyIdToken(idToken string) string {
 	oauth2Service, err := oauth2.New(httpClient)
 	tokenInfoCall := oauth2Service.Tokeninfo()

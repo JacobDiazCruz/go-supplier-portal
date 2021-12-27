@@ -8,20 +8,49 @@ import (
 )
 
 type Product struct {
-	ID             primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Title          string             `json:"title"`
-	Slug           string             `json:"slug"`
-	Body           string             `json:"body"`
-	Tags           []string           `json:"tags"`
-	Category       string             `json:"category"`
-	ThumbnailImage string             `json:"thumbnail_image"`
-	OriginalImage  string             `json:"original_image"`
-	Status         string             `json:"status"`
-	MarketingLink  string             `json:"marketing_link"`
-	Comments       []string           `json:"comments"`
-	VoteIds        []string           `json:"vote_ids"`
-	TotalVotes     float32            `json:"total_votes"`
-	AuditLog       AuditLog           `json:"audit_log"`
+	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Name             string             `json:"name"`
+	Status           string             `json:"status"`
+	Slug             string             `json:"slug"`
+	Description      string             `json:"description"`
+	Tags             []string           `json:"tags"`
+	Category         string             `json:"category"`
+	SalesInformation SalesInformation   `json:"sales_information"`
+	Variation        []Variation        `json:"variation"`
+	ThumbnailImage   string             `json:"thumbnail_image"`
+	OriginalImage    string             `json:"original_image"`
+	MarketingLink    string             `json:"marketing_link"`
+	Reviews          []string           `json:"reviews"`
+	AuditLog         AuditLog           `json:"audit_log"`
+}
+
+type Specification struct {
+	Brand           string `json:"brand"`
+	CountryOfOrigin string `json:"country_of_origin"`
+}
+
+type SalesInformation struct {
+	Price       float32 `json:"price"`
+	Stock       float32 `json:"stock"`
+	Brand       string  `json:"brand"`
+	MinQuantity float32 `json:"min_quantity"`
+	MaxQuantity float32 `json:"max_quantity"`
+	UnitPrice   float32 `json:"unit_price"`
+}
+
+type Variation struct {
+	Name          string  `json:"name"`
+	Price         float32 `json:"price"`
+	Stock         float32 `json:"stock"`
+	MinQuantity   float32 `json:"min_quantity"`
+	MaxQuantity   float32 `json:"max_quantity"`
+	DiscountPrice float32 `json:"discount_price"`
+}
+
+type Others struct {
+	PreOrder  bool   `json:"pre_order"`
+	Condition bool   `json:"condition"`
+	ParentSKU string `json:"parent_sku"`
 }
 
 type ProductUpdates struct {

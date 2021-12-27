@@ -6,13 +6,12 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
-	contents "gitlab.com/JacobDCruz/supplier-portal/src/contents/controllers"
 	delete "gitlab.com/JacobDCruz/supplier-portal/src/person/delete"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/person/get"
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
 
 	// profile
-	getProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/get"
+
 	updateProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/update"
 
 	// users
@@ -23,8 +22,13 @@ import (
 
 	// products
 	addProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/add"
+	adminListProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/admin-list"
 	getProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/get"
 	listProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/list"
+
+	// carts
+	addCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/add"
+	listCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/list"
 
 	// votes
 	votes "gitlab.com/JacobDCruz/supplier-portal/src/votes/controllers"
@@ -81,20 +85,17 @@ func main() {
 		updateProfile.UpdateController(ctx, id)
 	})
 
-	// contents
-	server.GET("/content", contents.ListController)
-	server.GET("/content/:id", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		getProfile.GetController(ctx, id)
-	})
-	server.POST("/content", contents.AddController)
-
 	// products
 	server.GET("/products", listProduct.ListController)
+	server.GET("/admin-products", adminListProduct.AdminListController)
 	server.GET("/product", func(ctx *gin.Context) {
 		getProduct.GetController(ctx)
 	})
 	server.POST("/products", addProduct.AddController)
+
+	// carts
+	server.GET("/carts", listCart.ListController)
+	server.POST("/cart", addCart.AddController)
 
 	// votations
 	server.GET("/vote/:id", func(ctx *gin.Context) {

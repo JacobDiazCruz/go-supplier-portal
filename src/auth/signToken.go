@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -18,8 +17,6 @@ var jwtKey = []byte("secret_key")
  */
 func SignToken(email string) string {
 	// sign jwt
-	fmt.Println(email)
-	fmt.Println("kpop")
 	claims := &Claims{
 		Username: email,
 		RegisteredClaims: jwt.RegisteredClaims{

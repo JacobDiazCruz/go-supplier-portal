@@ -7,12 +7,12 @@ import (
 )
 
 func GetController(ctx *gin.Context) {
-	userId := ctx.Query("id")
+	productId := ctx.Query("id")
 	slug := ctx.Query("slug")
-	param := Param{
-		id:   userId,
-		slug: slug,
-	}
-	res := getService.GetService(param)
-	ctx.JSON(http.StatusOK, gin.H{"msg": "Products fetched successfully.", "data": res})
+	// param := Param{
+	// 	id:   productId,
+	// 	slug: slug,
+	// }
+	res := GetService(productId, slug)
+	ctx.JSON(http.StatusOK, gin.H{"msg": "Product fetched successfully.", "data": res})
 }

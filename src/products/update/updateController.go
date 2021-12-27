@@ -6,10 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/products/entity"
-	get "gitlab.com/JacobDCruz/supplier-portal/src/products/get"
 )
 
-func AddController(ctx *gin.Context) {
+func UpdateController(ctx *gin.Context) {
 	product := entity.Product{}
 	err := ctx.BindJSON(&product)
 	if err != nil {
@@ -18,10 +17,10 @@ func AddController(ctx *gin.Context) {
 	}
 
 	// service
-	res := AddService(product)
+	res := UpdateService(product)
 	fmt.Println(res)
 
-	// get product
-	getRes := get.GetService(res, "")
-	ctx.JSON(http.StatusOK, gin.H{"msg": "Product added successfully.", "data": getRes})
+	// getRes := get.GetService(res)
+	// fmt.Println(getRes)
+	fmt.Println("contents get")
 }

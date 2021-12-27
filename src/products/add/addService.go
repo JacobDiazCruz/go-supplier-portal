@@ -15,19 +15,19 @@ var productCollection *mongo.Collection = database.OpenCollection(database.Clien
 func AddService(product entity.Product) string {
 	// query
 	result, err := productCollection.InsertOne(context.TODO(), bson.M{
-		"title":           product.Title,
-		"slug":            product.Slug,
-		"body":            product.Body,
-		"tags":            product.Tags,
-		"category":        product.Category,
-		"thumbnail_image": product.ThumbnailImage,
-		"original_image":  product.OriginalImage,
-		"status":          product.Status,
-		"marketing_link":  product.MarketingLink,
-		"comments":        product.Comments,
-		"vote_ids":        product.VoteIds,
-		"total_votes":     product.TotalVotes,
-		"audit_log":       product.AuditLog,
+		"title":             product.Name,
+		"slug":              product.Slug,
+		"body":              product.Description,
+		"tags":              product.Tags,
+		"category":          product.Category,
+		"sales_information": product.SalesInformation,
+		"thumbnail_image":   product.ThumbnailImage,
+		"original_image":    product.OriginalImage,
+		"variation":         product.Variation,
+		"status":            product.Status,
+		"marketing_link":    product.MarketingLink,
+		"reviews":           product.Reviews,
+		"audit_log":         product.AuditLog,
 	})
 	if err != nil {
 		panic(err)

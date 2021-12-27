@@ -1,24 +1,24 @@
 package auth
 
 import (
-	"net/http"
+	"fmt"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func GetToken(ctx *gin.Context) (*TokenIdentity, error) {
-	cookie, err := ctx.Cookie("token")
-
-	// if token exists
-	if err != nil {
-		if err == http.ErrNoCookie {
-			return nil, nil
-		}
-		return nil, nil
+func GetToken(ctx *gin.Context) *TokenIdentity {
+	if len(ctx.Request.Header["Authorization"]) <= 0 {
+		fmt.Println("here error token")
+		return nil
 	}
+	token := strings.Split(ctx.Request.Header["Authorization"][0], " ")[1]
 
-	tokenStr := cookie
+	fmt.Println(token)
+	fmt.Println("here token")
+
+	tokenStr := token
 	claims := &Claims{}
 
 	// validate with claims
@@ -29,12 +29,12 @@ func GetToken(ctx *gin.Context) (*TokenIdentity, error) {
 
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
-			return nil, nil
+			return nil
 		}
-		return nil, nil
+		return nil
 	}
 	if !tkn.Valid {
-		return nil, nil
+		return nil
 	}
 	// do something with decoded claims
 	// for key, val := range tkn {
@@ -43,8 +43,7 @@ func GetToken(ctx *gin.Context) (*TokenIdentity, error) {
 	// fmt.Printf("%v\n", claims)
 	tk := &TokenIdentity{
 		Username: claims.Username,
-		Token:    cookie,
+		Token:    token,
 	}
-	return tk, nil
-	// ctx.JSON(http.StatusOK, gin.H{"msg": "Sucess", "data": claims.Username})
+	return tk
 }

@@ -16,8 +16,8 @@ var myCollection *mongo.Collection = database.OpenCollection(database.Client, "b
 
 func LogoutController(ctx *gin.Context) {
 	// check token and return
-	ct, err := auth.GetToken(ctx)
-	if err != nil {
+	ct := auth.GetToken(ctx)
+	if ct == nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})
 	}
 	jwt := entity.TokenIdentity{ct.Token}
