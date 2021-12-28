@@ -1,4 +1,4 @@
-package products
+package carts
 
 import (
 	"time"
@@ -8,19 +8,30 @@ import (
 )
 
 type Cart struct {
-	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	ProductId primitive.ObjectID `json:"product_id" bson:"product_id,omitempty"`
-	Quantity  float32            `json:"quantity"`
-	AuditLog  AuditLog           `json:"audit_log"`
+	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Products []ProductRequest   `json:"products"`
+	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
+	AuditLog AuditLog           `json:"audit_log"`
+}
+type ProductItems struct {
+	ProductId string  `json:"product_id"`
+	Quantity  float32 `json:"quantity"`
 }
 
-type Product struct {
-	Name             string           `json:"name"`
-	Status           string           `json:"status"`
-	ThumbnailImage   string           `json:"thumbnail_image"`
-	OriginalImage    string           `json:"original_image"`
-	Variation        []Variation      `json:"variation"`
-	SalesInformation SalesInformation `json:"sales_information"`
+type ProductRequest struct {
+	ProductId string  `json:"product_id"`
+	Quantity  float32 `json:"quantity"`
+}
+
+type ProductResponse struct {
+	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Quantity         float32            `json:"quantity"`
+	Name             string             `json:"name"`
+	Status           string             `json:"status"`
+	ThumbnailImage   string             `json:"thumbnail_image"`
+	OriginalImage    string             `json:"original_image"`
+	Variation        []Variation        `json:"variation"`
+	SalesInformation SalesInformation   `json:"sales_information"`
 }
 
 type SalesInformation struct {

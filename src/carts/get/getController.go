@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ListController(ctx *gin.Context) {
-	carts := ListService()
+func GetController(ctx *gin.Context, id string) {
+	carts := GetService(id)
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Cart Items fetched successfully.", "data": carts})
 }

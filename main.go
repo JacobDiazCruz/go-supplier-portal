@@ -28,7 +28,9 @@ import (
 
 	// carts
 	addCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/add"
-	listCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/list"
+	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
+	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
+	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
 
 	// votes
 	votes "gitlab.com/JacobDCruz/supplier-portal/src/votes/controllers"
@@ -94,8 +96,19 @@ func main() {
 	server.POST("/products", addProduct.AddController)
 
 	// carts
-	server.GET("/carts", listCart.ListController)
+	server.GET("/cart/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		getCart.GetController(ctx, id)
+	})
 	server.POST("/cart", addCart.AddController)
+	server.DELETE("/cart/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		clearCart.ClearController(ctx, id)
+	})
+	server.PUT("/cart/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		updateCart.UpdateController(ctx, id)
+	})
 
 	// votations
 	server.GET("/vote/:id", func(ctx *gin.Context) {

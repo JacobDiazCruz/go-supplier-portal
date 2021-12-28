@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	addCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/add"
+	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	addProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/add"
 	profilesEntity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
@@ -64,6 +66,11 @@ func SignupController(ctx *gin.Context) {
 		Role:      getUser.Role,
 	}
 	addProfile.AddService(*pEntity)
+
+	// Create a cart for the new signed up user
+	cEntity := &cartEntity.Cart{}
+	cEntity.UserId = objID
+	addCart.AddService(*cEntity)
 
 	// http response
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Fetched data successfully", "data": getUser})

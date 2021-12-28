@@ -12,12 +12,14 @@ import (
 
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
+// 1. create a cart per user
+// 2. push item and its quantity per user's cart
 func AddService(cart entity.Cart) string {
 	// query
 	result, err := cartCollection.InsertOne(context.TODO(), bson.M{
-		"product_id": cart.ProductId,
-		"quantity":   cart.Quantity,
-		"audit_log":  cart.AuditLog,
+		"products":  cart.Products,
+		"user_id":   cart.UserId,
+		"audit_log": cart.AuditLog,
 	})
 	if err != nil {
 		panic(err)
