@@ -14,21 +14,18 @@ import (
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
 func UpdateService(cart entity.ProductRequest, id string) string {
-	// id to mongoId
+	// convert string id to mongoId
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		panic(err)
 	}
 
-	// query
+	// query filters
 	filter := bson.M{"_id": objID, "products.product_id": cart.ProductId}
 	update := bson.M{"products.$[item].quantity": cart.Quantity}
 	arrayFilter := bson.M{"item.product_id": cart.ProductId}
-	// result, err := cartCollection.FindOneAndUpdate(
-	// 	context.Background(),
 
-	// )
-
+	// query db
 	res := cartCollection.FindOneAndUpdate(context.Background(),
 		filter,
 		bson.M{"$set": update},
@@ -40,15 +37,11 @@ func UpdateService(cart entity.ProductRequest, id string) string {
 			},
 		))
 
+	// check error
 	if res.Err() != nil {
-		panic("err")
-		// log error
+		panic(res.Err())
 	}
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println(result)
 
-	// return
+	// return if no error
 	return id
 }
