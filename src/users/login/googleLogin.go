@@ -44,10 +44,7 @@ func GoogleLogin(ctx *gin.Context) {
 	}
 
 	// validate email if already exist
-	emailRes, err := get.GetEmail(user.Email)
-	if err != nil {
-		fmt.Println("Err")
-	}
+	emailRes := get.GetEmail(user.Email)
 
 	// Signup email if it doesnt exist yet
 	if emailRes.Email == "" {

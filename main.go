@@ -100,12 +100,15 @@ func main() {
 		id := ctx.Param("id")
 		getCart.GetController(ctx, id)
 	})
-	server.POST("/cart", addCart.AddController)
-	server.DELETE("/cart/:id", func(ctx *gin.Context) {
+	server.POST("/cart/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		addCart.AddController(ctx, id)
+	})
+	server.PUT("/remove-item/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		clearCart.ClearController(ctx, id)
 	})
-	server.PUT("/cart/:id", func(ctx *gin.Context) {
+	server.PUT("/update-quantity/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		updateCart.UpdateController(ctx, id)
 	})

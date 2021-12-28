@@ -1,11 +1,10 @@
 package users
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	addCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/add"
+	createCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/create"
 	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	addProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/add"
 	profilesEntity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
@@ -25,10 +24,7 @@ func SignupController(ctx *gin.Context) {
 	}
 
 	// validate email if already exist
-	emailRes, err := get.GetEmail(user.Email)
-	if err != nil {
-		fmt.Println("Err")
-	}
+	emailRes := get.GetEmail(user.Email)
 	if emailRes.Email != "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Email already exist."})
 		return
@@ -70,7 +66,8 @@ func SignupController(ctx *gin.Context) {
 	// Create a cart for the new signed up user
 	cEntity := &cartEntity.Cart{}
 	cEntity.UserId = objID
-	addCart.AddService(*cEntity)
+	cEntity.Products = []string{}
+	createCart.AddService(*cEntity)
 
 	// http response
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Fetched data successfully", "data": getUser})
