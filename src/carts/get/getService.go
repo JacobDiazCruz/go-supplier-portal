@@ -19,18 +19,12 @@ type Params struct {
 	ProductIds []primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 }
 
-func GetService(id string) entity.Cart {
-	result := entity.Cart{}
-	objID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		panic(err)
-	}
+func GetService(userId primitive.ObjectID) entity.GetCart {
+	result := entity.GetCart{}
 
 	// query
-	query := bson.M{"_id": objID}
-	if err2 := cartCollection.FindOne(context.TODO(), query).Decode(&result); err != nil {
-		panic(err2)
-	}
+	query := bson.M{"user_id": userId}
+	err := cartCollection.FindOne(context.TODO(), query).Decode(&result)
 	jsonData, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {
 		panic(err)

@@ -38,8 +38,8 @@ import (
 	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
 
-	// votes
-	votes "gitlab.com/JacobDCruz/supplier-portal/src/votes/controllers"
+	// orders
+	placeOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/place-order"
 )
 
 func main() {
@@ -102,9 +102,8 @@ func main() {
 	server.POST("/products", addProduct.AddController)
 
 	// carts
-	server.GET("/cart/:id", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		getCart.GetController(ctx, id)
+	server.GET("/cart/get", func(ctx *gin.Context) {
+		getCart.GetController(ctx)
 	})
 	server.POST("/cart/add", func(ctx *gin.Context) {
 		addCart.AddController(ctx)
@@ -132,12 +131,11 @@ func main() {
 		updateAddress.UpdateController(ctx, id)
 	})
 
-	// votations
-	server.GET("/vote/:id", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		votes.GetController(ctx, id)
+	// orders
+	server.POST("/orders/place", func(ctx *gin.Context) {
+		placeOrder.PlaceOrderController(ctx)
 	})
-	server.POST("/vote", votes.AddController)
+
 
 	// register
 	// server.Use(CORSMiddleware())
