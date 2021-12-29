@@ -16,6 +16,6 @@ func DeleteController(ctx *gin.Context, id string) {
 		DeleteService(id)
 		ctx.JSON(http.StatusOK, gin.H{"msg": "Data success"})
 	} else { // if error exist
-		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Invalid Token"})
 	}
 }

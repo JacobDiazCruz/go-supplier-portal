@@ -13,9 +13,11 @@ import (
 	// profile
 	updateProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/update"
 
-	// products
-	updateAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/update"
+	// addresses
+	addAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/add"
 	getAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/get"
+	listAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/list"
+	updateAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/update"
 
 	// users
 	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
@@ -118,11 +120,19 @@ func main() {
 	})
 
 	// addresses
-	server.GET("/address", func(ctx *gin.Context) {
-		getAddress.GetController(ctx)
+	server.GET("/address/get/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		getAddress.GetController(ctx, id)
 	})
-	server.POST("/address", func(ctx *gin.Context) {
-		updateAddress.AddController(ctx)
+	server.GET("/address/list", func(ctx *gin.Context) {
+		listAddress.ListController(ctx)
+	})
+	server.POST("/address/add", func(ctx *gin.Context) {
+		addAddress.AddController(ctx)
+	})
+	server.PUT("/address/update/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		updateAddress.UpdateController(ctx, id)
 	})
 
 	// votations

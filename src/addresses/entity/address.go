@@ -9,7 +9,7 @@ import (
 
 type Address struct {
 	ID          primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	ProfileId   primitive.ObjectID `json:"profile_id" bson:"profile_id,omitempty"`
+	UserId      primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	Region      string             `json:"region"`
 	Province    string             `json:"province"`
 	City        string             `json:"city"`

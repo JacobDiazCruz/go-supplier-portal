@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	entity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
+	entity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -37,6 +37,5 @@ func UpdateService(profile entity.Profile, profileId string) string {
 		panic(err)
 	}
 	fmt.Println(result)
-	fmt.Println("update service here id ^")
 	return "Success"
 }

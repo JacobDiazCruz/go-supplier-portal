@@ -19,23 +19,17 @@ type getService interface {
 }
 
 type Param struct {
-	id   string
-	slug string
+	UserId primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 }
 
-func GetService(profileId string) entity.Address {
+func GetService(id string) entity.Address {
 	// set initial values
 	result := entity.Address{}
-	var query = bson.M{"profile_id": ""}
-	objID, err := primitive.ObjectIDFromHex(profileId)
+	var query = bson.M{"_id": ""}
 
 	// profile_id query params
-	if err != nil {
-		fmt.Println("no id found")
-	} else {
-		query = bson.M{"profile_id": objID}
-		fmt.Println(query)
-	}
+	query = bson.M{"_id": id}
+	fmt.Println(query)
 
 	// query to db
 	err2 := addressCollection.FindOne(context.TODO(), query).Decode(&result)

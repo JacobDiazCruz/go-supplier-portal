@@ -1,7 +1,6 @@
 package addresses
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +9,7 @@ import (
 	user "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 )
 
-func UpdateController(ctx *gin.Context, id string) {
+func AddController(ctx *gin.Context) {
 	// check token and return
 	ct := auth.GetToken(ctx)
 
@@ -28,11 +27,11 @@ func UpdateController(ctx *gin.Context, id string) {
 		}
 		address.UserId = u.ID
 
-		// service
-		res := UpdateService(address, id)
-		fmt.Println(res)
+		// update service
+		res := AddService(address)
 
-		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Address Updated Successfully!"})
+		// return service
+		ctx.JSON(http.StatusOK, gin.H{"msg": "Address added successfully", "data": res})
 	} else {
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Invalid Token"})
 	}

@@ -16,6 +16,6 @@ func ClearController(ctx *gin.Context, id string) {
 		ClearService(id)
 		ctx.JSON(http.StatusOK, gin.H{"msg": "Cart item deleted successfully!"})
 	} else { // if error exist
-		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Invalid Token"})
 	}
 }

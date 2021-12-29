@@ -41,6 +41,6 @@ func AddController(ctx *gin.Context, id string) {
 		fmt.Println("contents get")
 		ctx.JSON(http.StatusOK, gin.H{"msg": "Cart Item Updated Successfully", "data": getRes})
 	} else { // if error exist
-		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Invalid Token"})
 	}
 }

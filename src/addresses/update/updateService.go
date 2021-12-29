@@ -14,7 +14,7 @@ import (
 var addressCollection *mongo.Collection = database.OpenCollection(database.Client, "addresses")
 
 func UpdateService(address entity.Address, id string) string {
-	// id to mongoId
+	// convert id string to mongo
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		panic(err)
@@ -23,20 +23,18 @@ func UpdateService(address entity.Address, id string) string {
 	// query
 	result, err := addressCollection.UpdateOne(
 		context.TODO(),
-		bson.M{"_id": objId},
+		bson.M{"_id": objID},
 		bson.M{
-			"$push": bson.M{
-				"addresses": bson.M{
-					"profile_id":   address.ProfileId,
-					"region":       address.Region,
-					"province":     address.Province,
-					"city":         address.City,
-					"barangay":     address.Barangay,
-					"label":        address.Label,
-					"phone_number": address.PhoneNumber,
-					"default":      address.Default,
-					"audit_log":    address.AuditLog,
-				},
+			"$set": bson.M{
+				"user_id":      address.UserId,
+				"region":       address.Region,
+				"province":     address.Province,
+				"city":         address.City,
+				"barangay":     address.Barangay,
+				"label":        address.Label,
+				"phone_number": address.PhoneNumber,
+				"default":      address.Default,
+				"audit_log":    address.AuditLog,
 			},
 		},
 	)
@@ -45,6 +43,5 @@ func UpdateService(address entity.Address, id string) string {
 	}
 	fmt.Println(result)
 
-	// return
-	return id
+	return "Success"
 }
