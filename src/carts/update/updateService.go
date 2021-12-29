@@ -6,22 +6,15 @@ import (
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
-func UpdateService(cart entity.ProductRequest, id string) string {
-	// convert string id to mongoId
-	objID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		panic(err)
-	}
-
+func UpdateService(cart entity.ProductRequest) string {
 	// query filters
-	filter := bson.M{"_id": objID, "products.product_id": cart.ProductId}
+	filter := bson.M{"user_id": cart.UserId, "products.product_id": cart.ProductId}
 	update := bson.M{"products.$[item].quantity": cart.Quantity}
 	arrayFilter := bson.M{"item.product_id": cart.ProductId}
 
@@ -43,5 +36,5 @@ func UpdateService(cart entity.ProductRequest, id string) string {
 	}
 
 	// return if no error
-	return id
+	return "Success"
 }
