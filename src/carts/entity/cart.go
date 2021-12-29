@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -16,12 +17,12 @@ type Cart struct {
 
 type GetCart struct {
 	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Products []ProductItems     `json:"products"`
+	Products []bson.M           `json:"products"`
 	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog AuditLog           `json:"audit_log"`
 }
 type ProductItems struct {
-	ProductId string  `json:"product_id"`
+	ProductId bson.M  `json:"product_id"`
 	Quantity  float32 `json:"quantity"`
 }
 

@@ -4,12 +4,61 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type PlaceOrder struct {
-	CartId          string   `json:"cart_id"`
-	DeliveryAddress string   `json:"delivery_address"`
-	AuditLog        AuditLog `json:"audit_log"`
+	CartId          string             `json:"cart_id"`
+	UserId          primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
+	DeliveryAddress string             `json:"delivery_address"`
+	AuditLog        AuditLog           `json:"audit_log"`
+}
+
+type Cart struct {
+	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Products []Product          `json:"products"`
+	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
+	AuditLog AuditLog           `json:"audit_log"`
+}
+
+type Product struct {
+	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Name             string             `json:"name"`
+	Status           string             `json:"status"`
+	Slug             string             `json:"slug"`
+	Description      string             `json:"description"`
+	Tags             []string           `json:"tags"`
+	Category         string             `json:"category"`
+	SalesInformation SalesInformation   `json:"sales_information"`
+	Variation        []Variation        `json:"variation"`
+	ThumbnailImage   string             `json:"thumbnail_image"`
+	OriginalImage    string             `json:"original_image"`
+	MarketingLink    string             `json:"marketing_link"`
+	Reviews          []string           `json:"reviews"`
+	AuditLog         AuditLog           `json:"audit_log"`
+}
+
+type Specification struct {
+	Brand           string `json:"brand"`
+	CountryOfOrigin string `json:"country_of_origin"`
+}
+
+type SalesInformation struct {
+	Price       float32 `json:"price"`
+	Stock       float32 `json:"stock"`
+	Brand       string  `json:"brand"`
+	MinQuantity float32 `json:"min_quantity"`
+	MaxQuantity float32 `json:"max_quantity"`
+	UnitPrice   float32 `json:"unit_price"`
+}
+
+type Variation struct {
+	Name          string  `json:"name"`
+	Price         float32 `json:"price"`
+	Stock         float32 `json:"stock"`
+	MinQuantity   float32 `json:"min_quantity"`
+	MaxQuantity   float32 `json:"max_quantity"`
+	DiscountPrice float32 `json:"discount_price"`
 }
 
 type AuditLog struct {
@@ -25,6 +74,10 @@ type AuditLog struct {
 
 type TokenIdentity struct {
 	Token string `json:"token"`
+}
+
+type Auth struct {
+	UserId primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 }
 
 type Claims struct {
