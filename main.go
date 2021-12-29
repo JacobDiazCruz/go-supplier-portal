@@ -11,8 +11,11 @@ import (
 	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
 
 	// profile
-
 	updateProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/update"
+
+	// products
+	updateAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/update"
+	getAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/get"
 
 	// users
 	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
@@ -28,7 +31,8 @@ import (
 
 	// carts
 	addCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/add"
-	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
+	// clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
+	deleteCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/delete-item"
 	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
 
@@ -106,11 +110,19 @@ func main() {
 	})
 	server.PUT("/remove-item/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
-		clearCart.ClearController(ctx, id)
+		deleteCart.DeleteController(ctx, id)
 	})
 	server.PUT("/update-quantity/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 		updateCart.UpdateController(ctx, id)
+	})
+
+	// addresses
+	server.GET("/address", func(ctx *gin.Context) {
+		getAddress.GetController(ctx)
+	})
+	server.POST("/address", func(ctx *gin.Context) {
+		updateAddress.AddController(ctx)
 	})
 
 	// votations

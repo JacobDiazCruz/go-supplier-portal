@@ -14,8 +14,6 @@ import (
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
 func AddService(cart entity.ProductRequest, id string) string {
-	fmt.Println(cart)
-	fmt.Println("my cart here add")
 	// id to mongoId
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
