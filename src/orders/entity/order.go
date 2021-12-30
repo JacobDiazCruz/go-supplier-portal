@@ -8,9 +8,10 @@ import (
 )
 
 type Order struct {
-	Cart            Cart     `json:"cart"`
-	DeliveryAddress string   `json:"delivery_address"`
-	AuditLog        AuditLog `json:"audit_log"`
+	ID              primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Cart            Cart               `json:"cart"`
+	DeliveryAddress string             `json:"delivery_address"`
+	AuditLog        AuditLog           `json:"audit_log"`
 }
 
 type PlaceOrder struct {
