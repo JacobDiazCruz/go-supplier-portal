@@ -77,10 +77,16 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 		cartEntity.Products = append(cartEntity.Products, product)
 	}
 
+	// add initial order_status
+	orderStatus := entity.OrderStatus{}
+	orderStatus.Title = "Order Placed (COD)"
+	orderStatus.Label = "order_placed_cod"
+
 	// 4. insert request to orders db
 	result, err := orderCollection.InsertOne(context.TODO(), bson.M{
 		"cart":             cartEntity,
 		"delivery_address": order.DeliveryAddress,
+		"order_status":     orderStatus,
 		"audit_log":        order.AuditLog,
 	})
 	if err != nil {

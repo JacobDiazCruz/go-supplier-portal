@@ -9,13 +9,20 @@ import (
 
 type Order struct {
 	ID              primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Cart            Cart               `json:"cart"`
+	OrderStatus     OrderStatus        `json:"order_status"`
 	DeliveryAddress string             `json:"delivery_address"`
+	Cart            Cart               `json:"cart"`
 	AuditLog        AuditLog           `json:"audit_log"`
+}
+
+type OrderStatus struct {
+	Title string `json:"title"`
+	Label string `json:"label"`
 }
 
 type PlaceOrder struct {
 	CartId          string             `json:"cart_id"`
+	OrderStatus     OrderStatus        `json:"order_status"`
 	UserId          primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	DeliveryAddress string             `json:"delivery_address"`
 	AuditLog        AuditLog           `json:"audit_log"`

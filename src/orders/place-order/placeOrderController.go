@@ -24,11 +24,6 @@ func PlaceOrderController(ctx *gin.Context) {
 		// cart request
 		order := entity.PlaceOrder{}
 		err := ctx.BindJSON(&order)
-
-		// todo: query cart and assign details in the entity
-		// todo: query products
-		// todo: insert cart with product details inside
-
 		if err != nil {
 			panic(err)
 			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
