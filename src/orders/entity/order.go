@@ -26,6 +26,7 @@ type Product struct {
 	Name             string             `json:"name"`
 	Status           string             `json:"status"`
 	Slug             string             `json:"slug"`
+	Quantity         float64            `json:"quantity"`
 	Description      string             `json:"description"`
 	Tags             []string           `json:"tags"`
 	Category         string             `json:"category"`
