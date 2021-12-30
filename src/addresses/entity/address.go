@@ -14,6 +14,8 @@ type Address struct {
 	Province    string             `json:"province"`
 	City        string             `json:"city"`
 	Barangay    string             `json:"barangay"`
+	Street      string             `json:"street"`
+	PostalCode  string             `json:"postal_code"`
 	PhoneNumber string             `json:"phone_number"`
 	Label       string             `json:"label"`
 	Default     bool               `json:"default"`

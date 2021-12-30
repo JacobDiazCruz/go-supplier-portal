@@ -22,6 +22,7 @@ import (
 	// users
 	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
 	loginUser "gitlab.com/JacobDCruz/supplier-portal/src/users/login"
+	changePassword "gitlab.com/JacobDCruz/supplier-portal/src/users/change-password"
 	logoutUser "gitlab.com/JacobDCruz/supplier-portal/src/users/logout"
 	signupUser "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
 
@@ -39,8 +40,8 @@ import (
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
 
 	// orders
-	listOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/list"
 	getOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/get"
+	listOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/list"
 	placeOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/place-order"
 )
 
@@ -80,6 +81,9 @@ func main() {
 	// users
 	server.POST("/login", func(ctx *gin.Context) {
 		loginUser.LoginController(ctx)
+	})
+	server.POST("/change-password", func(ctx *gin.Context) {
+		changePassword.ChangeController(ctx)
 	})
 	server.POST("/logout", logoutUser.LogoutController)
 	server.GET("/users", func(ctx *gin.Context) {
