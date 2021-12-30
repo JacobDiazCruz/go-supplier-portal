@@ -25,7 +25,7 @@ type ProductStruct struct {
 func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	// 1. find cart and get product ids
 	cartRes := getCart.GetService(au.UserId)
-	prod := ProductStruct{}
+	productStruct := ProductStruct{}
 	for _, val := range cartRes.Products {
 		strs := fmt.Sprintf("%v", val["product_id"])
 		// change string to objectid
@@ -33,13 +33,13 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 		if err != nil {
 			panic(err)
 		}
-		prod.ProductIds = append(prod.ProductIds, objId)
+		productStruct.ProductIds = append(productStruct.ProductIds, objId)
 	}
 
 	// 2. find all products with the following product_ids from cart
 	cursor, err := productCollection.Find(context.TODO(), bson.M{
 		"_id": bson.M{
-			"$in": prod.ProductIds,
+			"$in": productStruct.ProductIds,
 		},
 	})
 	if err != nil {
@@ -58,8 +58,8 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	for _, product := range products {
 		for _, val := range cartRes.Products {
 			// convert product_id string to mongoid
-			prodID := fmt.Sprintf("%v", val["product_id"])
-			objID, err := primitive.ObjectIDFromHex(prodID)
+			productID := fmt.Sprintf("%v", val["product_id"])
+			objID, err := primitive.ObjectIDFromHex(productID)
 			if err != nil {
 				panic(err)
 			}

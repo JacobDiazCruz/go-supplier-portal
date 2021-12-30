@@ -39,6 +39,7 @@ import (
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
 
 	// orders
+	listOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/list"
 	placeOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/place-order"
 )
 
@@ -132,10 +133,12 @@ func main() {
 	})
 
 	// orders
+	server.GET("/orders/list", func(ctx *gin.Context) {
+		listOrder.ListController(ctx)
+	})
 	server.POST("/orders/place", func(ctx *gin.Context) {
 		placeOrder.PlaceOrderController(ctx)
 	})
-
 
 	// register
 	// server.Use(CORSMiddleware())

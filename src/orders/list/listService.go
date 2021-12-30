@@ -14,17 +14,17 @@ import (
 var addressCollection *mongo.Collection = database.OpenCollection(database.Client, "orders")
 
 type listService interface {
-	ListService() entity.Address
+	ListService() entity.Order
 }
 
-func ListService(userId primitive.ObjectID) []entity.Address {
+func ListService(userId primitive.ObjectID) []entity.Order {
 	cursor, err := addressCollection.Find(context.TODO(), bson.M{
-		"user_id": userId,
+		"cart.user_id": userId,
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	addresses := []entity.Address{}
+	addresses := []entity.Order{}
 	if err = cursor.All(context.TODO(), &addresses); err != nil {
 		log.Fatal(err)
 	}

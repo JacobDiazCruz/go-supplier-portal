@@ -7,6 +7,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+type Order struct {
+	Cart            Cart     `json:"cart"`
+	DeliveryAddress string   `json:"delivery_address"`
+	AuditLog        AuditLog `json:"audit_log"`
+}
+
 type PlaceOrder struct {
 	CartId          string             `json:"cart_id"`
 	UserId          primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
