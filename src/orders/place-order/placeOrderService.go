@@ -55,40 +55,26 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	cartEntity.ID = cartRes.ID
 	cartEntity.AuditLog = entity.AuditLog(cartRes.AuditLog)
 	cartEntity.UserId = cartRes.UserId
-	// book, err := json.Marshal(cartEntity)
-	// fmt.Println(book)
 	for _, product := range products {
-		// var m map[string]interface{}
-		// product["quantity"] = 3232
 		for _, val := range cartRes.Products {
-			// book, err := json.Marshal(product)
-			// if err != nil {
-			// 	fmt.Println(err)
-			// }
-			strs := fmt.Sprintf("%v", val["quantity"])
-			value, err := strconv.ParseFloat(strs, 32)
+			// convert product_id string to mongoid
+			prodID := fmt.Sprintf("%v", val["product_id"])
+			objID, err := primitive.ObjectIDFromHex(prodID)
 			if err != nil {
-				fmt.Println(err)
+				panic(err)
 			}
-			fmt.Println(value)
-			product.Quantity = value
-			fmt.Println("im here ererrrrrr")
-			// fmt.Println(string(book))
-			// fmt.Printf("t1: %T\n", val["quantity"])
-			// var decoded interface{}
-			// test := json.NewDecoder(io.Reader("", []byte(fmt.Sprintf("%v", product))).Decode(&decoded)
-			// fmt.Println(test)
-			// json.Unmarshal([]byte(fmt.Sprintf("%v", product)), &decoded)
-			// test := decoded["quantity"]["type"]
-			// fmt.Println(1111111111111111)
-			// fmt.Println(test)
-			// fmt.Println(2222222222222222)
-			// product["quantity"] = val["quantity"]
-			// m["quantity"] = val["quantity"]
-			// newData, err := json.Marshal(m)
-			// fmt.Println(val)
-			cartEntity.Products = append(cartEntity.Products, product)
+			// compare if same product ids, then assign quantity
+			if objID == product.ID {
+				strs := fmt.Sprintf("%v", val["quantity"])
+				value, err := strconv.ParseFloat(strs, 32)
+				if err != nil {
+					fmt.Println(err)
+				}
+				fmt.Println(value)
+				product.Quantity = value
+			}
 		}
+		cartEntity.Products = append(cartEntity.Products, product)
 	}
 
 	// 4. insert request to orders db
