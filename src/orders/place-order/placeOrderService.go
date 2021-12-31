@@ -6,6 +6,8 @@ import (
 	"log"
 	"strconv"
 
+	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
+	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/orders/entity"
@@ -51,10 +53,10 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	}
 
 	// 3. insert product details to cart
-	cartEntity := entity.Cart{}
-	cartEntity.ID = cartRes.ID
-	cartEntity.AuditLog = entity.AuditLog(cartRes.AuditLog)
-	cartEntity.UserId = cartRes.UserId
+	orderCartEntity := entity.Cart{}
+	orderCartEntity.ID = cartRes.ID
+	orderCartEntity.AuditLog = entity.AuditLog(cartRes.AuditLog)
+	orderCartEntity.UserId = cartRes.UserId
 	for _, product := range products {
 		for _, val := range cartRes.Products {
 			// convert product_id string to mongoid
@@ -74,7 +76,7 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 				product.Quantity = value
 			}
 		}
-		cartEntity.Products = append(cartEntity.Products, product)
+		orderCartEntity.Products = append(orderCartEntity.Products, product)
 	}
 
 	// add initial order_status
@@ -84,7 +86,7 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 
 	// 4. insert request to orders db
 	result, err := orderCollection.InsertOne(context.TODO(), bson.M{
-		"cart":             cartEntity,
+		"cart":             orderCartEntity,
 		"delivery_address": order.DeliveryAddress,
 		"order_status":     orderStatus,
 		"audit_log":        order.AuditLog,
@@ -92,6 +94,11 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	if err != nil {
 		panic(err)
 	}
+
+	ce := cartEntity.ProductRequest{}
+	ce.UserId = au.UserId
+	// 5. empty / clear user's cart
+	clearCart.ClearService(ce)
 
 	// return order id string
 	oid := result.InsertedID.(primitive.ObjectID)
