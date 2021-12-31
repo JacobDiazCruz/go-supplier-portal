@@ -4,27 +4,30 @@ import (
 	"context"
 	"fmt"
 
+	entity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
-func ClearService(id string) string {
-	objID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		panic(err)
-	}
-
-	// query
-	query := bson.M{"_id": objID}
-	result, err := cartCollection.DeleteOne(context.TODO(), query)
+func ClearService(cart entity.ProductRequest) string {
+	// query db
+	result, err := cartCollection.UpdateOne(
+		context.TODO(),
+		bson.M{"user_id": cart.UserId},
+		bson.M{
+			"$set": bson.M{
+				"products": []entity.ProductItems{},
+			},
+		},
+	)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(result)
 
-	return "Success"
+	// return if no error
+	return cart.ProductId
 }

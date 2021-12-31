@@ -3,10 +3,10 @@ package products
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
+	entity "gitlab.com/JacobDCruz/supplier-portal/src/products/entity"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -14,12 +14,11 @@ import (
 var productCollection *mongo.Collection = database.OpenCollection(database.Client, "products")
 
 func SearchService(keyword string) []bson.M {
-	// filter := bson.M{
-	// 	"$search": bson.D{{"query": keyword}},
-	// }
+	// init
+	products := []entity.Product{}
 	var result []bson.M
-	fmt.Println(keyword)
-	fmt.Println("yeyeyeyeyeyeyyee")
+
+	// query filters
 	query := bson.M{
 		"$and": []bson.M{
 			bson.M{"$or": []bson.M{
@@ -28,6 +27,7 @@ func SearchService(keyword string) []bson.M {
 		},
 	}
 
+	// query db
 	cursor, err := productCollection.Find(context.TODO(), query)
 	if err != nil {
 		log.Fatal(err)
@@ -36,11 +36,11 @@ func SearchService(keyword string) []bson.M {
 		log.Fatal(err)
 	}
 
+	// convert to json struct and return
 	jsonData, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(jsonData)
-
+	json.Unmarshal(jsonData, &products)
 	return result
 }

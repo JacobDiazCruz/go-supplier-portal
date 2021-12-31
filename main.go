@@ -28,14 +28,14 @@ import (
 
 	// products
 	addProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/add"
-	searchProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/search"
 	adminListProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/admin-list"
 	getProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/get"
 	listProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/list"
+	searchProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/search"
 
 	// carts
 	addCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/add"
-	// clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
+	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
 	deleteCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/delete-item"
 	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
@@ -116,6 +116,9 @@ func main() {
 	})
 	server.POST("/cart/add", func(ctx *gin.Context) {
 		addCart.AddController(ctx)
+	})
+	server.POST("/cart/clear", func(ctx *gin.Context) {
+		clearCart.ClearController(ctx)
 	})
 	server.PUT("/remove-item", func(ctx *gin.Context) {
 		deleteCart.DeleteController(ctx)
