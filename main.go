@@ -20,9 +20,9 @@ import (
 	updateAddress "gitlab.com/JacobDCruz/supplier-portal/src/addresses/update"
 
 	// users
+	changePassword "gitlab.com/JacobDCruz/supplier-portal/src/users/change-password"
 	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
 	loginUser "gitlab.com/JacobDCruz/supplier-portal/src/users/login"
-	changePassword "gitlab.com/JacobDCruz/supplier-portal/src/users/change-password"
 	logoutUser "gitlab.com/JacobDCruz/supplier-portal/src/users/logout"
 	signupUser "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
 
@@ -40,6 +40,7 @@ import (
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
 
 	// orders
+	cancelOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/cancel"
 	getOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/get"
 	listOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/list"
 	placeOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/place-order"
@@ -147,6 +148,10 @@ func main() {
 	})
 	server.POST("/orders/place", func(ctx *gin.Context) {
 		placeOrder.PlaceOrderController(ctx)
+	})
+	server.PUT("/orders/cancel/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		cancelOrder.CancelController(ctx, id)
 	})
 
 	// register

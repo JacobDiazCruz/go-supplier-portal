@@ -24,7 +24,7 @@ func UpdateService(product entity.Product) string {
 		"original_image":  product.OriginalImage,
 		"status":          product.Status,
 		"marketing_link":  product.MarketingLink,
-		"comments":        product.Comments,
+		"reviews":         product.Reviews,
 		"audit_log":       product.AuditLog,
 	})
 	if err != nil {
