@@ -28,6 +28,7 @@ import (
 
 	// products
 	addProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/add"
+	searchProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/search"
 	adminListProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/admin-list"
 	getProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/get"
 	listProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/list"
@@ -107,6 +108,7 @@ func main() {
 		getProduct.GetController(ctx)
 	})
 	server.POST("/products", addProduct.AddController)
+	server.POST("/products/search", searchProduct.SearchController)
 
 	// carts
 	server.GET("/cart/get", func(ctx *gin.Context) {
