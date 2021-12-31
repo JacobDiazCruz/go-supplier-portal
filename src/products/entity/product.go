@@ -29,6 +29,13 @@ type Specification struct {
 	CountryOfOrigin string `json:"country_of_origin"`
 }
 
+type List struct {
+	Order   string `json:"order"`
+	OrderBy string `json:"order_by"`
+	PageNum int    `json:"page_num"`
+	Limit   int64  `json:"limit"`
+}
+
 type SalesInformation struct {
 	Price       float32 `json:"price"`
 	Stock       float32 `json:"stock"`
