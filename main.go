@@ -25,6 +25,7 @@ import (
 	loginUser "gitlab.com/JacobDCruz/supplier-portal/src/users/login"
 	logoutUser "gitlab.com/JacobDCruz/supplier-portal/src/users/logout"
 	signupUser "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
+	forgotPassword "gitlab.com/JacobDCruz/supplier-portal/src/users/forgot-password"
 
 	// products
 	addProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/add"
@@ -94,6 +95,7 @@ func main() {
 	server.POST("/signup", func(ctx *gin.Context) {
 		signupUser.SignupController(ctx)
 	})
+	server.POST("/forgot-password", forgotPassword.ForgotController)
 
 	// profile
 	server.PUT("/profile/:id", func(ctx *gin.Context) {

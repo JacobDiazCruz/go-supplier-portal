@@ -9,6 +9,7 @@ import (
 	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
 	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
+	productUpdate "gitlab.com/JacobDCruz/supplier-portal/src/products/update"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/orders/entity"
 	"go.mongodb.org/mongo-driver/bson"
@@ -95,10 +96,16 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 		panic(err)
 	}
 
+	// 5. empty / clear user's cart
 	ce := cartEntity.ProductRequest{}
 	ce.UserId = au.UserId
-	// 5. empty / clear user's cart
 	clearCart.ClearService(ce)
+
+	// 6. update product's stock
+	// loop here and call updatestock for every product update
+	for _, product := range orderCartEntity.Products {
+		productUpdate.UpdateStock(product.ID, product.Quantity)
+	}
 
 	// return order id string
 	oid := result.InsertedID.(primitive.ObjectID)
