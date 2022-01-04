@@ -40,13 +40,13 @@ func UpdateStock(productId primitive.ObjectID, quantity float64) string {
 	filter := bson.M{"_id": productId}
 	update := bson.M{"sales_information.stock": -quantity}
 
-	// // query db
+	// query db
 	res := productCollection.FindOneAndUpdate(context.Background(),
 		filter,
 		bson.M{"$inc": update},
 	)
 
-	// // check error
+	// check error
 	if res.Err() != nil {
 		panic(res.Err())
 	}

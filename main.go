@@ -21,11 +21,11 @@ import (
 
 	// users
 	changePassword "gitlab.com/JacobDCruz/supplier-portal/src/users/change-password"
+	forgotPassword "gitlab.com/JacobDCruz/supplier-portal/src/users/forgot-password"
 	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
 	loginUser "gitlab.com/JacobDCruz/supplier-portal/src/users/login"
 	logoutUser "gitlab.com/JacobDCruz/supplier-portal/src/users/logout"
 	signupUser "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
-	forgotPassword "gitlab.com/JacobDCruz/supplier-portal/src/users/forgot-password"
 
 	// products
 	addProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/add"
@@ -33,6 +33,10 @@ import (
 	getProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/get"
 	listProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/list"
 	searchProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/search"
+
+	// reviews
+	addReview "gitlab.com/JacobDCruz/supplier-portal/src/reviews/add"
+	listReview "gitlab.com/JacobDCruz/supplier-portal/src/reviews/list"
 
 	// carts
 	addCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/add"
@@ -111,6 +115,10 @@ func main() {
 	})
 	server.POST("/products", addProduct.AddController)
 	server.POST("/products/search", searchProduct.SearchController)
+
+	// reviews
+	server.POST("/reviews/add", addReview.AddController)
+	server.GET("/reviews/list", listReview.ListController)
 
 	// carts
 	server.GET("/cart/get", func(ctx *gin.Context) {
