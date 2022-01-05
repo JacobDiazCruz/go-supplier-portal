@@ -17,6 +17,7 @@ type Product struct {
 	Category         string             `json:"category"`
 	SalesInformation SalesInformation   `json:"sales_information"`
 	Variation        []Variation        `json:"variation"`
+	TotalRatings     int                `json:"total_ratings"`
 	ThumbnailImage   string             `json:"thumbnail_image"`
 	OriginalImage    string             `json:"original_image"`
 	MarketingLink    string             `json:"marketing_link"`

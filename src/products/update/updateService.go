@@ -53,3 +53,22 @@ func UpdateStock(productId primitive.ObjectID, quantity float64) string {
 
 	return "Sucess"
 }
+
+func UpdateTotalRatings(productId primitive.ObjectID, count int) string {
+	// query filters
+	filter := bson.M{"_id": productId}
+	update := bson.M{"total_ratings": +count}
+
+	// query db
+	res := productCollection.FindOneAndUpdate(context.Background(),
+		filter,
+		bson.M{"$inc": update},
+	)
+
+	// check error
+	if res.Err() != nil {
+		panic(res.Err())
+	}
+
+	return "Sucess"
+}

@@ -20,6 +20,7 @@ func AddService(product entity.Product) string {
 		"body":              product.Description,
 		"tags":              product.Tags,
 		"category":          product.Category,
+		"total_ratings":     product.TotalRatings,
 		"sales_information": product.SalesInformation,
 		"thumbnail_image":   product.ThumbnailImage,
 		"original_image":    product.OriginalImage,
