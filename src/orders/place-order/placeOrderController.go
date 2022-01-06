@@ -3,6 +3,7 @@ package orders
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
@@ -29,6 +30,17 @@ func PlaceOrderController(ctx *gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 		}
 		order.UserId = u.ID
+
+		// audit log
+		auditLog := &order.AuditLog
+		auditLog.Name = ct.Username
+		auditLog.Email = ct.Email
+		auditLog.ThumbnailImage = ct.ThumbnailImage
+		auditLog.OriginalImage = ct.OriginalImage
+		auditLog.CreatedAt = time.Now()
+		auditLog.CreatedBy = ct.Username
+		auditLog.UpdatedAt = time.Now()
+		auditLog.UpdatedBy = ct.Username
 
 		// update service
 		res := PlaceOrderService(order, au)

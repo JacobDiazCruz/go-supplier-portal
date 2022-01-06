@@ -2,6 +2,7 @@ package products
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
@@ -14,15 +15,24 @@ import (
 var productCollection *mongo.Collection = database.OpenCollection(database.Client, "products")
 
 func ListService(listFilters entity.List) []entity.Product {
+	products := []entity.Product{}
+	var result []bson.M
+
 	options := options.Find()
 	options.SetLimit(listFilters.Limit)
 	cursor, err := productCollection.Find(context.TODO(), bson.M{}, options)
 	if err != nil {
 		log.Fatal(err)
 	}
-	products := []entity.Product{}
-	if err = cursor.All(context.TODO(), &products); err != nil {
+	if err = cursor.All(context.TODO(), &result); err != nil {
 		log.Fatal(err)
 	}
+
+	// unmarshal result to products struct
+	jsonData, err := json.MarshalIndent(result, "", "    ")
+	if err != nil {
+		panic(err)
+	}
+	json.Unmarshal(jsonData, &products)
 	return products
 }

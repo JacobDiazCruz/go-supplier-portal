@@ -11,10 +11,13 @@ import (
 
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
-func ChangeService(user entity.User) string {
-	// query filters
+func UploadService(user entity.User) string {
+	// query
 	filter := bson.M{"_id": user.ID}
-	update := bson.M{"password": user.Password}
+	update := bson.M{
+		"thumbnail_image": user.ThumbnailImage,
+		"original_image":  user.OriginalImage,
+	}
 
 	// query db
 	res := userCollection.FindOneAndUpdate(context.Background(),

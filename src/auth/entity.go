@@ -5,11 +5,17 @@ import (
 )
 
 type TokenIdentity struct {
-	Username string `json:"username"`
-	Token    string `json:"token"`
+	Username       string `json:"username"`
+	Email          string `json:"email"`
+	ThumbnailImage string `json:"thumbnail_image"`
+	OriginalImage  string `json:"original_image"`
+	Token          string `json:"token"`
 }
 type Claims struct {
-	Username string `json:"username"`
+	Username       string `json:"username"`
+	Email          string `json:"email"`
+	ThumbnailImage string `json:"thumbnail_image"`
+	OriginalImage  string `json:"original_image"`
 	jwt.RegisteredClaims
 }
 

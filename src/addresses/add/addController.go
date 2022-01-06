@@ -2,6 +2,7 @@ package addresses
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/addresses/entity"
@@ -26,6 +27,17 @@ func AddController(ctx *gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 		}
 		address.UserId = u.ID
+
+		// audit log
+		auditLog := &address.AuditLog
+		auditLog.Name = ct.Username
+		auditLog.Email = ct.Email
+		auditLog.ThumbnailImage = ct.ThumbnailImage
+		auditLog.OriginalImage = ct.OriginalImage
+		auditLog.CreatedAt = time.Now()
+		auditLog.CreatedBy = ct.Username
+		auditLog.UpdatedAt = time.Now()
+		auditLog.UpdatedBy = ct.Username
 
 		// update service
 		res := AddService(address)

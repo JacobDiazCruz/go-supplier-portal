@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+	getUser "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 )
 
 func GetToken(ctx *gin.Context) *TokenIdentity {
@@ -36,14 +37,17 @@ func GetToken(ctx *gin.Context) *TokenIdentity {
 	if !tkn.Valid {
 		return nil
 	}
-	// do something with decoded claims
-	// for key, val := range tkn {
-	// 	fmt.Printf("Key: %v, value: %v\n", key, val)
-	// }
-	// fmt.Printf("%v\n", claims)
+
+	// get user by email
+	userData := getUser.GetEmail(claims.Username)
+
+	// return response
 	tk := &TokenIdentity{
-		Username: claims.Username,
-		Token:    token,
+		Username:       userData.FirstName + userData.LastName,
+		Email:          userData.Email,
+		ThumbnailImage: userData.ThumbnailImage,
+		OriginalImage:  userData.OriginalImage,
+		Token:          token,
 	}
 	return tk
 }

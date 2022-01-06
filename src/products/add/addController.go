@@ -3,6 +3,7 @@ package products
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
@@ -22,6 +23,17 @@ func AddController(ctx *gin.Context) {
 			panic(err)
 			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 		}
+
+		// audit log
+		auditLog := &product.AuditLog
+		auditLog.Name = ct.Username
+		auditLog.Email = ct.Email
+		auditLog.ThumbnailImage = ct.ThumbnailImage
+		auditLog.OriginalImage = ct.OriginalImage
+		auditLog.CreatedAt = time.Now()
+		auditLog.CreatedBy = ct.Username
+		auditLog.UpdatedAt = time.Now()
+		auditLog.UpdatedBy = ct.Username
 
 		// service
 		res := AddService(product)

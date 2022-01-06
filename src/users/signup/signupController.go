@@ -6,8 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	createCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/create"
 	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
-	addProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/add"
-	profilesEntity "gitlab.com/JacobDCruz/supplier-portal/src/profiles/entity"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -54,14 +52,14 @@ func SignupController(ctx *gin.Context) {
 	getUser := get.GetService(res)
 
 	// Create profile
-	pEntity := &profilesEntity.Profile{
-		UserId:    objID,
-		Email:     getUser.Email,
-		FirstName: getUser.FirstName,
-		LastName:  getUser.LastName,
-		Role:      getUser.Role,
-	}
-	addProfile.AddService(*pEntity)
+	// pEntity := &profilesEntity.Profile{
+	// 	UserId:    objID,
+	// 	Email:     getUser.Email,
+	// 	FirstName: getUser.FirstName,
+	// 	LastName:  getUser.LastName,
+	// 	Role:      getUser.Role,
+	// }
+	// addProfile.AddService(*pEntity)
 
 	// Create a cart for the new signed up user
 	cEntity := &cartEntity.Cart{}

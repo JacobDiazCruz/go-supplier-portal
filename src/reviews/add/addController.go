@@ -3,6 +3,7 @@ package reviews
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/JacobDCruz/supplier-portal/src/auth"
@@ -21,10 +22,18 @@ func AddController(ctx *gin.Context) {
 			panic(err)
 			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 		}
-		// err = validate.Struct(person)
-		// if err != nil {
-		// 	return err
-		// }
+
+		// audit log
+		auditLog := &review.AuditLog
+		auditLog.Name = ct.Username
+		auditLog.Email = ct.Email
+		auditLog.ThumbnailImage = ct.ThumbnailImage
+		auditLog.OriginalImage = ct.OriginalImage
+		auditLog.CreatedAt = time.Now()
+		auditLog.CreatedBy = ct.Username
+		auditLog.UpdatedAt = time.Now()
+		auditLog.UpdatedBy = ct.Username
+
 		res := AddService(review)
 		fmt.Println(res)
 		// return res

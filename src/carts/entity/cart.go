@@ -30,6 +30,7 @@ type ProductRequest struct {
 	ProductId string             `json:"product_id"`
 	Quantity  float32            `json:"quantity"`
 	UserId    primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
+	AuditLog  AuditLog           `json:"audit_log"`
 }
 
 type ProductResponse struct {

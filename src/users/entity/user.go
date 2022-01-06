@@ -6,13 +6,15 @@ import (
 )
 
 type User struct {
-	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Email     string             `json:"email"`
-	FirstName string             `json:"firstname"`
-	LastName  string             `json:"lastname"`
-	Password  string             `json:"password"`
-	Role      string             `json:"role"`
-	ProfileId string             `json:"profile_id"`
+	ID             primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Email          string             `json:"email"`
+	FirstName      string             `json:"firstname"`
+	ThumbnailImage string             `json:"thumbnail_image"`
+	OriginalImage  string             `json:"original_image"`
+	LastName       string             `json:"lastname"`
+	Password       string             `json:"password"`
+	Role           string             `json:"role"`
+	ProfileId      string             `json:"profile_id"`
 }
 
 type Credentials struct {
