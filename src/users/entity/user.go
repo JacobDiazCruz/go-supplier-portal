@@ -14,7 +14,6 @@ type User struct {
 	LastName       string             `json:"lastname"`
 	Password       string             `json:"password"`
 	Role           string             `json:"role"`
-	ProfileId      string             `json:"profile_id"`
 }
 
 type Credentials struct {

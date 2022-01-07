@@ -9,9 +9,10 @@ import (
 	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
 	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
-	productUpdate "gitlab.com/JacobDCruz/supplier-portal/src/products/update"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
+	addSellerOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/add-seller-order"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/orders/entity"
+	productUpdate "gitlab.com/JacobDCruz/supplier-portal/src/products/update"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -103,11 +104,23 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 
 	// 6. update product's stock
 	// loop here and call updatestock for every product update
+	oid := result.InsertedID.(primitive.ObjectID)
 	for _, product := range orderCartEntity.Products {
 		productUpdate.UpdateStock(product.ID, product.Quantity)
+
+		// 7. on place order, add each ordered product to the order admin list
+		// add order id on each product
+		// on admin account, seller can update the status of the product to out of stock
+		sellerRequest := entity.SellerOrder{}
+		sellerRequest.OrderId = oid
+		sellerRequest.Product = product
+		sellerRequest.Quantity = int(product.Quantity)
+		sellerRequest.DeliveryAddress = order.DeliveryAddress
+		sellerRequest.OrderStatus = orderStatus
+		sellerRequest.AuditLog = order.AuditLog
+		addSellerOrder.AddService(sellerRequest)
 	}
 
 	// return order id string
-	oid := result.InsertedID.(primitive.ObjectID)
 	return oid.Hex()
 }

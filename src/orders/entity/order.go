@@ -28,6 +28,16 @@ type PlaceOrder struct {
 	AuditLog        AuditLog           `json:"audit_log"`
 }
 
+type SellerOrder struct {
+	OrderId         primitive.ObjectID `json:"order_id"`
+	Product         Product            `json:"product"`
+	OrderStatus     OrderStatus        `json:"order_status"`
+	SellerId        primitive.ObjectID `json:"order_id"`
+	DeliveryAddress string             `json:"delivery_address"`
+	Quantity        int                `json:"quantity"`
+	AuditLog        AuditLog           `json:"audit_log"`
+}
+
 type Cart struct {
 	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	Products []Product          `json:"products"`

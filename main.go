@@ -50,6 +50,7 @@ import (
 	getOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/get"
 	listOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/list"
 	placeOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/place-order"
+	addSellerOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/add-seller-order"
 )
 
 func main() {
@@ -109,7 +110,7 @@ func main() {
 
 	// products
 	server.GET("/products", listProduct.ListController)
-	server.GET("/admin-products", adminListProduct.AdminListController)
+	server.GET("/admin-products", adminListProduct.ListController)
 	server.GET("/product", func(ctx *gin.Context) {
 		getProduct.GetController(ctx)
 	})
@@ -163,6 +164,9 @@ func main() {
 	})
 	server.POST("/orders/place", func(ctx *gin.Context) {
 		placeOrder.PlaceOrderController(ctx)
+	})
+	server.POST("/orders/add-seller-order", func(ctx *gin.Context) {
+		addSellerOrder.AddController(ctx)
 	})
 	server.PUT("/orders/cancel/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
