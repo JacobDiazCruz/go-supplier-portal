@@ -18,7 +18,7 @@ func ChangeController(ctx *gin.Context) {
 	// if no error
 	if ct != nil {
 		// get email and return user details
-		u := user.GetEmail(ct.Username)
+		u := user.GetEmail(ct.Email)
 		// bind requestData
 		user := entity.User{}
 		err := ctx.BindJSON(&user)

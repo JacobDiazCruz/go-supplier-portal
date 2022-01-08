@@ -25,7 +25,7 @@ func ListController(ctx *gin.Context) {
 		}
 		listEntity := entity.List{}
 		listEntity.Limit = limit
-		users := AdminListService()
+		users := ListService(listEntity)
 		ctx.JSON(http.StatusOK, gin.H{"msg": "Products fetched successfully.", "data": users})
 	} else { // if error exist
 		ctx.JSON(http.StatusBadRequest, gin.H{"data": "Invalid Token"})

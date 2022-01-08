@@ -15,7 +15,7 @@ func CancelController(ctx *gin.Context, orderId string) {
 	// if no error
 	if ct != nil {
 		// get email and return user details
-		// u := user.GetEmail(ct.Username)
+		// u := user.GetEmail(ct.Email)
 
 		// cart request
 		// cart := entity.ProductRequest{}

@@ -17,7 +17,7 @@ func UploadController(ctx *gin.Context) {
 	// if no error
 	if ct != nil {
 		// get email and return user details
-		u := get.GetEmail(ct.Username)
+		u := get.GetEmail(ct.Email)
 
 		user := entity.User{}
 		err := ctx.BindJSON(&user)

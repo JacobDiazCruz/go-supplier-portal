@@ -14,7 +14,7 @@ import (
 
 var productCollection *mongo.Collection = database.OpenCollection(database.Client, "products")
 
-func AdminListService(listFilters entity.List) []entity.Product {
+func ListService(listFilters entity.List) []entity.Product {
 	products := []entity.Product{}
 	var result []bson.M
 

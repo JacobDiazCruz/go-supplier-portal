@@ -2,6 +2,7 @@ package orders
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"strconv"
@@ -27,6 +28,8 @@ type ProductStruct struct {
 
 // create order id and return
 func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
+	var totalAmount = 0
+
 	// 1. find cart and get product ids
 	cartRes := getCart.GetService(au.UserId)
 	productStruct := ProductStruct{}
@@ -50,9 +53,16 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 		log.Fatal(err)
 	}
 	products := []entity.Product{}
-	if err = cursor.All(context.TODO(), &products); err != nil {
+	var prodResult []bson.M
+	if err = cursor.All(context.TODO(), &prodResult); err != nil {
 		log.Fatal(err)
 	}
+	// unmarshal result to products struct
+	jsonData, err := json.MarshalIndent(prodResult, "", "    ")
+	if err != nil {
+		panic(err)
+	}
+	json.Unmarshal(jsonData, &products)
 
 	// 3. insert product details to cart
 	orderCartEntity := entity.Cart{}
@@ -78,8 +88,17 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 				product.Quantity = value
 			}
 		}
+
+		// compute total amount
+		totalProductAmount := int(product.SalesInformation.Price) * int(product.Quantity)
+		totalAmount = totalAmount + totalProductAmount
+
+		// append
 		orderCartEntity.Products = append(orderCartEntity.Products, product)
 	}
+
+	// @TODO HERE
+	// 3.5 compute total price by adding all price of cart items and add shipping amount
 
 	// add initial order_status
 	orderStatus := entity.OrderStatus{}
@@ -90,6 +109,11 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	result, err := orderCollection.InsertOne(context.TODO(), bson.M{
 		"cart":             orderCartEntity,
 		"delivery_address": order.DeliveryAddress,
+		"note":             order.Note,
+		"subtotal":         totalAmount,
+		"total_amount":     totalAmount,
+		"shipping_courier": order.ShippingCourier,
+		"shipping_amount":  order.ShippingAmount,
 		"order_status":     orderStatus,
 		"audit_log":        order.AuditLog,
 	})

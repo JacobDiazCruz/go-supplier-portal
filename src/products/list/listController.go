@@ -12,6 +12,13 @@ import (
 
 func ListController(ctx *gin.Context) {
 	strLimit := ctx.Query("limit")
+
+	// validate query params
+	if strLimit == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error fetching product. No limit parameter.", "data": ""})
+	}
+
+	// service
 	limit, err := strconv.ParseInt(strLimit, 10, 64)
 	if err != nil {
 		fmt.Println(err)

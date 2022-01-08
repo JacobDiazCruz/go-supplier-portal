@@ -25,6 +25,9 @@ type PlaceOrder struct {
 	OrderStatus     OrderStatus        `json:"order_status"`
 	UserId          primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	DeliveryAddress string             `json:"delivery_address"`
+	Note            string             `json:"note"`
+	ShippingCourier string             `json:"shipping_courier"`
+	ShippingAmount  int                `json:"shipping_amount"`
 	AuditLog        AuditLog           `json:"audit_log"`
 }
 
