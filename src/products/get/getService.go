@@ -25,7 +25,9 @@ type Param struct {
 
 func GetService(id string, slug string) entity.Product {
 	// set initial values
-	result := entity.Product{}
+	product := entity.Product{}
+	var result bson.M
+
 	var query = bson.M{"_id": ""}
 	objID, err := primitive.ObjectIDFromHex(id)
 
@@ -48,13 +50,11 @@ func GetService(id string, slug string) entity.Product {
 		panic(err2)
 	}
 
-	// log documents and return
+	// unmarshal result to products struct
 	jsonData, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s\n", jsonData)
-	fmt.Println("Test123123")
-	fmt.Println(result)
-	return result
+	json.Unmarshal(jsonData, &product)
+	return product
 }

@@ -9,10 +9,11 @@ import (
 )
 
 type Cart struct {
-	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Products []string           `json:"products"`
-	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
-	AuditLog AuditLog           `json:"audit_log"`
+	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Products  []string           `json:"products"`
+	Variation Variation          `json:"variation"`
+	UserId    primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
+	AuditLog  AuditLog           `json:"audit_log"`
 }
 
 type GetCart struct {
@@ -29,6 +30,7 @@ type ProductItems struct {
 type ProductRequest struct {
 	ProductId string             `json:"product_id"`
 	Quantity  float32            `json:"quantity"`
+	Variation Variation          `json:"variation"`
 	UserId    primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog  AuditLog           `json:"audit_log"`
 }

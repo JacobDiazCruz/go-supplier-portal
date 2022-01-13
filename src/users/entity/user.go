@@ -7,18 +7,18 @@ import (
 
 type User struct {
 	ID             primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Email          string             `json:"email"`
-	FirstName      string             `json:"firstname"`
+	Email          string             `json:"email" validate:"required"`
+	FirstName      string             `json:"firstname" validate:"required"`
 	ThumbnailImage string             `json:"thumbnail_image"`
 	OriginalImage  string             `json:"original_image"`
-	LastName       string             `json:"lastname"`
-	Password       string             `json:"password"`
+	LastName       string             `json:"lastname" validate:"required"`
+	Password       string             `json:"password" validate:"required"`
 	Role           string             `json:"role"`
 }
 
 type Credentials struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password" validate:"required"`
 }
 
 type TokenIdentity struct {

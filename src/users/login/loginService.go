@@ -32,11 +32,6 @@ func LoginService(login *entity.Credentials) string {
 	if err != nil {
 		return "Invalid username or password"
 	} else {
-		// sign token and return
-		// tk := &auth.TokenIdentity{
-		// 	Username: login.Email,
-		// }
-		// fmt.Println(tk)
 		signToken := auth.SignToken(login.Email)
 		return signToken
 	}

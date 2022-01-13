@@ -47,12 +47,14 @@ type SalesInformation struct {
 }
 
 type Variation struct {
-	Name          string  `json:"name"`
-	Price         float32 `json:"price"`
-	Stock         float32 `json:"stock"`
-	MinQuantity   float32 `json:"min_quantity"`
-	MaxQuantity   float32 `json:"max_quantity"`
-	DiscountPrice float32 `json:"discount_price"`
+	Name           string  `json:"name"`
+	Price          float32 `json:"price"`
+	Stock          float32 `json:"stock"`
+	MinQuantity    float32 `json:"min_quantity"`
+	MaxQuantity    float32 `json:"max_quantity"`
+	DiscountPrice  float32 `json:"discount_price"`
+	ThumbnailImage string  `json:"thumbnail_image"`
+	OriginalImage  string  `json:"original_image"`
 }
 
 type Others struct {

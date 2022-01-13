@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	cloud.google.com/go v0.97.0 // indirect
+	github.com/franela/goreq v0.0.0-20171204163338-bcd34c9993f8 // indirect
 	github.com/gin-contrib/cors v1.3.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.7.6 // indirect

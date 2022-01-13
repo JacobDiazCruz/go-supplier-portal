@@ -15,7 +15,7 @@ var productCollection *mongo.Collection = database.OpenCollection(database.Clien
 func AddService(product entity.Product) string {
 	// query
 	result, err := productCollection.InsertOne(context.TODO(), bson.M{
-		"title":             product.Name,
+		"name":              product.Name,
 		"slug":              product.Slug,
 		"body":              product.Description,
 		"tags":              product.Tags,

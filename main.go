@@ -47,6 +47,7 @@ import (
 
 	// orders
 	cancelOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/cancel"
+	ordersPaymongo "gitlab.com/JacobDCruz/supplier-portal/src/orders/paymongo"
 	getOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/get"
 	listOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/list"
 	placeOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/place-order"
@@ -107,6 +108,9 @@ func main() {
 		id := ctx.Param("id")
 		updateProfile.UpdateController(ctx, id)
 	})
+
+	// paymongo
+	server.POST("/checkout", ordersPaymongo.PaymongoService)
 
 	// products
 	server.GET("/products", listProduct.ListController)

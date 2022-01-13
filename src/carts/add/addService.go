@@ -6,6 +6,7 @@ import (
 
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
+	getProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/get"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -13,6 +14,9 @@ import (
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
 func AddService(cart entity.ProductRequest) string {
+	// @TODO: query products and add sales_information on the request
+	productDetails := getProduct.GetService(cart.ProductId, "")
+
 	// query
 	result, err := cartCollection.UpdateOne(
 		context.TODO(),
@@ -20,8 +24,10 @@ func AddService(cart entity.ProductRequest) string {
 		bson.M{
 			"$push": bson.M{
 				"products": bson.M{
-					"product_id": cart.ProductId,
-					"quantity":   cart.Quantity,
+					"product_id":        cart.ProductId,
+					"variation":         cart.Variation,
+					"sales_information": productDetails.SalesInformation,
+					"quantity":          cart.Quantity,
 				},
 			},
 		},

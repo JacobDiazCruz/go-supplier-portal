@@ -97,9 +97,6 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 		orderCartEntity.Products = append(orderCartEntity.Products, product)
 	}
 
-	// @TODO HERE
-	// 3.5 compute total price by adding all price of cart items and add shipping amount
-
 	// add initial order_status
 	orderStatus := entity.OrderStatus{}
 	orderStatus.Title = "Order Placed (COD)"
@@ -110,7 +107,7 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 		"cart":             orderCartEntity,
 		"delivery_address": order.DeliveryAddress,
 		"note":             order.Note,
-		"subtotal":         totalAmount,
+		"subtotal_amount":  totalAmount,
 		"total_amount":     totalAmount,
 		"shipping_courier": order.ShippingCourier,
 		"shipping_amount":  order.ShippingAmount,
