@@ -18,7 +18,7 @@ var jwtKey = []byte("secret_key")
 func SignToken(email string) string {
 	// sign jwt
 	claims := &Claims{
-		Username: email,
+		Email: email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Minute * 5)},
 		},

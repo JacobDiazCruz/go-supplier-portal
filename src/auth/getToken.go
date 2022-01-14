@@ -16,9 +16,6 @@ func GetToken(ctx *gin.Context) *TokenIdentity {
 	}
 	token := strings.Split(ctx.Request.Header["Authorization"][0], " ")[1]
 
-	fmt.Println(token)
-	fmt.Println("here token")
-
 	tokenStr := token
 	claims := &Claims{}
 
@@ -39,11 +36,13 @@ func GetToken(ctx *gin.Context) *TokenIdentity {
 	}
 
 	// get user by email
-	userData := getUser.GetEmail(claims.Username)
+	fmt.Println(claims.Email)
+	fmt.Println("email here123")
+	userData := getUser.GetEmail(claims.Email)
 
 	// return response
 	tk := &TokenIdentity{
-		Username:       userData.FirstName + userData.LastName,
+		Username:       userData.Username,
 		Email:          userData.Email,
 		ThumbnailImage: userData.ThumbnailImage,
 		OriginalImage:  userData.OriginalImage,

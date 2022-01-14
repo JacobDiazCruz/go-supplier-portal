@@ -9,17 +9,17 @@ import (
 
 type Product struct {
 	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Name             string             `json:"name"`
-	Status           string             `json:"status"`
-	Slug             string             `json:"slug"`
-	Description      string             `json:"description"`
+	Name             string             `json:"name" validate:"required"`
+	Status           string             `json:"status" validate:"required"`
+	Slug             string             `json:"slug" validate:"required"`
+	Description      string             `json:"description" validate:"required"`
 	Tags             []string           `json:"tags"`
-	Category         string             `json:"category"`
-	SalesInformation SalesInformation   `json:"sales_information"`
-	Variation        []Variation        `json:"variation"`
-	TotalRatings     int                `json:"total_ratings"`
-	ThumbnailImage   string             `json:"thumbnail_image"`
-	OriginalImage    string             `json:"original_image"`
+	Category         string             `json:"category" validate:"required"`
+	SalesInformation SalesInformation   `json:"sales_information" validate:"required"`
+	Variation        []Variation        `json:"variation" validate:"required"`
+	TotalRatings     int                `json:"total_ratings" validate:"required"`
+	ThumbnailImage   string             `json:"thumbnail_image" validate:"required"`
+	OriginalImage    string             `json:"original_image" validate:"required"`
 	MarketingLink    string             `json:"marketing_link"`
 	Reviews          []string           `json:"reviews"`
 	AuditLog         AuditLog           `json:"audit_log"`
@@ -38,11 +38,11 @@ type List struct {
 }
 
 type SalesInformation struct {
-	Price       float32 `json:"price"`
-	Stock       float32 `json:"stock"`
+	Price       float32 `json:"price" validate:"required"`
+	Stock       float32 `json:"stock" validate:"required"`
 	Brand       string  `json:"brand"`
-	MinQuantity float32 `json:"min_quantity"`
-	MaxQuantity float32 `json:"max_quantity"`
+	MinQuantity float32 `json:"min_quantity" validate:"required"`
+	MaxQuantity float32 `json:"max_quantity" validate:"required"`
 	UnitPrice   float32 `json:"unit_price"`
 }
 

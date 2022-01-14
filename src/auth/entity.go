@@ -20,8 +20,12 @@ type Claims struct {
 }
 
 type Credentials struct {
-	Email string `json:"email"`
-	Token string `json:"token"`
-	Type  string `json:"type"`
-	Scope string `json:"scope"`
+	Email          string `json:"email" validate:"required"`
+	Username       string `json:"username"`
+	ThumbnailImage string `json:"thumbnail_image"`
+	OriginalImage  string `json:"original_image"`
+	Role           string `json:"role"`
+	Token          string `json:"token"`
+	Type           string `json:"type"`
+	Scope          string `json:"scope"`
 }

@@ -28,8 +28,9 @@ import (
 
 var httpClient = &http.Client{}
 
+var credentials = &auth.Credentials{}
+
 func GoogleLogin(ctx *gin.Context) {
-	credentials := &auth.Credentials{}
 	err2 := ctx.BindJSON(&credentials)
 	fmt.Println("im here 0")
 	if err2 != nil {
@@ -40,7 +41,11 @@ func GoogleLogin(ctx *gin.Context) {
 	// @TODO: Signup google email if it does not exist in db
 	// bind requestData
 	user := entity.User{
-		Email: credentials.Email,
+		Email:          credentials.Email,
+		Username:       credentials.Username,
+		ThumbnailImage: credentials.ThumbnailImage,
+		OriginalImage:  credentials.OriginalImage,
+		Role:           credentials.Role,
 	}
 
 	// validate email if already exist
@@ -69,8 +74,8 @@ func verifyIdToken(idToken string) string {
 	// if token is valid, return token
 	if tokenInfo.VerifiedEmail == true {
 		tk := &auth.TokenIdentity{}
-		fmt.Println(tk)
-		signToken := auth.SignToken(tk.Username)
+		tk.Email = credentials.Email
+		signToken := auth.SignToken(tk.Email)
 		return signToken
 	}
 	return "Error"

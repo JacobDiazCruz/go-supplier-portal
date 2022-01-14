@@ -21,7 +21,6 @@ type Address struct {
 	Default     bool               `json:"default"`
 	AuditLog    AuditLog           `json:"audit_log"`
 }
-
 type AuditLog struct {
 	Name           string    `json:"name"`
 	Email          string    `json:"email"`

@@ -8,17 +8,28 @@ import (
 type User struct {
 	ID             primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	Email          string             `json:"email" validate:"required"`
-	FirstName      string             `json:"firstname" validate:"required"`
+	Username       string             `json:"username" validate:"required"`
 	ThumbnailImage string             `json:"thumbnail_image"`
 	OriginalImage  string             `json:"original_image"`
-	LastName       string             `json:"lastname" validate:"required"`
 	Password       string             `json:"password" validate:"required"`
+	ContactNumber  int                `json:"contact_number" validate:"required"`
 	Role           string             `json:"role"`
 }
 
 type Credentials struct {
 	Email    string `json:"email" validate:"required"`
 	Password string `json:"password" validate:"required"`
+}
+
+type GoogleLoginRequest struct {
+	Email          string `json:"email" validate:"required"`
+	Username       string `json:"username" validate:"required"`
+	ThumbnailImage string `json:"thumbnail_image"`
+	OriginalImage  string `json:"original_image"`
+	Role           string `json:"role"`
+	Token          string `json:"token"`
+	Type           string `json:"type"`
+	Scope          string `json:"scope"`
 }
 
 type TokenIdentity struct {

@@ -46,12 +46,12 @@ import (
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
 
 	// orders
+	addSellerOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/add-seller-order"
 	cancelOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/cancel"
-	ordersPaymongo "gitlab.com/JacobDCruz/supplier-portal/src/orders/paymongo"
 	getOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/get"
 	listOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/list"
+	ordersPaymongo "gitlab.com/JacobDCruz/supplier-portal/src/orders/paymongo"
 	placeOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/place-order"
-	addSellerOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/add-seller-order"
 )
 
 func main() {
@@ -60,7 +60,7 @@ func main() {
 	server.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Content-Type"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		// AllowOriginFunc: func(origin string) bool {
@@ -84,7 +84,7 @@ func main() {
 	})
 
 	// auth
-	server.GET("/token", auth.CheckToken)
+	server.POST("/token", auth.CheckToken)
 	server.POST("/google/login", loginUser.GoogleLogin)
 
 	// users

@@ -20,7 +20,7 @@ func LoginService(login *entity.Credentials) string {
 	query := bson.M{"email": login.Email}
 	err2 := myCollection.FindOne(context.TODO(), query).Decode(&user)
 	if err2 != nil {
-		return "Incorrent email or password"
+		return "Error"
 	}
 
 	// Comparing the password with the hash
@@ -30,7 +30,7 @@ func LoginService(login *entity.Credentials) string {
 	fmt.Println(err) // nil means it is a match
 
 	if err != nil {
-		return "Invalid username or password"
+		return "Error"
 	} else {
 		signToken := auth.SignToken(login.Email)
 		return signToken
