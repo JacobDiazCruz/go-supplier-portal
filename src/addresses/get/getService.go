@@ -26,9 +26,10 @@ func GetService(id string) entity.Address {
 	// set initial values
 	result := entity.Address{}
 	var query = bson.M{"_id": ""}
+	objID, err := primitive.ObjectIDFromHex(id)
 
 	// profile_id query params
-	query = bson.M{"_id": id}
+	query = bson.M{"_id": objID}
 	fmt.Println(query)
 
 	// query to db

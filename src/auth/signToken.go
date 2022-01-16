@@ -20,7 +20,7 @@ func SignToken(email string) string {
 	claims := &Claims{
 		Email: email,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Minute * 5)},
+			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Minute * 60)},
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

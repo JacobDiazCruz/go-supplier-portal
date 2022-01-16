@@ -5,10 +5,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	createCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/create"
+	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 	signup "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/api/oauth2/v2"
 )
 
@@ -54,8 +57,15 @@ func GoogleLogin(ctx *gin.Context) {
 	// Signup email if it doesnt exist yet
 	if emailRes.Email == "" {
 		res := signup.SignupService(user)
-		fmt.Println(res)
-		fmt.Println("here signup already")
+		objID, err := primitive.ObjectIDFromHex(res)
+		if err != nil {
+			panic(err)
+		}
+		// Create a cart for the new signed up user
+		cEntity := &cartEntity.Cart{}
+		cEntity.UserId = objID
+		cEntity.Products = []string{}
+		createCart.AddService(*cEntity)
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"data": token})

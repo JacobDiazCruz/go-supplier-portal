@@ -26,6 +26,9 @@ func AddService(cart entity.ProductRequest) string {
 				"products": bson.M{
 					"product_id":        cart.ProductId,
 					"variation":         cart.Variation,
+					"name":              productDetails.Name,
+					"thumbnail_image":   productDetails.ThumbnailImage,
+					"original_image":    productDetails.OriginalImage,
 					"sales_information": productDetails.SalesInformation,
 					"quantity":          cart.Quantity,
 				},
