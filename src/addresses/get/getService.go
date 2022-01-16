@@ -24,7 +24,9 @@ type Param struct {
 
 func GetService(id string) entity.Address {
 	// set initial values
-	result := entity.Address{}
+	address := entity.Address{}
+	var result bson.M
+
 	var query = bson.M{"_id": ""}
 	objID, err := primitive.ObjectIDFromHex(id)
 
@@ -38,13 +40,12 @@ func GetService(id string) entity.Address {
 		panic(err2)
 	}
 
-	// log documents and return
+	// unmarshal result to products struct
 	jsonData, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s\n", jsonData)
-	fmt.Println("Test123123")
-	fmt.Println(result)
-	return result
+	json.Unmarshal(jsonData, &address)
+
+	return address
 }

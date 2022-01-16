@@ -15,7 +15,8 @@ var addressesCollection *mongo.Collection = database.OpenCollection(database.Cli
 func AddService(address entity.Address) string {
 	// query
 	result, err := addressesCollection.InsertOne(context.TODO(), bson.M{
-		"user_id": address.UserId,
+		"user_id":  address.UserId,
+		"fullname": address.FullName,
 		"region": bson.M{
 			"region_name": address.Region.RegionName,
 			"region_code": address.Region.RegionCode,
@@ -38,6 +39,7 @@ func AddService(address entity.Address) string {
 			"region_code":   address.Barangay.RegionCode,
 			"province_code": address.City.ProvinceCode,
 		},
+		"street":       address.Street,
 		"label":        address.Label,
 		"phone_number": address.PhoneNumber,
 		"default":      address.Default,
