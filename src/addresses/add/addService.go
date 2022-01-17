@@ -42,6 +42,7 @@ func AddService(address entity.Address) string {
 		"street":       address.Street,
 		"label":        address.Label,
 		"phone_number": address.PhoneNumber,
+		"postal_code":  address.PostalCode,
 		"default":      address.Default,
 		"audit_log":    address.AuditLog,
 	})

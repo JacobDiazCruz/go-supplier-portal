@@ -29,6 +29,7 @@ type ProductStruct struct {
 // create order id and return
 func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	var totalAmount = 0
+	var subTotalAmount = 0
 
 	// 1. find cart and get product ids
 	cartRes := getCart.GetService(au.UserId)
@@ -89,9 +90,10 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 			}
 		}
 
-		// compute total amount
+		// compute total_amount, subtotal and shipping
 		totalProductAmount := int(product.SalesInformation.Price) * int(product.Quantity)
-		totalAmount = totalAmount + totalProductAmount
+		totalAmount = totalAmount + totalProductAmount + order.ShippingAmount
+		subTotalAmount = totalProductAmount
 
 		// append
 		orderCartEntity.Products = append(orderCartEntity.Products, product)
@@ -103,12 +105,18 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	orderStatus.Label = "order_placed_cod"
 
 	// 4. insert request to orders db
-	result, err := orderCollection.InsertOne(context.TODO(), bson.M{
-		"cart":             orderCartEntity,
+	result, err := orderCollection.InsertOne(context.Background(), bson.M{
+		"cart": bson.M{
+			"_id":       orderCartEntity.ID,
+			"user_id":   orderCartEntity.UserId,
+			"products":  orderCartEntity.Products,
+			"audit_log": orderCartEntity.AuditLog,
+		},
 		"delivery_address": order.DeliveryAddress,
 		"note":             order.Note,
-		"subtotal_amount":  totalAmount,
+		"subtotal_amount":  subTotalAmount,
 		"total_amount":     totalAmount,
+		"payment_method":   order.PaymentMethod,
 		"shipping_courier": order.ShippingCourier,
 		"shipping_amount":  order.ShippingAmount,
 		"order_status":     orderStatus,
