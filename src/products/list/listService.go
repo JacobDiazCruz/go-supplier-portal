@@ -18,8 +18,21 @@ func ListService(listFilters entity.List) []entity.Product {
 	products := []entity.Product{}
 	var result []bson.M
 
+	// Initialize Filters
 	options := options.Find()
 	options.SetLimit(listFilters.Limit)
+
+	// Sort filter
+	if listFilters.Sort == "date_asc" {
+		options.SetSort(bson.D{{"audit_log.created_at", -1}})
+	} else if listFilters.Sort == "date_desc" {
+		options.SetSort(bson.D{{"audit_log.created_at", 1}})
+	} else if listFilters.Sort == "price_high_to_low" {
+		options.SetSort(bson.D{{"sales_information.price", 1}})
+	} else if listFilters.Sort == "price_low_to_high" {
+		options.SetSort(bson.D{{"sales_information.price", -1}})
+	}
+
 	cursor, err := productCollection.Find(context.TODO(), bson.M{}, options)
 	if err != nil {
 		log.Fatal(err)

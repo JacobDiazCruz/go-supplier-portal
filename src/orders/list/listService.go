@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var addressCollection *mongo.Collection = database.OpenCollection(database.Client, "orders")
@@ -21,9 +22,15 @@ type listService interface {
 func ListService(userId primitive.ObjectID) []entity.Order {
 	orders := []entity.Order{}
 	var result []bson.M
+
+	// Sort filter
+	findOptions := options.Find()
+	findOptions.SetSort(bson.D{{"audit_log.created_at", -1}})
+
+	// Find Query
 	cursor, err := addressCollection.Find(context.TODO(), bson.M{
 		"cart.user_id": userId,
-	})
+	}, findOptions)
 	if err != nil {
 		log.Fatal(err)
 	}

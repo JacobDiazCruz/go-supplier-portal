@@ -12,5 +12,5 @@ order statuses
 4. name: Order Complete
    label: order_complete
 
-5. name: Canceled
-   label: canceled
+5. name: Order Cancelled
+   label: cancelled

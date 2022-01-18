@@ -12,10 +12,15 @@ import (
 
 func ListController(ctx *gin.Context) {
 	strLimit := ctx.Query("limit")
+	sort := ctx.Query("sort")
 
 	// validate query params
 	if strLimit == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error fetching product. No limit parameter.", "data": ""})
+	}
+	// validate query params
+	if sort == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error fetching product. No sort parameter.", "data": ""})
 	}
 
 	// service
@@ -26,6 +31,7 @@ func ListController(ctx *gin.Context) {
 	}
 	listEntity := entity.List{}
 	listEntity.Limit = limit
-	users := ListService(listEntity)
-	ctx.JSON(http.StatusOK, gin.H{"msg": "Products fetched successfully.", "data": users})
+	listEntity.Sort = sort
+	products := ListService(listEntity)
+	ctx.JSON(http.StatusOK, gin.H{"msg": "Products fetched successfully.", "data": products})
 }

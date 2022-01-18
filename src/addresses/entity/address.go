@@ -10,16 +10,16 @@ import (
 type Address struct {
 	ID          primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	UserId      primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
-	Region      Region             `json:"region"`
-	Province    Province           `json:"province"`
-	City        City               `json:"city"`
-	Barangay    Barangay           `json:"barangay"`
-	Street      string             `json:"street"`
-	PostalCode  string             `json:"postal_code"`
-	PhoneNumber string             `json:"phone_number"`
-	FullName    string             `json:"fullname"`
+	Region      Region             `json:"region" validate:"required"`
+	Province    Province           `json:"province" validate:"required"`
+	City        City               `json:"city" validate:"required"`
+	Barangay    Barangay           `json:"barangay" validate:"required"`
+	Street      string             `json:"street" validate:"required"`
+	PostalCode  string             `json:"postal_code" validate:"required"`
+	PhoneNumber string             `json:"phone_number" validate:"required"`
+	FullName    string             `json:"fullname" validate:"required"`
 	Label       string             `json:"label"`
-	Default     bool               `json:"default"`
+	Default     bool               `json:"default" validate:"required"`
 	AuditLog    AuditLog           `json:"audit_log"`
 }
 
@@ -48,14 +48,14 @@ type Barangay struct {
 }
 
 type AuditLog struct {
-	Name           string    `json:"name"`
-	Email          string    `json:"email"`
-	ThumbnailImage string    `json:"thumbnail_image"`
-	OriginalImage  string    `json:"original_image"`
-	CreatedAt      time.Time `json:"created_at"`
-	CreatedBy      string    `json:"created_by"`
-	UpdatedAt      time.Time `json:"updated_at"`
-	UpdatedBy      string    `json:"updated_by"`
+	Name           string    `json:"name" bson:"name"`
+	Email          string    `json:"email" bson:"email"`
+	ThumbnailImage string    `json:"thumbnail_image" bson:"thumbnail_image"`
+	OriginalImage  string    `json:"original_image" bson:"original_image"`
+	CreatedAt      time.Time `json:"created_at" bson:"created_at"`
+	CreatedBy      string    `json:"created_by" bson:"created_by"`
+	UpdatedAt      time.Time `json:"updated_at" bson:"updated_at"`
+	UpdatedBy      string    `json:"updated_by" bson:"updated_by"`
 }
 
 type TokenIdentity struct {

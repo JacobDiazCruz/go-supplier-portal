@@ -17,12 +17,6 @@ type Param struct {
 	id string
 }
 
-// statuses:
-// 1. Order placed (COD Payment)
-// 1. To Ship
-// 2. To Receive
-// 3. Completed
-// 4. Canceled
 func GetService(id string) entity.Order {
 	order := entity.Order{}
 	var result bson.M

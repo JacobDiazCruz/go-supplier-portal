@@ -20,8 +20,8 @@ func CancelService(orderId string) string {
 	}
 
 	orderStatus := entity.OrderStatus{}
-	orderStatus.Title = "Canceled"
-	orderStatus.Label = "canceled"
+	orderStatus.Title = "Order Cancelled"
+	orderStatus.Label = "cancelled"
 
 	// query filters
 	filter := bson.M{"_id": objID}

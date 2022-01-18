@@ -31,31 +31,11 @@ func DBInstance() *mongo.Client {
 	}
 	fmt.Println("Connected to MongoDB!")
 	return client
-	// coll := client.Database("test").Collection("newsletter")
-	// company := "tes555"
-	// var result bson.M
-	// err = coll.FindOne(context.TODO(), bson.D{{"company", company}}).Decode(&result)
-	// fmt.Println(result)
-	// fmt.Println("here23423")
-	// if err == mongo.ErrNoDocuments {
-	// 	fmt.Printf("No document was found with the title %s\n", company)
-	// 	return
-	// }
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// jsonData, err := json.MarshalIndent(result, "", "    ")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Printf("%s\n", jsonData)
 }
 
 var Client *mongo.Client = DBInstance()
 
 func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	var collection *mongo.Collection = client.Database("test").Collection(collectionName)
-	// fmt.Printf("%s\n", collection)
-	// fmt.Println("Test mongo")
 	return collection
 }
