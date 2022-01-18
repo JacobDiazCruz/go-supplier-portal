@@ -1,8 +1,11 @@
 package orders
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +17,11 @@ import (
 func PlaceOrderController(ctx *gin.Context) {
 	// check token and return
 	ct := auth.GetToken(ctx)
+
+	b := make([]byte, 7) //equals 14 characters
+	rand.Read(b)
+	s := hex.EncodeToString(b)
+	randOrderId := strings.ToUpper(s)
 
 	// if no error
 	if ct != nil {
@@ -29,6 +37,7 @@ func PlaceOrderController(ctx *gin.Context) {
 			panic(err)
 			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 		}
+		order.OrderId = randOrderId
 		order.UserId = u.ID
 
 		// audit log

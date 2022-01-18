@@ -112,6 +112,7 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 			"products":  orderCartEntity.Products,
 			"audit_log": orderCartEntity.AuditLog,
 		},
+		"order_id":         order.OrderId,
 		"delivery_address": order.DeliveryAddress,
 		"note":             order.Note,
 		"subtotal_amount":  subTotalAmount,
@@ -141,7 +142,8 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 		// add order id on each product
 		// on admin account, seller can update the status of the product to out of stock
 		sellerRequest := entity.SellerOrder{}
-		sellerRequest.OrderId = oid
+		sellerRequest.ID = oid
+		sellerRequest.OrderId = order.OrderId
 		sellerRequest.Product = product
 		sellerRequest.Quantity = int(product.Quantity)
 		sellerRequest.DeliveryAddress = order.DeliveryAddress

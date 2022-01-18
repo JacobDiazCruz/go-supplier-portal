@@ -31,6 +31,7 @@ type Province struct {
 	RegionCode   string `json:"region_code" bson:"region_code"`
 	PsgcCode     string `json:"psgc_code" bson:"psgc_code"`
 }
+
 type City struct {
 	CityName     string `json:"city_name" bson:"city_name"`
 	CityCode     string `json:"city_code" bson:"city_code"`

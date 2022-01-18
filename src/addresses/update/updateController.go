@@ -32,7 +32,7 @@ func UpdateController(ctx *gin.Context, id string) {
 		res := UpdateService(address, id)
 		fmt.Println(res)
 
-		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Address Updated Successfully!"})
+		ctx.JSON(http.StatusOK, gin.H{"msg": "Address Updated Successfully!"})
 	} else {
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Invalid Token"})
 	}

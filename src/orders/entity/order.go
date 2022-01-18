@@ -9,6 +9,7 @@ import (
 
 type Order struct {
 	ID              primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	OrderId         string             `json:"order_id" bson:"order_id"`
 	OrderStatus     OrderStatus        `json:"order_status" bson:"order_status"`
 	DeliveryAddress Address            `json:"delivery_address" bson:"delivery_address"`
 	Cart            Cart               `json:"cart"`
@@ -28,7 +29,8 @@ type OrderStatus struct {
 
 type PlaceOrder struct {
 	CartId          string             `json:"cart_id"`
-	OrderStatus     OrderStatus        `json:"order_status"`
+	OrderId         string             `json:"order_id" bson:"order_id"`
+	OrderStatus     OrderStatus        `json:"order_status" bson:"order_status"`
 	UserId          primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	DeliveryAddress Address            `json:"delivery_address" bson:"delivery_address"`
 	Note            string             `json:"note" bson:"note"`
@@ -39,7 +41,8 @@ type PlaceOrder struct {
 }
 
 type SellerOrder struct {
-	OrderId         primitive.ObjectID `json:"order_id"`
+	ID              primitive.ObjectID `json:"_id" bson:"order_id"`
+	OrderId         string             `json:"order_id"`
 	Product         Product            `json:"product"`
 	OrderStatus     OrderStatus        `json:"order_status"`
 	SellerId        primitive.ObjectID `json:"order_id"`
