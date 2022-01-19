@@ -90,14 +90,17 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 			}
 		}
 
-		// compute total_amount, subtotal and shipping
+		// compute subtotal
 		totalProductAmount := int(product.SalesInformation.Price) * int(product.Quantity)
-		totalAmount = totalAmount + totalProductAmount + order.ShippingAmount
-		subTotalAmount = totalProductAmount
+		subTotalAmount = subTotalAmount + totalProductAmount
 
 		// append
 		orderCartEntity.Products = append(orderCartEntity.Products, product)
 	}
+
+	// add total amount
+	// subtotal + shipping amount
+	totalAmount = totalAmount + subTotalAmount + order.ShippingAmount
 
 	// add initial order_status
 	orderStatus := entity.OrderStatus{}

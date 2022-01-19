@@ -20,9 +20,9 @@ type Product struct {
 	TotalRatings     int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
 	ThumbnailImage   string             `json:"thumbnail_image" bson:"thumbnail_image" validate:"required"`
 	OriginalImage    string             `json:"original_image" bson:"original_image" validate:"required"`
-	MarketingLink    string             `json:"marketing_link"`
-	Reviews          []string           `json:"reviews"`
-	AuditLog         AuditLog           `json:"audit_log"`
+	MarketingLink    string             `json:"marketing_link" bson:"marketing_link"`
+	Reviews          []string           `json:"reviews" bson:"reviews"`
+	AuditLog         AuditLog           `json:"audit_log" bson:"audit_log"`
 }
 
 type Specification struct {
@@ -41,7 +41,8 @@ type List struct {
 type SalesInformation struct {
 	Price       float32 `json:"price" validate:"required"`
 	Stock       float32 `json:"stock" validate:"required"`
-	Brand       string  `json:"brand"`
+	Brand       string  `json:"brand" bson:"brand"`
+	Sku         string  `json:"sku" bson:"sku"`
 	MinQuantity float32 `json:"min_quantity" bson:"min_quantity" validate:"required"`
 	MaxQuantity float32 `json:"max_quantity" bson:"max_quantity" validate:"required"`
 	UnitPrice   float32 `json:"unit_price" bson:"unit_price"`
