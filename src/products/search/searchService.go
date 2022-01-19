@@ -22,7 +22,7 @@ func SearchService(sf SearchField) []bson.M {
 	query := bson.M{
 		"$and": []bson.M{
 			bson.M{"$or": []bson.M{
-				bson.M{"slug": bson.M{"$regex": sf.Search, "$options": "i"}},
+				bson.M{"name": bson.M{"$regex": sf.Search, "$options": "i"}},
 			}},
 		},
 	}
