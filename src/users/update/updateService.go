@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"fmt"
 
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
@@ -15,21 +16,22 @@ func UpdateService(user entity.User) string {
 	// query
 	filter := bson.M{"_id": user.ID}
 	update := bson.M{
-		"email":      user.Email,
-		"first_name": user.FirstName,
-		"last_name":  user.LastName,
+		"email":          user.Email,
+		"username":       user.Username,
+		"contact_number": user.ContactNumber,
 	}
 
 	// query db
-	res := userCollection.FindOneAndUpdate(context.Background(),
+	res, err := userCollection.UpdateOne(context.TODO(),
 		filter,
 		bson.M{"$set": update},
 	)
 
 	// check error
-	if res.Err() != nil {
-		panic(res.Err())
+	if err != nil {
+		panic(err)
 	}
+	fmt.Println(res)
 
 	// return if no error
 	return "Success"

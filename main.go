@@ -6,9 +6,6 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
-	delete "gitlab.com/JacobDCruz/supplier-portal/src/person/delete"
-	get "gitlab.com/JacobDCruz/supplier-portal/src/person/get"
-	list "gitlab.com/JacobDCruz/supplier-portal/src/person/list"
 
 	// profile
 	updateProfile "gitlab.com/JacobDCruz/supplier-portal/src/profiles/update"
@@ -22,10 +19,12 @@ import (
 	// users
 	changePassword "gitlab.com/JacobDCruz/supplier-portal/src/users/change-password"
 	forgotPassword "gitlab.com/JacobDCruz/supplier-portal/src/users/forgot-password"
+	getUser "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
 	loginUser "gitlab.com/JacobDCruz/supplier-portal/src/users/login"
 	logoutUser "gitlab.com/JacobDCruz/supplier-portal/src/users/logout"
 	signupUser "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
+	updateUser "gitlab.com/JacobDCruz/supplier-portal/src/users/update"
 
 	// products
 	addProduct "gitlab.com/JacobDCruz/supplier-portal/src/products/add"
@@ -69,20 +68,6 @@ func main() {
 		MaxAge: 12 * time.Hour,
 	}))
 
-	server.GET("/person/:id", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		get.GetUser(ctx, id)
-	})
-
-	server.GET("/person", func(ctx *gin.Context) {
-		ctx.JSON(200, list.GetAllUsers())
-	})
-
-	server.DELETE("/person/:id", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		delete.DeleteController(ctx, id)
-	})
-
 	// auth
 	server.POST("/token", auth.CheckToken)
 	server.POST("/google/login", loginUser.GoogleLogin)
@@ -91,12 +76,19 @@ func main() {
 	server.POST("/login", func(ctx *gin.Context) {
 		loginUser.LoginController(ctx)
 	})
-	server.POST("/change-password", func(ctx *gin.Context) {
+	server.POST("/user/change-password", func(ctx *gin.Context) {
 		changePassword.ChangeController(ctx)
 	})
 	server.POST("/logout", logoutUser.LogoutController)
 	server.GET("/users", func(ctx *gin.Context) {
 		listUser.ListController(ctx)
+	})
+	server.GET("/user/get/:email", func(ctx *gin.Context) {
+		email := ctx.Param("email")
+		getUser.GetController(ctx, email)
+	})
+	server.PUT("/user/update", func(ctx *gin.Context) {
+		updateUser.UpdateController(ctx)
 	})
 	server.POST("/signup", func(ctx *gin.Context) {
 		signupUser.SignupController(ctx)

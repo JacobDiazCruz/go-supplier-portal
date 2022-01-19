@@ -13,7 +13,7 @@ import (
 
 var productCollection *mongo.Collection = database.OpenCollection(database.Client, "products")
 
-func SearchService(keyword string) []bson.M {
+func SearchService(sf SearchField) []bson.M {
 	// init
 	products := []entity.Product{}
 	var result []bson.M
@@ -22,7 +22,7 @@ func SearchService(keyword string) []bson.M {
 	query := bson.M{
 		"$and": []bson.M{
 			bson.M{"$or": []bson.M{
-				bson.M{"slug": bson.M{"$regex": keyword, "$options": "i"}},
+				bson.M{"slug": bson.M{"$regex": sf.Search, "$options": "i"}},
 			}},
 		},
 	}

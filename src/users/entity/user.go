@@ -7,13 +7,13 @@ import (
 
 type User struct {
 	ID             primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Email          string             `json:"email" validate:"required"`
-	Username       string             `json:"username" validate:"required"`
-	ThumbnailImage string             `json:"thumbnail_image"`
-	OriginalImage  string             `json:"original_image"`
-	Password       string             `json:"password" validate:"required"`
-	ContactNumber  int                `json:"contact_number" validate:"required"`
-	Role           string             `json:"role"`
+	Email          string             `json:"email" validate:"required" bson:"email"`
+	Username       string             `json:"username" validate:"required" bson:"username"`
+	ThumbnailImage string             `json:"thumbnail_image" bson:"thumbnail_image"`
+	OriginalImage  string             `json:"original_image" bson:"original_image"`
+	Password       string             `json:"password" validate:"required" bson:"password"`
+	ContactNumber  string             `json:"contact_number" validate:"required" bson:"contact_number"`
+	Role           string             `json:"role" bson:"role"`
 }
 
 type Credentials struct {
