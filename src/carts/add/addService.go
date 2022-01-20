@@ -25,7 +25,7 @@ func AddService(cart entity.ProductRequest) string {
 			"$push": bson.M{
 				"products": bson.M{
 					"product_id":        cart.ProductId,
-					"variation":         cart.Variation,
+					"variant":           cart.Variant,
 					"name":              productDetails.Name,
 					"thumbnail_image":   productDetails.ThumbnailImage,
 					"original_image":    productDetails.OriginalImage,

@@ -9,11 +9,11 @@ import (
 )
 
 type Cart struct {
-	ID        primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Products  []string           `json:"products"`
-	Variation Variation          `json:"variation"`
-	UserId    primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
-	AuditLog  AuditLog           `json:"audit_log"`
+	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Products []string           `json:"products" bson:"products"`
+	Variant  Variant            `json:"variant" bson:"variant"`
+	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
+	AuditLog AuditLog           `json:"audit_log"`
 }
 
 type GetCart struct {
@@ -30,7 +30,6 @@ type ProductItems struct {
 type ProductRequest struct {
 	ProductId string             `json:"product_id"`
 	Quantity  float32            `json:"quantity"`
-	Variation Variation          `json:"variation"`
 	UserId    primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog  AuditLog           `json:"audit_log"`
 }
@@ -42,7 +41,7 @@ type ProductResponse struct {
 	Status           string             `json:"status"`
 	ThumbnailImage   string             `json:"thumbnail_image"`
 	OriginalImage    string             `json:"original_image"`
-	Variation        []Variation        `json:"variation"`
+	Variants         []Variant          `json:"variants"`
 	SalesInformation SalesInformation   `json:"sales_information"`
 }
 
@@ -55,13 +54,21 @@ type SalesInformation struct {
 	UnitPrice   float32 `json:"unit_price"`
 }
 
-type Variation struct {
-	Name          string  `json:"name"`
-	Price         float32 `json:"price"`
-	Stock         float32 `json:"stock"`
-	MinQuantity   float32 `json:"min_quantity"`
-	MaxQuantity   float32 `json:"max_quantity"`
-	DiscountPrice float32 `json:"discount_price"`
+type Variant struct {
+	Name    string           `json:"name" bson:"name"`
+	Options []VariantOptions `json:"options" bson:"options"`
+}
+
+type VariantOptions struct {
+	Name           string  `json:"name" bson:"name"`
+	Price          float32 `json:"price" bson:"price"`
+	Stock          float32 `json:"stock" bson:"stock"`
+	Sku            string  `json:"sku" bson:"sku"`
+	SalePrice      float32 `json:"sale_price" bson:"sale_price"`
+	MinQuantity    float32 `json:"min_quantity" bson:"min_quantity"`
+	MaxQuantity    float32 `json:"max_quantity" bson:"max_quantity"`
+	ThumbnailImage string  `json:"thumbnail_image" bson:"thumbnail_image"`
+	OriginalImage  string  `json:"original_image" bson:"original_image"`
 }
 
 type AuditLog struct {

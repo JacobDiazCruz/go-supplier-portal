@@ -10,11 +10,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var productCollection *mongo.Collection = database.OpenCollection(database.Client, "products")
+var variantCollection *mongo.Collection = database.OpenCollection(database.Client, "variants")
 
 func AddService(product entity.Product) string {
 	// query
-	result, err := productCollection.InsertOne(context.TODO(), bson.M{
+	result, err := variantCollection.InsertOne(context.TODO(), bson.M{
 		"name":              product.Name,
 		"slug":              product.Slug,
 		"body":              product.Description,

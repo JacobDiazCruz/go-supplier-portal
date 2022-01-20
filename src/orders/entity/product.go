@@ -14,7 +14,7 @@ type Product struct {
 	Tags             []string           `json:"tags"`
 	Category         string             `json:"category" validate:"required"`
 	SalesInformation SalesInformation   `json:"sales_information" bson:"sales_information" validate:"required"`
-	Variation        []Variation        `json:"variation" validate:"required"`
+	Variants         []Variant          `json:"variants" validate:"required"`
 	TotalRatings     int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
 	ThumbnailImage   string             `json:"thumbnail_image" bson:"thumbnail_image" validate:"required"`
 	OriginalImage    string             `json:"original_image" bson:"original_image" validate:"required"`
@@ -24,21 +24,28 @@ type Product struct {
 }
 
 type SalesInformation struct {
-	Price       float32 `json:"price" validate:"required"`
-	Stock       float32 `json:"stock" validate:"required"`
-	Brand       string  `json:"brand"`
+	Price       float32 `json:"price" bson:"price" validate:"required"`
+	SalePrice   float32 `json:"sale_price" bson:"sale_price"`
+	Stock       float32 `json:"stock" bson:"stock" validate:"required"`
+	Brand       string  `json:"brand" bson:"brand"`
+	Sku         string  `json:"sku" bson:"sku" validate:"required"`
 	MinQuantity float32 `json:"min_quantity" bson:"min_quantity" validate:"required"`
 	MaxQuantity float32 `json:"max_quantity" bson:"max_quantity" validate:"required"`
-	UnitPrice   float32 `json:"unit_price" bson:"unit_price"`
 }
 
-type Variation struct {
-	Name           string  `json:"name"`
-	Price          float32 `json:"price"`
-	Stock          float32 `json:"stock"`
+type Variant struct {
+	Name    string           `json:"name" bson:"name"`
+	Options []VariantOptions `json:"options" bson:"options"`
+}
+
+type VariantOptions struct {
+	Name           string  `json:"name" bson:"name"`
+	Price          float32 `json:"price" bson:"price"`
+	Stock          float32 `json:"stock" bson:"stock"`
+	Sku            string  `json:"sku" bson:"sku"`
+	SalePrice      float32 `json:"sale_price" bson:"sale_price"`
 	MinQuantity    float32 `json:"min_quantity" bson:"min_quantity"`
 	MaxQuantity    float32 `json:"max_quantity" bson:"max_quantity"`
-	DiscountPrice  float32 `json:"discount_price" bson:"discount_price"`
 	ThumbnailImage string  `json:"thumbnail_image" bson:"thumbnail_image"`
 	OriginalImage  string  `json:"original_image" bson:"original_image"`
 }
