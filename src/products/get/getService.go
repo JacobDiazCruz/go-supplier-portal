@@ -58,3 +58,34 @@ func GetService(id string, slug string) entity.Product {
 	json.Unmarshal(jsonData, &product)
 	return product
 }
+
+func GetVariantOptions(id string) entity.Product {
+	// set initial values
+	product := entity.Product{}
+	var result bson.M
+
+	var query = bson.M{"_id": ""}
+	objID, err := primitive.ObjectIDFromHex(id)
+
+	// _id query params
+	if err != nil {
+		fmt.Println("no id found")
+	} else {
+		query = bson.M{"_id": objID}
+		fmt.Println(query)
+	}
+
+	// query to db
+	err2 := productCollection.FindOne(context.TODO(), query).Decode(&result)
+	if err2 != nil {
+		panic(err2)
+	}
+
+	// unmarshal result to products struct
+	jsonData, err := json.MarshalIndent(result, "", "    ")
+	if err != nil {
+		panic(err)
+	}
+	json.Unmarshal(jsonData, &product)
+	return product
+}

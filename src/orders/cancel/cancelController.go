@@ -18,7 +18,7 @@ func CancelController(ctx *gin.Context, orderId string) {
 		// u := user.GetEmail(ct.Email)
 
 		// cart request
-		// cart := entity.ProductRequest{}
+		// cart := entity.AddToCart{}
 		// err := ctx.BindJSON(&cart)
 		// if err != nil {
 		// 	panic(err)

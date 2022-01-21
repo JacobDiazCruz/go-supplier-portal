@@ -12,7 +12,7 @@ import (
 
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
-func UpdateService(cart entity.ProductRequest) string {
+func UpdateService(cart entity.AddToCart) string {
 	// query filters
 	filter := bson.M{"user_id": cart.UserId, "products.product_id": cart.ProductId}
 	update := bson.M{"products.$[item].quantity": cart.Quantity}

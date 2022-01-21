@@ -11,7 +11,6 @@ import (
 type Cart struct {
 	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	Products []string           `json:"products" bson:"products"`
-	Variant  Variant            `json:"variant" bson:"variant"`
 	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog AuditLog           `json:"audit_log"`
 }
@@ -27,9 +26,10 @@ type ProductItems struct {
 	Quantity  float32 `json:"quantity"`
 }
 
-type ProductRequest struct {
+type AddToCart struct {
 	ProductId string             `json:"product_id"`
 	Quantity  float32            `json:"quantity"`
+	Variants  []VariantRequest   `json:"variants" bson:"variants"`
 	UserId    primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog  AuditLog           `json:"audit_log"`
 }
@@ -54,7 +54,13 @@ type SalesInformation struct {
 	UnitPrice   float32 `json:"unit_price"`
 }
 
+type VariantRequest struct {
+	VariantId       string `json:"variant_id" bson:"variant_id"`
+	VariantOptionId string `json:"variant_option_id" bson:"variant_option_id"`
+}
+
 type Variant struct {
+	ID      string           `json:"_id" bson:"_id"`
 	Name    string           `json:"name" bson:"name"`
 	Options []VariantOptions `json:"options" bson:"options"`
 }

@@ -21,7 +21,7 @@ func AddController(ctx *gin.Context) {
 		u := user.GetEmail(ct.Email)
 
 		// cart request
-		cart := entity.ProductRequest{}
+		cart := entity.AddToCart{}
 		err := ctx.BindJSON(&cart)
 		if err != nil {
 			panic(err)

@@ -13,9 +13,12 @@ import (
 
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
-func AddService(cart entity.ProductRequest) string {
-	// @TODO: query products and add sales_information on the request
+func AddService(cart entity.AddToCart) string {
+	// query products and add sales_information on the request
+	// @TODO: Throw error if product id does not exist
 	productDetails := getProduct.GetService(cart.ProductId, "")
+
+	// @TODO: Query variants in
 
 	// query
 	result, err := cartCollection.UpdateOne(
@@ -25,7 +28,7 @@ func AddService(cart entity.ProductRequest) string {
 			"$push": bson.M{
 				"products": bson.M{
 					"product_id":        cart.ProductId,
-					"variant":           cart.Variant,
+					"variants":          cart.Variants,
 					"name":              productDetails.Name,
 					"thumbnail_image":   productDetails.ThumbnailImage,
 					"original_image":    productDetails.OriginalImage,

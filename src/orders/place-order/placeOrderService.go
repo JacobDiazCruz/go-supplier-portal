@@ -131,7 +131,7 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	}
 
 	// 5. empty / clear user's cart
-	ce := cartEntity.ProductRequest{}
+	ce := cartEntity.AddToCart{}
 	ce.UserId = au.UserId
 	clearCart.ClearService(ce)
 

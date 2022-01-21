@@ -11,8 +11,9 @@ import (
 )
 
 var productCollection *mongo.Collection = database.OpenCollection(database.Client, "products")
+var variantCollection *mongo.Collection = database.OpenCollection(database.Client, "variant_options")
 
-func AddService(product entity.Product) string {
+func AddProductService(product entity.Product) string {
 	// query
 	result, err := productCollection.InsertOne(context.TODO(), bson.M{
 		"name":              product.Name,

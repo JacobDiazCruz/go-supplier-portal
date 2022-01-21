@@ -1,6 +1,8 @@
 package products
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"net/http"
 	"time"
@@ -18,13 +20,14 @@ func AddController(ctx *gin.Context) {
 	// if no error
 	if ct != nil {
 		product := entity.Product{}
+
 		err := ctx.BindJSON(&product)
 		if err != nil {
 			panic(err)
-			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered in adding a product"})
 		}
 
-		// audit log
+		// product audit log
 		auditLog := &product.AuditLog
 		auditLog.Name = ct.Username
 		auditLog.Email = ct.Email
@@ -35,8 +38,25 @@ func AddController(ctx *gin.Context) {
 		auditLog.UpdatedAt = time.Now()
 		auditLog.UpdatedBy = ct.Username
 
+		// ======================================
+		// Approach 1 Variant option collection:
+		// Problem: slow if we create all variant options in 1 api
+		variants := product.Variants
+		for variantKey, variant := range variants {
+			b := make([]byte, 10) // equals 16 characters
+			rand.Read(b)
+			randId := hex.EncodeToString(b)
+			variants[variantKey].ID = randId
+			for optionKey, _ := range variant.Options {
+				b := make([]byte, 10) // equals 16 characters
+				rand.Read(b)
+				randId := hex.EncodeToString(b)
+				variants[variantKey].Options[optionKey].ID = randId
+			}
+		}
+
 		// service
-		res := AddService(product)
+		res := AddProductService(product)
 		fmt.Println(res)
 
 		// get product

@@ -20,7 +20,7 @@ func ClearController(ctx *gin.Context) {
 		u := user.GetEmail(ct.Email)
 
 		// cart request
-		cart := entity.ProductRequest{}
+		cart := entity.AddToCart{}
 		cart.UserId = u.ID
 
 		// update service

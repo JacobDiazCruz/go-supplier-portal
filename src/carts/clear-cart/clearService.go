@@ -12,7 +12,7 @@ import (
 
 var cartCollection *mongo.Collection = database.OpenCollection(database.Client, "carts")
 
-func ClearService(cart entity.ProductRequest) string {
+func ClearService(cart entity.AddToCart) string {
 	// query db
 	result, err := cartCollection.UpdateOne(
 		context.TODO(),

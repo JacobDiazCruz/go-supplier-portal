@@ -21,7 +21,7 @@ func DeleteController(ctx *gin.Context) {
 		u := user.GetEmail(ct.Email)
 
 		// cart request
-		cart := entity.ProductRequest{}
+		cart := entity.AddToCart{}
 		cart.UserId = u.ID
 		cart.ProductId = productId
 
