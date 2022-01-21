@@ -18,7 +18,23 @@ func AddService(cart entity.AddToCart) string {
 	// @TODO: Throw error if product id does not exist
 	productDetails := getProduct.GetService(cart.ProductId, "")
 
-	// @TODO: Query variants in
+	// @TODO: Query variants details
+	variantsRequest := []interface{}{}
+	for _, productVariant := range productDetails.Variants {
+		for _, cartVariant := range cart.Variants {
+			if productVariant.ID == cartVariant.VariantId {
+				for _, productVariantOption := range productVariant.Options {
+					if cartVariant.VariantOptionId == productVariantOption.ID {
+						variantEntity := entity.Variant{}
+						variantEntity.ID = productVariant.ID
+						variantEntity.Name = productVariant.Name
+						variantEntity.Option = productVariantOption
+						variantsRequest = append(variantsRequest, variantEntity)
+					}
+				}
+			}
+		}
+	}
 
 	// query
 	result, err := cartCollection.UpdateOne(
@@ -28,7 +44,7 @@ func AddService(cart entity.AddToCart) string {
 			"$push": bson.M{
 				"products": bson.M{
 					"product_id":        cart.ProductId,
-					"variants":          cart.Variants,
+					"variants":          variantsRequest,
 					"name":              productDetails.Name,
 					"thumbnail_image":   productDetails.ThumbnailImage,
 					"original_image":    productDetails.OriginalImage,

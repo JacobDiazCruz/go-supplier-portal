@@ -60,9 +60,9 @@ type VariantRequest struct {
 }
 
 type Variant struct {
-	ID      string           `json:"_id" bson:"_id"`
-	Name    string           `json:"name" bson:"name"`
-	Options []VariantOptions `json:"options" bson:"options"`
+	ID     string      `json:"_id" bson:"_id"`
+	Name   string      `json:"name" bson:"name"`
+	Option interface{} `json:"options" bson:"options"`
 }
 
 type VariantOptions struct {
