@@ -14,7 +14,8 @@ type Product struct {
 	Tags             []string           `json:"tags"`
 	Category         string             `json:"category" validate:"required"`
 	SalesInformation SalesInformation   `json:"sales_information" bson:"sales_information" validate:"required"`
-	Variants         []Variant          `json:"variants" validate:"required"`
+	SelectedVariants []interface{}      `json:"selected_variants" bson:"selected_variants"`
+	Variants         []Variant          `json:"variants" bson:"variants"`
 	TotalRatings     int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
 	ThumbnailImage   string             `json:"thumbnail_image" bson:"thumbnail_image" validate:"required"`
 	OriginalImage    string             `json:"original_image" bson:"original_image" validate:"required"`
@@ -34,20 +35,9 @@ type SalesInformation struct {
 }
 
 type Variant struct {
-	Name    string           `json:"name" bson:"name"`
-	Options []VariantOptions `json:"options" bson:"options"`
-}
-
-type VariantOptions struct {
-	Name           string  `json:"name" bson:"name"`
-	Price          float32 `json:"price" bson:"price"`
-	Stock          float32 `json:"stock" bson:"stock"`
-	Sku            string  `json:"sku" bson:"sku"`
-	SalePrice      float32 `json:"sale_price" bson:"sale_price"`
-	MinQuantity    float32 `json:"min_quantity" bson:"min_quantity"`
-	MaxQuantity    float32 `json:"max_quantity" bson:"max_quantity"`
-	ThumbnailImage string  `json:"thumbnail_image" bson:"thumbnail_image"`
-	OriginalImage  string  `json:"original_image" bson:"original_image"`
+	ID     string      `json:"_id" bson:"_id"`
+	Name   string      `json:"name" bson:"name"`
+	Option interface{} `json:"option" bson:"option"`
 }
 
 type Others struct {

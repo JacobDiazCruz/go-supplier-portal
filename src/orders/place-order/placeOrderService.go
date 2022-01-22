@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strconv"
 
 	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
 	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
@@ -26,6 +25,22 @@ type ProductStruct struct {
 	ProductIds []primitive.ObjectID
 }
 
+type SelectedProduct struct {
+	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Name             string             `json:"name" validate:"required"`
+	Quantity         float64            `json:"quantity"`
+	Status           string             `json:"status" validate:"required"`
+	Slug             string             `json:"slug" validate:"required"`
+	Description      string             `json:"description" validate:"required"`
+	Tags             []string           `json:"tags"`
+	Category         string             `json:"category" validate:"required"`
+	SalesInformation interface{}        `json:"sales_information" bson:"sales_information" validate:"required"`
+	Variants         interface{}        `json:"variants" bson:"variants"`
+	ThumbnailImage   string             `json:"thumbnail_image" bson:"thumbnail_image" validate:"required"`
+	OriginalImage    string             `json:"original_image" bson:"original_image" validate:"required"`
+	AuditLog         interface{}        `json:"audit_log" bson:"audit_log"`
+}
+
 // create order id and return
 func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	var totalAmount = 0
@@ -34,17 +49,16 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	// 1. find cart and get product ids
 	cartRes := getCart.GetService(au.UserId)
 	productStruct := ProductStruct{}
+	orderCart := entity.Cart{}
+	orderCart.ID = cartRes.ID
+	orderCart.UserId = cartRes.UserId
+	orderCart.AuditLog = entity.AuditLog(cartRes.AuditLog)
+
 	for _, val := range cartRes.Products {
-		strs := fmt.Sprintf("%v", val["product_id"])
-		// change string to objectid
-		objId, err := primitive.ObjectIDFromHex(strs)
-		if err != nil {
-			panic(err)
-		}
-		productStruct.ProductIds = append(productStruct.ProductIds, objId)
+		productStruct.ProductIds = append(productStruct.ProductIds, val.ID)
 	}
 
-	// 2. find all products with the following product_ids from cart
+	// 2. Find all products with the following product_ids from cart
 	cursor, err := productCollection.Find(context.TODO(), bson.M{
 		"_id": bson.M{
 			"$in": productStruct.ProductIds,
@@ -66,36 +80,26 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	json.Unmarshal(jsonData, &products)
 
 	// 3. insert product details to cart
-	orderCartEntity := entity.Cart{}
-	orderCartEntity.ID = cartRes.ID
-	orderCartEntity.AuditLog = entity.AuditLog(cartRes.AuditLog)
-	orderCartEntity.UserId = cartRes.UserId
-	for _, product := range products {
-		for _, val := range cartRes.Products {
-			// convert product_id string to mongoid
-			productID := fmt.Sprintf("%v", val["product_id"])
-			objID, err := primitive.ObjectIDFromHex(productID)
-			if err != nil {
-				panic(err)
-			}
-			// compare if same product ids, then assign quantity
-			if objID == product.ID {
-				strs := fmt.Sprintf("%v", val["quantity"])
-				value, err := strconv.ParseFloat(strs, 32)
-				if err != nil {
-					fmt.Println(err)
+	// include selected quantity and selected variant
+	fmt.Println(products)
+	for productKey, product := range products {
+		for _, cartProduct := range cartRes.Products {
+			if cartProduct.ID == product.ID {
+				for variantKey, _ := range product.Variants {
+					for _, cartVariant := range cartProduct.Variants {
+						products[productKey].Variants[variantKey].ID = cartVariant.ID
+						products[productKey].Variants[variantKey].Name = cartVariant.Name
+						products[productKey].Variants[variantKey].Option = cartVariant.Option
+					}
 				}
-				fmt.Println(value)
-				product.Quantity = value
+				product.Quantity = cartProduct.Quantity
 			}
 		}
-
 		// compute subtotal
 		totalProductAmount := int(product.SalesInformation.Price) * int(product.Quantity)
 		subTotalAmount = subTotalAmount + totalProductAmount
-
 		// append
-		orderCartEntity.Products = append(orderCartEntity.Products, product)
+		orderCart.Products = append(orderCart.Products, product)
 	}
 
 	// add total amount
@@ -110,10 +114,10 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	// 4. insert request to orders db
 	result, err := orderCollection.InsertOne(context.Background(), bson.M{
 		"cart": bson.M{
-			"_id":       orderCartEntity.ID,
-			"user_id":   orderCartEntity.UserId,
-			"products":  orderCartEntity.Products,
-			"audit_log": orderCartEntity.AuditLog,
+			"_id":       orderCart.ID,
+			"user_id":   orderCart.UserId,
+			"products":  orderCart.Products,
+			"audit_log": orderCart.AuditLog,
 		},
 		"order_id":         order.OrderId,
 		"delivery_address": order.DeliveryAddress,
@@ -138,7 +142,7 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 	// 6. update product's stock
 	// loop here and call updatestock for every product update
 	oid := result.InsertedID.(primitive.ObjectID)
-	for _, product := range orderCartEntity.Products {
+	for _, product := range orderCart.Products {
 		productUpdate.UpdateStock(product.ID, product.Quantity)
 
 		// 7. on place order, add each ordered product to the order admin list

@@ -18,7 +18,7 @@ func AddService(cart entity.AddToCart) string {
 	// @TODO: Throw error if product id does not exist
 	productDetails := getProduct.GetService(cart.ProductId, "")
 
-	// @TODO: Query variants details
+	// get selected variant details
 	variantsRequest := []interface{}{}
 	for _, productVariant := range productDetails.Variants {
 		for _, cartVariant := range cart.Variants {

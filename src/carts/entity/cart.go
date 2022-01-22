@@ -17,32 +17,40 @@ type Cart struct {
 
 type GetCart struct {
 	ID       primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Products []bson.M           `json:"products"`
+	Products []ProductResponse  `json:"products" bson:"products"`
 	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog AuditLog           `json:"audit_log"`
 }
 type ProductItems struct {
-	ProductId bson.M  `json:"product_id"`
-	Quantity  float32 `json:"quantity"`
+	ProductId bson.M `json:"product_id"`
+	Quantity  int    `json:"quantity"`
 }
 
 type AddToCart struct {
 	ProductId string             `json:"product_id"`
-	Quantity  float32            `json:"quantity"`
+	Quantity  int                `json:"quantity"`
 	Variants  []VariantRequest   `json:"variants" bson:"variants"`
 	UserId    primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog  AuditLog           `json:"audit_log"`
 }
 
 type ProductResponse struct {
-	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Quantity         float32            `json:"quantity"`
-	Name             string             `json:"name"`
-	Status           string             `json:"status"`
-	ThumbnailImage   string             `json:"thumbnail_image"`
-	OriginalImage    string             `json:"original_image"`
-	Variants         []Variant          `json:"variants"`
-	SalesInformation SalesInformation   `json:"sales_information"`
+	ID               primitive.ObjectID `json:"product_id" bson:"product_id,omitempty"`
+	Name             string             `json:"name" validate:"required"`
+	Quantity         float64            `json:"quantity"`
+	Status           string             `json:"status" validate:"required"`
+	Slug             string             `json:"slug" validate:"required"`
+	Description      string             `json:"description" validate:"required"`
+	Tags             []string           `json:"tags"`
+	Category         string             `json:"category" validate:"required"`
+	SalesInformation SalesInformation   `json:"sales_information" bson:"sales_information" validate:"required"`
+	Variants         []Variant          `json:"variants" bson:"variants"`
+	TotalRatings     int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
+	ThumbnailImage   string             `json:"thumbnail_image" bson:"thumbnail_image" validate:"required"`
+	OriginalImage    string             `json:"original_image" bson:"original_image" validate:"required"`
+	MarketingLink    string             `json:"marketing_link" bson:"marketing_link"`
+	Reviews          []string           `json:"reviews"`
+	AuditLog         AuditLog           `json:"audit_log" bson:"audit_log"`
 }
 
 type SalesInformation struct {

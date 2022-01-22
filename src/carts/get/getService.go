@@ -3,7 +3,6 @@ package carts
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
@@ -20,17 +19,22 @@ type Params struct {
 }
 
 func GetService(userId primitive.ObjectID) entity.GetCart {
-	result := entity.GetCart{}
+	cart := entity.GetCart{}
+	var result bson.M
 
 	// query
 	query := bson.M{"user_id": userId}
-	err := cartCollection.FindOne(context.TODO(), query).Decode(&result)
-	jsonData, err := json.Marshal(result)
+	err2 := cartCollection.FindOne(context.TODO(), query).Decode(&result)
+	if err2 != nil {
+		panic(err2)
+	}
+
+	// unmarshal result to products struct
+	jsonData, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s\n", jsonData)
-	fmt.Println("Test123123")
-	fmt.Println(result)
-	return result
+	json.Unmarshal(jsonData, &cart)
+
+	return cart
 }

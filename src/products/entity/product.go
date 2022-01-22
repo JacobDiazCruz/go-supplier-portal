@@ -57,18 +57,17 @@ type Variant struct {
 }
 
 type VariantOption struct {
-	ID             string   `json:"_id" bson:"_id"`
-	Name           string   `json:"name" bson:"name"`
-	Price          float32  `json:"price" bson:"price"`
-	Stock          float32  `json:"stock" bson:"stock"`
-	Sku            string   `json:"sku" bson:"sku"`
-	Status         string   `json:"status" bson:"status"`
-	SalePrice      float32  `json:"sale_price" bson:"sale_price"`
-	MinQuantity    float32  `json:"min_quantity" bson:"min_quantity"`
-	MaxQuantity    float32  `json:"max_quantity" bson:"max_quantity"`
-	ThumbnailImage string   `json:"thumbnail_image" bson:"thumbnail_image"`
-	OriginalImage  string   `json:"original_image" bson:"original_image"`
-	AuditLog       AuditLog `json:"audit_log" bson:"audit_log"`
+	ID             string  `json:"_id" bson:"_id"`
+	Name           string  `json:"name" bson:"name"`
+	Price          float32 `json:"price" bson:"price"`
+	Stock          float32 `json:"stock" bson:"stock"`
+	Sku            string  `json:"sku" bson:"sku"`
+	Status         string  `json:"status" bson:"status"`
+	SalePrice      float32 `json:"sale_price" bson:"sale_price"`
+	MinQuantity    float32 `json:"min_quantity" bson:"min_quantity"`
+	MaxQuantity    float32 `json:"max_quantity" bson:"max_quantity"`
+	ThumbnailImage string  `json:"thumbnail_image" bson:"thumbnail_image"`
+	OriginalImage  string  `json:"original_image" bson:"original_image"`
 }
 
 type ProductUpdates struct {
