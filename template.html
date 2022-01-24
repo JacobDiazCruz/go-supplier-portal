@@ -2,7 +2,13 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <h3>Name:</h3><span>{{.Name}}</span><br/><br/>
-    <h3>Email:</h3><span>{{.Message}}</span><br/>
+    <div>
+        <p style="text-align: center">Hello {{.Email}},</p>
+
+        <p style="text-align: center">We've received your request to reset your Picko password.</p>
+        <p style="text-align: center">Click <a href="{{.Link}}">here</a> to set a new password for your account.</p>
+        <p style="text-align: center">If you did not initiate this request, please contact our Customer Service Team immediately <a href="mailto:support@picko.ph">here</a>.</p>
+    </div>
+    <!-- <h3>Email:</h3><span>{{.Message}}</span><br/> -->
 </body>
 </html>

@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
-	user "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
+	getUser "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,7 +18,7 @@ func ChangeController(ctx *gin.Context) {
 	// if no error
 	if ct != nil {
 		// get email and return user details
-		u := user.GetEmail(ct.Email)
+		u := getUser.GetEmail(ct.Email)
 		// bind requestData
 		user := entity.User{}
 		err := ctx.BindJSON(&user)
