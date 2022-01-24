@@ -8,22 +8,28 @@ import (
 )
 
 type Product struct {
-	ID               primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
-	Name             string             `json:"name" validate:"required"`
-	Status           string             `json:"status" validate:"required"`
-	Slug             string             `json:"slug" validate:"required"`
-	Description      string             `json:"description" validate:"required"`
-	Tags             []string           `json:"tags"`
-	Category         string             `json:"category" validate:"required"`
-	Wholesale        []Wholesale        `json:"wholesale" bson:"wholesale"`
-	SalesInformation SalesInformation   `json:"sales_information" bson:"sales_information" validate:"required"`
-	Variants         []Variant          `json:"variants" bson:"variants" validate:"required"`
-	TotalRatings     int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
-	ThumbnailImage   string             `json:"thumbnail_image" bson:"thumbnail_image" validate:"required"`
-	OriginalImage    string             `json:"original_image" bson:"original_image" validate:"required"`
-	MarketingLink    string             `json:"marketing_link" bson:"marketing_link"`
-	Reviews          []string           `json:"reviews" bson:"reviews"`
-	AuditLog         AuditLog           `json:"audit_log" bson:"audit_log"`
+	ID                  primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
+	Name                string             `json:"name" validate:"required"`
+	Status              string             `json:"status" validate:"required"`
+	Slug                string             `json:"slug" validate:"required"`
+	Description         string             `json:"description" validate:"required"`
+	Tags                []string           `json:"tags"`
+	Category            string             `json:"category" validate:"required"`
+	Wholesale           []Wholesale        `json:"wholesale" bson:"wholesale"`
+	SalesInformation    SalesInformation   `json:"sales_information" bson:"sales_information" validate:"required"`
+	Variants            []Variant          `json:"variants" bson:"variants" validate:"required"`
+	TotalRatings        int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
+	ThumbnailDisplayUrl string             `json:"thumbnail_display_url" bson:"thumbnail_display_url"`
+	Files               []File             `json:"files" bson:"files"`
+	MarketingLink       string             `json:"marketing_link" bson:"marketing_link"`
+	Reviews             []string           `json:"reviews" bson:"reviews"`
+	AuditLog            AuditLog           `json:"audit_log" bson:"audit_log"`
+}
+
+type File struct {
+	ThumbnailUrl string `json:"thumbnail_url" bson:"thumbnail_url"`
+	OriginalUrl  string `json:"original_url" bson:"original_url"`
+	FileType     string `json:"file_type" bson:"file_type"`
 }
 
 type Wholesale struct {
@@ -61,6 +67,7 @@ type VariantOption struct {
 	Name           string  `json:"name" bson:"name"`
 	Price          float32 `json:"price" bson:"price"`
 	Stock          float32 `json:"stock" bson:"stock"`
+	Selected       bool    `json:"selected" bson:"selected"`
 	Sku            string  `json:"sku" bson:"sku"`
 	Status         string  `json:"status" bson:"status"`
 	SalePrice      float32 `json:"sale_price" bson:"sale_price"`

@@ -43,13 +43,13 @@ func AddService(cart entity.AddToCart) string {
 		bson.M{
 			"$push": bson.M{
 				"products": bson.M{
-					"product_id":        cart.ProductId,
-					"variants":          variantsRequest,
-					"name":              productDetails.Name,
-					"thumbnail_image":   productDetails.ThumbnailImage,
-					"original_image":    productDetails.OriginalImage,
-					"sales_information": productDetails.SalesInformation,
-					"quantity":          cart.Quantity,
+					"product_id":            cart.ProductId,
+					"variants":              variantsRequest,
+					"name":                  productDetails.Name,
+					"files":                 productDetails.Files,
+					"thumbnail_display_url": productDetails.ThumbnailDisplayUrl,
+					"sales_information":     productDetails.SalesInformation,
+					"quantity":              cart.Quantity,
 				},
 			},
 		},

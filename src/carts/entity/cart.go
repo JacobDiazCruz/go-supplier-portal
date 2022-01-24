@@ -35,22 +35,28 @@ type AddToCart struct {
 }
 
 type ProductResponse struct {
-	ID               primitive.ObjectID `json:"product_id" bson:"product_id,omitempty"`
-	Name             string             `json:"name" validate:"required"`
-	Quantity         float64            `json:"quantity"`
-	Status           string             `json:"status" validate:"required"`
-	Slug             string             `json:"slug" validate:"required"`
-	Description      string             `json:"description" validate:"required"`
-	Tags             []string           `json:"tags"`
-	Category         string             `json:"category" validate:"required"`
-	SalesInformation SalesInformation   `json:"sales_information" bson:"sales_information" validate:"required"`
-	Variants         []Variant          `json:"variants" bson:"variants"`
-	TotalRatings     int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
-	ThumbnailImage   string             `json:"thumbnail_image" bson:"thumbnail_image" validate:"required"`
-	OriginalImage    string             `json:"original_image" bson:"original_image" validate:"required"`
-	MarketingLink    string             `json:"marketing_link" bson:"marketing_link"`
-	Reviews          []string           `json:"reviews"`
-	AuditLog         AuditLog           `json:"audit_log" bson:"audit_log"`
+	ID                  primitive.ObjectID `json:"product_id" bson:"product_id,omitempty"`
+	Name                string             `json:"name" validate:"required"`
+	Quantity            float64            `json:"quantity"`
+	Status              string             `json:"status" validate:"required"`
+	Slug                string             `json:"slug" validate:"required"`
+	Description         string             `json:"description" validate:"required"`
+	Tags                []string           `json:"tags"`
+	Category            string             `json:"category" validate:"required"`
+	SalesInformation    SalesInformation   `json:"sales_information" bson:"sales_information" validate:"required"`
+	Variants            []Variant          `json:"variants" bson:"variants"`
+	TotalRatings        int                `json:"total_ratings" bson:"total_ratings" validate:"required"`
+	ThumbnailDisplayUrl string             `json:"thumbnail_display_url" bson:"thumbnail_display_url"`
+	Files               []File             `json:"files" bson:"files"`
+	MarketingLink       string             `json:"marketing_link" bson:"marketing_link"`
+	Reviews             []string           `json:"reviews"`
+	AuditLog            AuditLog           `json:"audit_log" bson:"audit_log"`
+}
+
+type File struct {
+	ThumbnailUrl string `json:"thumbnail_url" bson:"thumbnail_url"`
+	OriginalUrl  string `json:"original_url" bson:"original_url"`
+	FileType     string `json:"file_type" bson:"file_type"`
 }
 
 type SalesInformation struct {
@@ -70,7 +76,7 @@ type VariantRequest struct {
 type Variant struct {
 	ID     string      `json:"_id" bson:"_id"`
 	Name   string      `json:"name" bson:"name"`
-	Option interface{} `json:"options" bson:"options"`
+	Option interface{} `json:"option" bson:"option"`
 }
 
 type VariantOptions struct {

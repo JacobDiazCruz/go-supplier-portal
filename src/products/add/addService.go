@@ -16,21 +16,21 @@ var variantCollection *mongo.Collection = database.OpenCollection(database.Clien
 func AddProductService(product entity.Product) string {
 	// query
 	result, err := productCollection.InsertOne(context.TODO(), bson.M{
-		"name":              product.Name,
-		"slug":              product.Slug,
-		"body":              product.Description,
-		"tags":              product.Tags,
-		"category":          product.Category,
-		"total_ratings":     product.TotalRatings,
-		"wholesale":         product.Wholesale,
-		"sales_information": product.SalesInformation,
-		"thumbnail_image":   product.ThumbnailImage,
-		"original_image":    product.OriginalImage,
-		"variants":          product.Variants,
-		"status":            product.Status,
-		"marketing_link":    product.MarketingLink,
-		"reviews":           product.Reviews,
-		"audit_log":         product.AuditLog,
+		"name":                  product.Name,
+		"slug":                  product.Slug,
+		"body":                  product.Description,
+		"tags":                  product.Tags,
+		"category":              product.Category,
+		"total_ratings":         product.TotalRatings,
+		"wholesale":             product.Wholesale,
+		"sales_information":     product.SalesInformation,
+		"files":                 product.Files,
+		"variants":              product.Variants,
+		"status":                product.Status,
+		"thumbnail_display_url": product.ThumbnailDisplayUrl,
+		"marketing_link":        product.MarketingLink,
+		"reviews":               product.Reviews,
+		"audit_log":             product.AuditLog,
 	})
 	if err != nil {
 		panic(err)
