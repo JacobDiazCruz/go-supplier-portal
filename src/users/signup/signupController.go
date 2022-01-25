@@ -15,7 +15,6 @@ import (
 )
 
 func SignupController(ctx *gin.Context) {
-
 	// validate user request
 	user := entity.User{}
 	if err := ctx.ShouldBindJSON(&user); err == nil {

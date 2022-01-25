@@ -97,6 +97,12 @@ func main() {
 	server.POST("/signup", func(ctx *gin.Context) {
 		signupUser.SignupController(ctx)
 	})
+	server.POST("/verify-email", func(ctx *gin.Context) {
+		signupUser.VerifyEmailController(ctx)
+	})
+	server.POST("/verify-code", func(ctx *gin.Context) {
+		signupUser.VerifyCodeController(ctx)
+	})
 	server.POST("/forgot-password", forgotPassword.ForgotController)
 
 	// profile

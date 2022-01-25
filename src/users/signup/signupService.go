@@ -12,7 +12,6 @@ import (
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
 func SignupService(user entity.User) string {
-
 	// save user to db
 	result, err := userCollection.InsertOne(context.TODO(), user)
 	if err != nil {
