@@ -23,6 +23,7 @@ import (
 	listUser "gitlab.com/JacobDCruz/supplier-portal/src/users/list"
 	loginUser "gitlab.com/JacobDCruz/supplier-portal/src/users/login"
 	logoutUser "gitlab.com/JacobDCruz/supplier-portal/src/users/logout"
+	resetPassword "gitlab.com/JacobDCruz/supplier-portal/src/users/reset-password"
 	signupUser "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
 	updateUser "gitlab.com/JacobDCruz/supplier-portal/src/users/update"
 
@@ -75,6 +76,9 @@ func main() {
 	// users
 	server.POST("/login", func(ctx *gin.Context) {
 		loginUser.LoginController(ctx)
+	})
+	server.POST("/reset-password", func(ctx *gin.Context) {
+		resetPassword.ResetController(ctx)
 	})
 	server.POST("/user/change-password", func(ctx *gin.Context) {
 		changePassword.ChangeController(ctx)

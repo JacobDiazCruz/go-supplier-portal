@@ -56,16 +56,6 @@ func SignupController(ctx *gin.Context) {
 	// get user service
 	getUser := get.GetService(res)
 
-	// Create profile
-	// pEntity := &profilesEntity.Profile{
-	// 	UserId:    objID,
-	// 	Email:     getUser.Email,
-	// 	FirstName: getUser.FirstName,
-	// 	LastName:  getUser.LastName,
-	// 	Role:      getUser.Role,
-	// }
-	// addProfile.AddService(*pEntity)
-
 	// Create a cart for the new signed up user
 	cEntity := &cartEntity.Cart{}
 	cEntity.UserId = objID
@@ -74,5 +64,4 @@ func SignupController(ctx *gin.Context) {
 
 	// http response
 	ctx.JSON(http.StatusOK, gin.H{"msg": "Fetched data successfully", "data": getUser})
-
 }

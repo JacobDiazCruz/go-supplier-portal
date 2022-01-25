@@ -13,35 +13,6 @@ import (
 	h "gitlab.com/JacobDCruz/supplier-portal/src/helpers"
 )
 
-// func ForgotController(ctx *gin.Context) {
-// 	// Sender data.
-// 	from := "support@picko.ph"
-// 	password := "aekhrnvfhoffzzum"
-
-// 	// Receiver email address.
-// 	to := []string{
-// 		"humorbounty@gmail.com",
-// 	}
-
-// 	// smtp server configuration.
-// 	smtpHost := "smtp.gmail.com"
-// 	smtpPort := "587"
-
-// 	// Message.
-// 	message := []byte("This is a test email message.")
-
-// 	// Authentication.
-// 	auth := smtp.PlainAuth("", from, password, smtpHost)
-
-// 	// Sending email.
-// 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return
-// 	}
-// 	fmt.Println("Email Sent Successfully!")
-// }
-
 type ForgotPassword struct {
 	Email string `json:"email" bson:"email"`
 }
@@ -85,7 +56,7 @@ func ForgotController(ctx *gin.Context) {
 	body.Write([]byte(fmt.Sprintf("Subject: This is a test subject \n%s\n\n", mimeHeaders)))
 
 	// sign a jwt token
-	signToken := authService.SignToken(fp.Email)
+	signToken := authService.SignToken(fp.Email, 10)
 
 	// set body content
 	t.Execute(&body, struct {

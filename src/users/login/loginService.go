@@ -32,7 +32,7 @@ func LoginService(login *entity.Credentials) string {
 	if err != nil {
 		return "Error"
 	} else {
-		signToken := auth.SignToken(login.Email)
+		signToken := auth.SignToken(login.Email, 60)
 		return signToken
 	}
 }

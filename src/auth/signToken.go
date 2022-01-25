@@ -15,13 +15,23 @@ var jwtKey = []byte("secret_key")
  * @param - token, login type
  * @returns - access token
  */
-func SignToken(email string) string {
+func SignToken(email string, ttl int) string {
 	// sign jwt
-	claims := &Claims{
-		Email: email,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Minute * 60)},
-		},
+	claims := &Claims{}
+	if ttl == 10 {
+		claims = &Claims{
+			Email: email,
+			RegisteredClaims: jwt.RegisteredClaims{
+				ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Minute * 10)},
+			},
+		}
+	} else {
+		claims = &Claims{
+			Email: email,
+			RegisteredClaims: jwt.RegisteredClaims{
+				ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Minute * 60)},
+			},
+		}
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)

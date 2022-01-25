@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
 	createCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/create"
 	cartEntity "gitlab.com/JacobDCruz/supplier-portal/src/carts/entity"
-	auth "gitlab.com/JacobDCruz/supplier-portal/src/auth"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
 	get "gitlab.com/JacobDCruz/supplier-portal/src/users/get"
 	signup "gitlab.com/JacobDCruz/supplier-portal/src/users/signup"
@@ -85,7 +85,7 @@ func verifyIdToken(idToken string) string {
 	if tokenInfo.VerifiedEmail == true {
 		tk := &auth.TokenIdentity{}
 		tk.Email = credentials.Email
-		signToken := auth.SignToken(tk.Email)
+		signToken := auth.SignToken(tk.Email, 60)
 		return signToken
 	}
 	return "Error"
