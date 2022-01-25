@@ -13,6 +13,7 @@ type User struct {
 	OriginalImage  string             `json:"original_image" bson:"original_image"`
 	Password       string             `json:"password" validate:"required" bson:"password"`
 	ContactNumber  string             `json:"contact_number" validate:"required" bson:"contact_number"`
+	Verified       bool               `json:"verified" bson:"verified"`
 	Role           string             `json:"role" bson:"role"`
 }
 

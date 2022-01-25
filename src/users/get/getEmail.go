@@ -15,7 +15,7 @@ func GetEmail(email string) entity.User {
 	result := entity.User{}
 
 	// query
-	query := bson.M{"email": email}
+	query := bson.M{"email": email, "verified": true}
 	userCollection.FindOne(context.TODO(), query).Decode(&result)
 	return result
 }

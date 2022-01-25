@@ -29,6 +29,8 @@ func SignupController(ctx *gin.Context) {
 			return
 		}
 	}
+	// initialize not verified user
+	user.Verified = false
 
 	// validate email if already exist
 	emailRes := get.GetEmail(user.Email)

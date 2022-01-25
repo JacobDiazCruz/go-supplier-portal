@@ -17,7 +17,7 @@ var myCollection *mongo.Collection = database.OpenCollection(database.Client, "u
 func LoginService(login *entity.Credentials) string {
 	// validate credentials
 	user := entity.User{}
-	query := bson.M{"email": login.Email}
+	query := bson.M{"email": login.Email, "verified": true}
 	err2 := myCollection.FindOne(context.TODO(), query).Decode(&user)
 	if err2 != nil {
 		return "Error"

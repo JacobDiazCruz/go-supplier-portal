@@ -36,3 +36,26 @@ func UpdateService(user entity.User) string {
 	// return if no error
 	return "Success"
 }
+
+func UpdateVerifiedStatus(email string) string {
+	// query
+	filter := bson.M{"email": email, "verified": false}
+	update := bson.M{
+		"verified": true,
+	}
+
+	// query db
+	res, err := userCollection.UpdateOne(context.TODO(),
+		filter,
+		bson.M{"$set": update},
+	)
+
+	// check error
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+
+	// return if no error
+	return email
+}
