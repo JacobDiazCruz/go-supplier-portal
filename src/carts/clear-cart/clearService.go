@@ -19,7 +19,7 @@ func ClearService(cart entity.AddToCart) string {
 		bson.M{"user_id": cart.UserId},
 		bson.M{
 			"$set": bson.M{
-				"products": []entity.ProductItems{},
+				"products": []entity.ProductResponse{},
 			},
 		},
 	)

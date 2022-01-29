@@ -56,7 +56,7 @@ func GoogleLogin(ctx *gin.Context) {
 
 	// Signup email if it doesnt exist yet
 	if emailRes.Email == "" {
-		res := signup.SignupService(user)
+		res := signup.SignupService(user, "google")
 		objID, err := primitive.ObjectIDFromHex(res)
 		if err != nil {
 			panic(err)

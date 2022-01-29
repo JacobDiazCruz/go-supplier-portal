@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/smtp"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -78,8 +79,8 @@ func VerifyCodeController(ctx *gin.Context) {
 func SendEmailVerification(ctx *gin.Context, ve VerifyEmail, code string) string {
 
 	// Sender data.
-	from := "support@picko.ph"
-	password := "aekhrnvfhoffzzum"
+	from := os.Getenv("GOOGLE_SMTP_EMAIL")
+	password := os.Getenv("GOOGLE_SMTP_APP_PASSWORD")
 
 	// Receiver email address.
 	to := []string{
@@ -87,7 +88,7 @@ func SendEmailVerification(ctx *gin.Context, ve VerifyEmail, code string) string
 	}
 
 	// smtp server configuration.
-	smtpHost := "smtp.gmail.com"
+	smtpHost := "smtp-relay.gmail.com"
 	smtpPort := "587"
 
 	// Authentication.

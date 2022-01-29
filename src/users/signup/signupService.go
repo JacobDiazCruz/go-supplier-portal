@@ -11,7 +11,14 @@ import (
 
 var userCollection *mongo.Collection = database.OpenCollection(database.Client, "users")
 
-func SignupService(user entity.User) string {
+func SignupService(user entity.User, signupType string) string {
+	// initialize not verified user
+	if signupType == "manual" {
+		user.Verified = false
+	} else {
+		user.Verified = true
+	}
+
 	// save user to db
 	result, err := userCollection.InsertOne(context.TODO(), user)
 	if err != nil {

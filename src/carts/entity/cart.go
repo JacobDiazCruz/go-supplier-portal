@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -21,10 +20,6 @@ type GetCart struct {
 	UserId   primitive.ObjectID `json:"user_id" bson:"user_id,omitempty"`
 	AuditLog AuditLog           `json:"audit_log"`
 }
-type ProductItems struct {
-	ProductId bson.M `json:"product_id"`
-	Quantity  int    `json:"quantity"`
-}
 
 type AddToCart struct {
 	ProductId string             `json:"product_id"`
@@ -35,7 +30,7 @@ type AddToCart struct {
 }
 
 type ProductResponse struct {
-	ID                  primitive.ObjectID `json:"product_id" bson:"product_id,omitempty"`
+	ID                  primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
 	Name                string             `json:"name" validate:"required"`
 	Quantity            float64            `json:"quantity"`
 	Status              string             `json:"status" validate:"required"`
@@ -60,14 +55,14 @@ type File struct {
 }
 
 type SalesInformation struct {
-	Price       float32 `json:"price"`
-	Stock       float32 `json:"stock"`
-	Brand       string  `json:"brand"`
-	MinQuantity float32 `json:"min_quantity"`
-	MaxQuantity float32 `json:"max_quantity"`
-	UnitPrice   float32 `json:"unit_price"`
+	Price       float32 `json:"price" bson:"price" validate:"required"`
+	SalePrice   float32 `json:"sale_price" bson:"sale_price"`
+	Stock       float32 `json:"stock" bson:"stock" validate:"required"`
+	Brand       string  `json:"brand" bson:"brand"`
+	Sku         string  `json:"sku" bson:"sku" validate:"required"`
+	MinQuantity float32 `json:"min_quantity" bson:"min_quantity" validate:"required"`
+	MaxQuantity float32 `json:"max_quantity" bson:"max_quantity" validate:"required"`
 }
-
 type VariantRequest struct {
 	VariantId       string `json:"variant_id" bson:"variant_id"`
 	VariantOptionId string `json:"variant_option_id" bson:"variant_option_id"`

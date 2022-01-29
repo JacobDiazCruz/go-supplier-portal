@@ -3,7 +3,6 @@ package orders
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	clearCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/clear-cart"
@@ -81,7 +80,6 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 
 	// 3. insert product details to cart
 	// include selected quantity and selected variant
-	fmt.Println(products)
 	for productKey, product := range products {
 		for _, cartProduct := range cartRes.Products {
 			if cartProduct.ID == product.ID {
@@ -96,7 +94,13 @@ func PlaceOrderService(order entity.PlaceOrder, au entity.Auth) string {
 			}
 		}
 		// compute subtotal
-		totalProductAmount := int(product.SalesInformation.Price) * int(product.Quantity)
+		// check if there's a sale price
+		totalProductAmount := 0
+		if int(product.SalesInformation.SalePrice) != 0 {
+			totalProductAmount = int(product.SalesInformation.SalePrice) * int(product.Quantity)
+		} else {
+			totalProductAmount = int(product.SalesInformation.Price) * int(product.Quantity)
+		}
 		subTotalAmount = subTotalAmount + totalProductAmount
 		// append
 		orderCart.Products = append(orderCart.Products, product)

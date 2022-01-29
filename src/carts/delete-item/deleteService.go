@@ -19,7 +19,7 @@ func DeleteService(cart entity.AddToCart) string {
 		bson.M{"user_id": cart.UserId},
 		bson.M{
 			"$pull": bson.M{
-				"products": bson.M{"product_id": cart.ProductId},
+				"products": bson.M{"_id": cart.ProductId},
 			},
 		},
 	)

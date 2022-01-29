@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/smtp"
+	"os"
 	"text/template"
 
 	"github.com/gin-gonic/gin"
@@ -33,8 +34,8 @@ func ForgotController(ctx *gin.Context) {
 	}
 
 	// Sender data.
-	from := "support@picko.ph"
-	password := "aekhrnvfhoffzzum"
+	from := os.Getenv("GOOGLE_SMTP_EMAIL")
+	password := os.Getenv("GOOGLE_SMTP_APP_PASSWORD")
 
 	// Receiver email address.
 	to := []string{
@@ -48,7 +49,7 @@ func ForgotController(ctx *gin.Context) {
 	// Authentication.
 	auth := smtp.PlainAuth("", from, password, smtpHost)
 
-	t, _ := template.ParseFiles("template.html")
+	t, _ := template.ParseFiles("reset_password.html")
 
 	var body bytes.Buffer
 

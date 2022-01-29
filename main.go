@@ -44,6 +44,7 @@ import (
 	deleteCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/delete-item"
 	getCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/get"
 	updateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/update"
+	validateCart "gitlab.com/JacobDCruz/supplier-portal/src/carts/validate-items"
 
 	// orders
 	addSellerOrder "gitlab.com/JacobDCruz/supplier-portal/src/orders/add-seller-order"
@@ -142,6 +143,9 @@ func main() {
 	})
 	server.PUT("/update-quantity", func(ctx *gin.Context) {
 		updateCart.UpdateController(ctx)
+	})
+	server.GET("/cart/validate-items", func(ctx *gin.Context) {
+		validateCart.ValidateController(ctx)
 	})
 
 	// addresses

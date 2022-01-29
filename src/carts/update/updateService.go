@@ -14,9 +14,9 @@ var cartCollection *mongo.Collection = database.OpenCollection(database.Client, 
 
 func UpdateService(cart entity.AddToCart) string {
 	// query filters
-	filter := bson.M{"user_id": cart.UserId, "products.product_id": cart.ProductId}
+	filter := bson.M{"user_id": cart.UserId, "products._id": cart.ProductId}
 	update := bson.M{"products.$[item].quantity": cart.Quantity}
-	arrayFilter := bson.M{"item.product_id": cart.ProductId}
+	arrayFilter := bson.M{"item._id": cart.ProductId}
 
 	// query db
 	res := cartCollection.FindOneAndUpdate(context.Background(),
