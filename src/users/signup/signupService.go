@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"fmt"
 
 	database "gitlab.com/JacobDCruz/supplier-portal/src/config"
 	entity "gitlab.com/JacobDCruz/supplier-portal/src/users/entity"
@@ -18,6 +19,9 @@ func SignupService(user entity.User, signupType string) string {
 	} else {
 		user.Verified = true
 	}
+
+	fmt.Println(user)
+	fmt.Println("hehehee")
 
 	// save user to db
 	result, err := userCollection.InsertOne(context.TODO(), user)

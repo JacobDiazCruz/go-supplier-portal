@@ -73,6 +73,7 @@ func main() {
 	// auth
 	server.POST("/token", auth.CheckToken)
 	server.POST("/google/login", loginUser.GoogleLogin)
+	server.POST("/facebook/login", loginUser.FacebookLogin)
 
 	// users
 	server.POST("/login", func(ctx *gin.Context) {

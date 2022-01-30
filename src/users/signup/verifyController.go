@@ -88,8 +88,8 @@ func SendEmailVerification(ctx *gin.Context, ve VerifyEmail, code string) string
 	}
 
 	// smtp server configuration.
-	smtpHost := "smtp-relay.gmail.com"
-	smtpPort := "587"
+	smtpHost := os.Getenv("GOOGLE_SMTP_HOST")
+	smtpPort := os.Getenv("GOOGLE_SMTP_PORT")
 
 	// Authentication.
 	auth := smtp.PlainAuth("", from, password, smtpHost)

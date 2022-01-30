@@ -30,7 +30,6 @@ import (
 // const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 
 var httpClient = &http.Client{}
-
 var credentials = &auth.Credentials{}
 
 func GoogleLogin(ctx *gin.Context) {
@@ -41,6 +40,9 @@ func GoogleLogin(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Error encountered"})
 	}
 	token := verifyIdToken(credentials.Token)
+	if token == "Error" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"msg": "Invalid Access Token"})
+	}
 	// @TODO: Signup google email if it does not exist in db
 	// bind requestData
 	user := entity.User{

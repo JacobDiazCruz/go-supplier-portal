@@ -43,8 +43,8 @@ func ForgotController(ctx *gin.Context) {
 	}
 
 	// smtp server configuration.
-	smtpHost := "smtp.gmail.com"
-	smtpPort := "587"
+	smtpHost := os.Getenv("GOOGLE_SMTP_HOST")
+	smtpPort := os.Getenv("GOOGLE_SMTP_PORT")
 
 	// Authentication.
 	auth := smtp.PlainAuth("", from, password, smtpHost)
