@@ -18,7 +18,7 @@ func AddProductService(product entity.Product) string {
 	result, err := productCollection.InsertOne(context.TODO(), bson.M{
 		"name":                  product.Name,
 		"slug":                  product.Slug,
-		"body":                  product.Description,
+		"description":           product.Description,
 		"tags":                  product.Tags,
 		"category":              product.Category,
 		"total_ratings":         product.TotalRatings,

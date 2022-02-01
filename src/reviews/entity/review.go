@@ -8,10 +8,10 @@ import (
 )
 
 type Review struct {
-	ProductId primitive.ObjectID `json:"product_id"`
-	Rating    int                `json:"rating"`
-	Comment   string             `json:"comment"`
-	AuditLog  AuditLog           `json:"audit_log"`
+	ProductId primitive.ObjectID `json:"product_id" bson:"product_id"`
+	Rating    int                `json:"rating" bson:"rating"`
+	Comment   string             `json:"comment" bson:"comment"`
+	AuditLog  AuditLog           `json:"audit_log" bson:"audit_log"`
 }
 
 type AuditLog struct {
